@@ -1,0 +1,20 @@
+---
+title: "california schools"
+output: html_document
+date: "`r Sys.Date()`"
+---
+```{r libraries}
+library(tidyverse)
+```
+
+```{r data}
+schooldata21<-read.csv("schooldata.csv")
+```
+
+```{r}
+schooldata21 %>% ggplot() +
+  geom_boxplot(aes(ELA_NUMVALID_ALL_00))
+```
+
+
+
