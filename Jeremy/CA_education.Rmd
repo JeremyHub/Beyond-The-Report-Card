@@ -8,17 +8,26 @@ school_data <- read.csv('ca_education.csv')
 ela_metric_data <- read.csv('ca_edu_metrics.csv')
 physical_fitness_data <- read.csv('physical_fitness_testing_ca.csv')
 science_metric_data <- read.csv('science_ca_assesment.csv', sep = "^")
-physical_fitness_data = physical_fitness_data %>%
+physical_fitness_data <- physical_fitness_data %>%
   mutate(cds = as.numeric(paste0(paste0(CO,DIST),SCHL)))
+science_metric_data <- science_metric_data %>%
+  mutate(cds = as.numeric(paste0(paste0(County.Code,District.Code),School.Code)))
 ```
 
 ```{r}
 merged1 <- merge(school_data, ela_metric_data, by='schoolname')
-merged1
-physical_fitness_data %>%
-  group_by(cds)
-merged2 <- merge(physical_fitness_data,merged1, by='cds')
-merged2
+
+physical_fitness_data_clean <- physical_fitness_data %>%
+  filter(Level_Number==1, Table_Number==1, Report_Number==0) %>%
+  select(-Level_Number, -Report_Number, -Table_Number, -Line_Number, -ChrtNum)
+
+merged2 <- merge(physical_fitness_data_clean,merged1, by='cds')
+
+science_metrics_clean <- science_metric_data %>%
+  filter(County.Code > 0) %>%
+  select(-County.Code, -District.Code, -School.Code, -Filler)
+
+merged3 <- merge(merged2, science_metrics_clean, by='cds')
 ```
 
 
