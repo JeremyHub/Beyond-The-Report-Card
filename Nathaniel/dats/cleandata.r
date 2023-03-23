@@ -45,17 +45,26 @@ periodToNA <- function(val) {
   } else {return(val)}
 }
 
+singlePCTtoRange <- function(val) {
+  if (is.na(val)) {
+    return(val)
+  } else if (!str_detect(val,"-")) {
+    return(paste(val,val,sep="-"))
+  } else (return(val))
+}
+
 
 colFunc <- function(col, valueFunction) {  # TODO: There is probably a better way to do this...
   sapply(col, valueFunction)
 }
 
 
-
 wipdats <- schooldata21 %>% mutate(across(contains("PCT"),~colFunc(.x,valueFunction = valFunc)))
-
-wipdats <- wipdats %>% separate_wider_delim(cols = contains("PCT"),delim = "-",names = c("max","min"),names_sep = "_",too_few = "align_start")
 
 wipdats <- wipdats %>% mutate(across(contains("PCT"),~colFunc(.x,valueFunction = periodToNA)))
 
-write.csv(schooldata21,file = "schooldata.csv")
+wipdats <- wipdats %>% mutate(across(contains("PCT"),~colFunc(.x,valueFunction = singlePCTtoRange)))
+
+wideschooldata21 <- wipdats %>% separate_wider_delim(cols = contains("PCT"),delim = "-",names = c("max","min"),names_sep = "_",too_few = "align_start")
+
+write.csv(wideschooldata21,file = "wideschooldata.csv")
