@@ -1,0 +1,50 @@
+```{r}
+library(ggplot2)
+library(dplyr)
+```
+
+```{r}
+school_data <- read.csv('ca_education.csv')
+ela_metric_data <- read.csv('ca_edu_metrics.csv')
+physical_fitness_data <- read.csv('physical_fitness_testing_ca.csv')
+science_metric_data <- read.csv('science_ca_assesment.csv', sep = "^")
+physical_fitness_data = physical_fitness_data %>%
+  mutate(cds = as.numeric(paste0(paste0(CO,DIST),SCHL)))
+```
+
+```{r}
+merged1 <- merge(school_data, ela_metric_data, by='schoolname')
+merged1
+physical_fitness_data %>%
+  group_by(cds)
+merged2 <- merge(physical_fitness_data,merged1, by='cds')
+merged2
+```
+
+
+
+
+```{r}
+merged <- merge(school_data, ela_metric_data, by='schoolname', all=FALSE)
+clean_merged <- merged %>%
+  filter(flag_nerds == 'false') %>%
+  filter(flag_f33 != '1') %>%
+  select(schoolname, currstatus, currdenom, pp_stloc_raw, gradespan, enroll_raw) %>%
+  na.omit() %>%
+  group_by(schoolname) %>%
+  mutate(pp_stloc_raw = as.numeric(pp_stloc_raw), enroll_raw = as.numeric(enroll_raw)) %>%
+  na.omit() %>%
+  summarize(avg_status = mean(currstatus), total_num = sum(currdenom), per_pupil_funding = mean(pp_stloc_raw), gradespan = gradespan, enrollment = mean(enroll_raw))
+```
+
+```{r}
+unique(clean_merged$gradespan)
+old_grades = c("KG-12","KG-06","KG-05","06-08","09-12","07-08","06-12","07-12","KG-08","04-12","05-08","10-12","03-12","KG-03","KG-KG","11-12","08-12","03-05","04-08","03-06","KG-01","06-09","KG-02","KG-07","KG-04","06-10","01-05","05-06","04-06","02-08","04-05","07-09","01-08","01-01","02-03","06-07","02-06","01-03","01-12","01-06","05-12","03-04","02-05","08-08","NRD")
+new_categories = c("k-12", "k-6", "k-6", "6-12", "9-12", "6-8", "6-12", "6-12", "k-8", "k-12", "5-8", "9-12", "k-12", "k-6", "k", "9-12", "9-12", "k-6", "k-8", "k-8", "k", "6-12", "k", "k-6", "k-6", "6-12", "k-6", "5-8", "5-8", "k-8",
+"6-8", "6-12", "k-8", "k", "k-6", "5-8", "k-6", "k-6", "k-12", "k-6", "6-12", "k-6", "k-6", "6-8", "NRD")
+clean_merged <- clean_merged %>%
+  mutate(new_grade_span = factor(gradespan, levels=old_grades, labels=new_categories))
+```
+
+
+
