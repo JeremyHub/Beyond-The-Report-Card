@@ -1,0 +1,25 @@
+---
+title: "california schools"
+output: html_document
+date: "`r Sys.Date()`"
+---
+```{r libraries}
+library(tidyverse)
+```
+
+```{r data}
+wideschooldata21<-read.csv("wideschooldata.csv")
+```
+
+```{r}
+wideschooldata21 %>% ggplot() +
+  geom_boxplot(aes(ELA_PCTPROF_ALL_00_min))
+wideschooldata21 %>% ggplot() +
+  geom_point(aes(x=ELA_PCTPROF_ALL_00_min,y=ELA_NUMVALID_ALL_00))
+
+summary(wideschooldata21$ELA_PCTPROF_ALL_00_max)
+length(wideschooldata21$ELA_PCTPROF_ALL_00_min)
+```
+
+
+
