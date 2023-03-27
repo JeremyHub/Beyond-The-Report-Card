@@ -1,6 +1,7 @@
 ```{r}
 library(ggplot2)
 library(dplyr)
+library(tidyverse)
 ```
 
 ```{r}
@@ -15,17 +16,28 @@ science_metric_data <- science_metric_data %>%
 ```
 
 ```{r}
-merged1 <- merge(school_data, ela_metric_data, by='schoolname')
+school_data_clean <- school_data %>%
+  filter(flag_nerds == 'false') %>%
+  filter(flag_f33 != '1')
+
+ela_metric_data_clean <- ela_metric_data %>%
+  filter(cds > 0, rtype == 'S') %>%
+  select(-color, -box) %>%
+  pivot_wider(names_from = studentgroup, values_from = c(currdenom, currstatus, priordenom, priorstatus, change, statuslevel, changelevel, curradjustment, prioradjustment))
+
+merged1 <- merge(school_data_clean, ela_metric_data_clean, by='schoolname')
 
 physical_fitness_data_clean <- physical_fitness_data %>%
   filter(Level_Number==1, Table_Number==1, Report_Number==0) %>%
-  select(-Level_Number, -Report_Number, -Table_Number, -Line_Number, -ChrtNum)
+  select(-Level_Number, -Report_Number, -Table_Number, -Line_Number, -ChrtNum) %>%
+  pivot_wider(names_from = Line_Text, values_from = c(NoStud5, NoHFZ5, Perc5a, Perc5b, Perc5c, NoStud7, NoHFZ7, Perc7a, Perc7b, Perc7c, NoStud9, NoHFZ9, Perc9a, Perc9b, Perc9c))
 
 merged2 <- merge(physical_fitness_data_clean,merged1, by='cds')
 
 science_metrics_clean <- science_metric_data %>%
-  filter(County.Code > 0) %>%
-  select(-County.Code, -District.Code, -School.Code, -Filler)
+  filter(County.Code > 0, Type.ID == 07) %>%
+  select(-County.Code, -District.Code, -School.Code, -Filler) %>%
+  pivot_wider(names_from = c(Grade, Student.Group.ID), values_from = c(Total.Tested.at.Reporting.Level, Students.Enrolled, Students.Tested, Mean.Scale.Score, Percentage.Standard.Exceeded, Percentage.Standard.Met, Percentage.Standard.Met.and.Above, Percentage.Standard.Nearly.Met, Percentage.Standard.Not.Met, Students.with.Scores, Life.Sciences.Domain.Percent.Below.Standard, Life.Sciences.Domain.Percent.Near.Standard, Life.Sciences.Domain.Percent.Above.Standard, Physical.Sciences.Domain.Percent.Below.Standard, Physical.Sciences.Domain.Percent.Near.Standard, Physical.Sciences.Domain.Percent.Above.Standard, Earth.and.Space.Sciences.Domain.Percent.Below.Standard, Earth.and.Space.Sciences.Domain.Percent.Near.Standard, Earth.and.Space.Sciences.Domain.Percent.Above.Standard))
 
 merged3 <- merge(merged2, science_metrics_clean, by='cds')
 ```
