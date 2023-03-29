@@ -42,6 +42,9 @@ science_metrics_clean <- science_metric_data %>%
 merged3 <- merge(merged2, science_metrics_clean, by='cds')
 ```
 
+```{r}
+merged3
+```
 
 
 
