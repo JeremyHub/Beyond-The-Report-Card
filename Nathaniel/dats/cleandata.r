@@ -1,10 +1,14 @@
 library(readr)
 library(tidyverse)
+library("rstudioapi")
 
-math21 <- read_csv("Documents/ProjectsInDS/STAT-456-Final/Nathaniel/dats/math21.csv")
+setwd(dirname(getActiveDocumentContext()$path))
 
-ela21 <- read_csv("Documents/ProjectsInDS/STAT-456-Final/Nathaniel/dats/ela21.csv")
+math21 <- read_csv("math21.csv")
 
+ela21 <- read_csv("ela21.csv")
+
+nerdschoolreport <- read_csv("nerdschoolreport.csv")
 
 math21 <- math21 %>% filter(STNAM == "CALIFORNIA") %>% 
   rename("MTH_NUMVALID"="NUMVALID") %>%
@@ -19,7 +23,6 @@ ela21 <- ela21 %>% filter(STNAM == "CALIFORNIA") %>%
 data21 <- full_join(ela21,math21,by=c("SCHOOL_YEAR","GRADE","CATEGORY","LEAID","ST_SCHID","STNAM","FIPST","ST_LEAID","LEANM","NCESSCH","DATE_CUR","SCHNAM"))
 
 schooldata21 <- data21 %>% pivot_wider(names_from = c(CATEGORY,GRADE),values_from = c(ELA_NUMVALID,ELA_PCTPROF,MTH_NUMVALID,MTH_PCTPROF))
-# the data is already incredibly wide but we must further widen it to get any use out of the PCT columns
 
 valFunc <- function(val) {
   if (is.na(val)) {
@@ -58,13 +61,21 @@ colFunc <- function(col, valueFunction) {  # TODO: There is probably a better wa
   sapply(col, valueFunction)
 }
 
-
-wipdats <- schooldata21 %>% mutate(across(contains("PCT"),~colFunc(.x,valueFunction = valFunc)))
+wipdats <- data21 %>% mutate(across(contains("PCT"),~colFunc(.x,valueFunction = valFunc)))
 
 wipdats <- wipdats %>% mutate(across(contains("PCT"),~colFunc(.x,valueFunction = periodToNA)))
 
 wipdats <- wipdats %>% mutate(across(contains("PCT"),~colFunc(.x,valueFunction = singlePCTtoRange)))
 
-wideschooldata21 <- wipdats %>% separate_wider_delim(cols = contains("PCT"),delim = "-",names = c("max","min"),names_sep = "_",too_few = "align_start")
+wideschooldata21 <- wipdats %>% separate_wider_delim(cols = contains("PCT"),delim = "-",names = c("min","max"),names_sep = "_",too_few = "align_start")
 
 write.csv(wideschooldata21,file = "wideschooldata.csv")
+
+# School Summary Stats
+
+schoolsummary <- schooldata21 %>% mutate(across(contains("NUMVALID"),~.x/ELA_NUMVALID_ALL_00))
+
+schoolsummary <- schoolsummary %>% left_join(nerdschoolreport, by = c("NCESSCH"="ncesid")) %>% select(-contains("PCT"))
+
+write.csv(schoolsummary,file="schoolsummary.csv")
+                                        
