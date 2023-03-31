@@ -2,13 +2,29 @@
 library(ggplot2)
 library(dplyr)
 library(tidyverse)
+library(readxl)
 ```
 
 ```{r}
-school_data <- read.csv('ca_education.csv')
-ela_metric_data <- read.csv('ca_edu_metrics.csv')
+school_data <- read.csv('ca_education.csv') # dataset of public K-12 spending by school
+ela_metric_data <- read.csv('ca_edu_metrics.csv') # 2022 Academic Indicator (English Language Arts/Literacy) Data File
 physical_fitness_data <- read.csv('physical_fitness_testing_ca.csv')
 science_metric_data <- read.csv('science_ca_assesment.csv', sep = "^")
+stanford_data <- read_csv('seda_school_pool_gcs_4.1.csv')
+ca_school_details <- read_excel("ca_school_details.xlsx")
+
+```
+
+```{r}
+# Clean CA school details
+
+ca_school_details_clean <- ca_school_details %>%
+  filter(StatusType == "Active")
+```
+
+
+```{r}
+# Clean physical fitness data
 physical_fitness_data <- physical_fitness_data %>%
   mutate(cds = as.numeric(paste0(paste0(CO,DIST),SCHL)))
 science_metric_data <- science_metric_data %>%
@@ -16,20 +32,73 @@ science_metric_data <- science_metric_data %>%
 ```
 
 ```{r}
+# Clean Stanford data -- adding 0 in front of school id to match the format of the school dataset
+
+stanford_data_clean <- stanford_data %>% 
+  filter(stateabb == 'CA') %>% 
+  select(sedasch, sedaschname, fips, stateabb, subcat, subgroup, gradecenter, gap, contains("avg"), -ends_with("se")) %>%
+  mutate(standardized_school_id = paste0(0, sedasch))
+
+# Quick exploration of clean_stanford_data
+
+## Number of unique school IDs in CA
+length(unique(stanford_data_clean$standardized_school_id)) # 8512, which is also the number of observations
+
+## Number of unique school names in CA
+length(unique(stanford_data_clean$sedaschname)) # 7361/8512, so there are overlapping school names
+
+unique(stanford_data$subcat)
+unique(stanford_data$subgroup)
+unique(stanford_data_clean$gradecenter)
+
+```
+
+
+
+```{r}
+#  Clean school data
 school_data_clean <- school_data %>%
   filter(flag_nerds == 'false') %>%
   filter(flag_f33 != '1')
 
+length(unique(school_data_clean$ncesid)) # 4973 unique school ids
+length(unique(school_data_clean$schoolname)) # 4460 unique school names
+
+```
+
+
+```{r}
+merged_seda_school_data <- school_data_clean %>% 
+  left_join(stanford_data_clean, 
+        by=c('ncesid'='standardized_school_id')) # there are 1475 schools in school_data_clean that are not matched with stanford_data_clean
+# k12 schools that are not high school
+
+merged_seda_school_data %>% filter(is.na(sedasch))
+
+# stanford_data_clean %>% filter(sedaschname == 'Rancheria Continuation')
+# school_data_clean %>% filter(schoolname == 'Rancheria Continuation')
+
+write.csv(merged_seda_school_data, "merged_seda_school_data.csv")
+```
+
+
+
+```{r}
 ela_metric_data_clean <- ela_metric_data %>%
-  filter(cds > 0, rtype == 'S') %>%
-  select(-color, -box) %>%
+  filter(cds > 0, rtype == 'S') %>% # school record
+  select(-color, -box)
+
+ela_metric_data_clean_wide <- ela_metric_data_clean %>%
   pivot_wider(names_from = studentgroup, values_from = c(currdenom, currstatus, priordenom, priorstatus, change, statuslevel, changelevel, curradjustment, prioradjustment))
 
 colnames(ela_metric_data_clean) <- paste0("ela_data_", colnames(ela_metric_data_clean))
+colnames(ela_metric_data_clean_wide) <- paste0("ela_data_", colnames(ela_metric_data_clean_wide))
 
-ela_metric_data_clean <- ela_metric_data_clean %>% rename(schoolname = ela_data_schoolname, cds = ela_data_cds)
+ela_metric_data_clean$ela_data_cds[1]
 
-merged1 <- merge(school_data_clean, ela_metric_data_clean, by='schoolname')
+ela_metric_data_clean_wide <- ela_metric_data_clean %>% rename(schoolname = ela_data_schoolname, cds = ela_data_cds)
+
+merged1 <- merge(school_data_clean, ela_metric_data_clean_wide, by='schoolname')
 
 physical_fitness_data_clean <- physical_fitness_data %>%
   filter(Level_Number==1, Table_Number==1, Report_Number==0) %>%
@@ -52,6 +121,7 @@ colnames(science_metrics_clean) <- paste0("science_data_", colnames(science_metr
 science_metrics_clean <- science_metrics_clean %>% rename(cds = science_data_cds)
 
 merged3 <- merge(merged2, science_metrics_clean, by='cds')
+
 ```
 
 ```{r}

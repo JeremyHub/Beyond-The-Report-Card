@@ -20,38 +20,42 @@ ca_education = pd.read_csv(dir_list_path[0])
 ca_education
 
 #%%
-ca_edu_metrics = pd.read_csv(dir_list_path[1])
+seda_df = pd.read_csv(dir_list_path[1])
+seda_df
+
+
+#%%
+ca_edu_metrics = pd.read_csv(dir_list_path[2])
 ca_edu_metrics
 
 #%%
-science_ca_assesment = pd.read_csv(dir_list_path[2])
+merged_seda_school_df = pd.read_csv(dir_list_path[3])
+merged_seda_school_df
+
+#%%
+science_ca_assesment = pd.read_csv(dir_list_path[4], sep="^")
 science_ca_assesment
 
 
 #%%
-wiiiide_df = pd.read_csv(dir_list_path[3])
+wiiiide_df = pd.read_csv(dir_list_path[5])
 wiiiide_df
+
+#%%
+physical_fitness_df = pd.read_csv(dir_list_path[6])
+physical_fitness_df
 
 
 #%%
 wiiiide_df.columns.values.tolist()
 
+#%%
+merged_seda_school_df.isna().sum()
 
 
 #%%
-statesites = pd.read_csv(dir_list_path[4])
-statesites
-
-#%%
-questions = pd.read_csv(dir_list_path[5])
-questions
-
-#%%
-subcategories = pd.read_csv(dir_list_path[6])
-subcategories
-
-#%%
-clients.isna().sum()
+# len('060162010232')
+1.10017*(10^12)
 
 # %%
 len(clients[clients['ClientUno'].notna()])
