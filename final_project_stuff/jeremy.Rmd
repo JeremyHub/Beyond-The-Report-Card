@@ -1,0 +1,60 @@
+
+metrics:
+science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard
+science_data_Physical.Sciences.Domain.Percent.Above.Standard
+science_data_Life.Sciences.Domain.Percent.Above.Standard
+ela_data_currstatus
+gcs_mn_avg_ol - gradecenter
+
+by:
+pp_total_raw
+
+```{r}
+min_max_norm <- function(x) {
+    (x - min(x)) / (max(x) - min(x))
+}
+
+# model metrics by per pupil funding
+grouped_merged_table <- merged_table %>%
+  # mutate to then as.numeric
+    mutate(
+        science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard),
+        science_data_Physical.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Physical.Sciences.Domain.Percent.Above.Standard),
+        science_data_Life.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Life.Sciences.Domain.Percent.Above.Standard),
+        ela_data_currstatus = as.numeric(ela_data_currstatus),
+        gcs_mn_avg_ol = as.numeric(gcs_mn_avg_ol)
+    ) %>%
+  group_by(pp_total_raw, CDSCode) %>%
+  summarise(
+    science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = mean(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),
+    science_data_Physical.Sciences.Domain.Percent.Above.Standard = mean(science_data_Physical.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),
+    science_data_Life.Sciences.Domain.Percent.Above.Standard = mean(science_data_Life.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),
+    ela_data_currstatus = mean(ela_data_currstatus, na.rm = TRUE),
+    gcs_mn_avg_ol = mean(gcs_mn_avg_ol, na.rm = TRUE)
+  ) %>%
+  # normalize the metrics
+    mutate(
+        science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = min_max_norm(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard),
+        science_data_Physical.Sciences.Domain.Percent.Above.Standard = min_max_norm(science_data_Physical.Sciences.Domain.Percent.Above.Standard),
+        science_data_Life.Sciences.Domain.Percent.Above.Standard = min_max_norm(science_data_Life.Sciences.Domain.Percent.Above.Standard),
+        ela_data_currstatus = min_max_norm(ela_data_currstatus),
+        gcs_mn_avg_ol = min_max_norm(gcs_mn_avg_ol)
+    )
+
+grouped_merged_table
+
+grouped_merged_table %>%
+  ggplot(aes(x = pp_total_raw)) +
+  geom_point(aes(y = science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard), color = "red") +
+  geom_point(aes(y = science_data_Physical.Sciences.Domain.Percent.Above.Standard), color = "blue") +
+  geom_point(aes(y = science_data_Life.Sciences.Domain.Percent.Above.Standard), color = "green") +
+  geom_point(aes(y = ela_data_currstatus), color = "purple") +
+  geom_point(aes(y = gcs_mn_avg_ol), color = "orange") +
+  labs(x = "Per Pupil Funding", y = "Metric") +
+  theme_bw() +
+  theme(
+    legend.title = element_blank(),
+    legend.text = element_text(size = 8)
+  )
+```
+
