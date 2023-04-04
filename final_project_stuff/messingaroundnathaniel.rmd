@@ -1,0 +1,127 @@
+---
+title: "Untitled"
+output: html_document
+date: "2023-04-03"
+---
+### school_data
+
+[Codebook](https://github.com/JeremyHub/STAT-456-Final/blob/8ef6fa6ce28785065f583f4c477c5deb11afd442/final_project_stuff/school_info_docs.pdf)
+
+```{r school_data}
+school_data <- read.csv('ca_education.csv') # dataset of public K-12 spending by school
+
+school_data_clean <- school_data %>%
+  filter(flag_nerds == 'false') %>%
+  filter(flag_f33 != '1')
+```
+
+school_data identified by ncesid at school level -- 10404
+
+
+### ela_metric_data
+
+[Codebook](https://github.com/JeremyHub/STAT-456-Final/blob/8ef6fa6ce28785065f583f4c477c5deb11afd442/final_project_stuff/ela_docs.pdf)
+
+```{r ela_metric_data}
+ela_metric_data <- read.csv('ca_edu_metrics.csv') # 2022 Academic Indicator (English Language Arts/Literacy) Data File
+
+ela_metric_data_clean <- ela_metric_data %>%
+  filter(cds > 0, rtype == 'S') %>% # school record
+  select(-color, -box) %>%
+  mutate(cds_standardized = as.character(paste0(0, cds)))
+
+colnames(ela_metric_data_clean) <- paste0("ela_data_", colnames(ela_metric_data_clean))
+```
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+names(ela_metric_data)
+length(levels(factor(ela_metric_data$cds)))
+```
+
+
+ela_metric_data identified by cds at school level -- 10837 AND student group -- 165532
+
+
+### science_metric_data
+
+[Codebook](https://github.com/JeremyHub/STAT-456-Final/blob/8ef6fa6ce28785065f583f4c477c5deb11afd442/final_project_stuff/science_docs.pdf)
+
+```{r science_metric_data}
+science_metric_data <- read.csv('science_ca_assesment.csv', sep = "^")
+
+science_metrics_clean <- science_metric_data %>%
+  mutate(cds = as.character(paste0(0, paste0(paste0(County.Code,District.Code),School.Code)))) %>% # add cds identifier
+  mutate(cds_standardized = ifelse(nchar(cds) == 13, as.character(paste0(cds,0)), cds)) %>% # there are school codes missing the last 0, this fixes that to match other cds
+  filter(County.Code > 0, Type.ID == 07) %>%
+  select(-County.Code, -District.Code, -School.Code, -Filler)
+
+colnames(science_metrics_clean) <- paste0("science_data_", colnames(science_metrics_clean))
+```
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+length(levels(factor(science_metrics_clean$cds_standardized)))
+levels(factor(science_metrics_clean$Grade))
+```
+
+
+science_metrics_clean identified by cds_standardized at school level -- 8819 AND Grade -- 25298
+
+
+### stanford_data and cov
+
+```{r}
+stanford_data <- read.csv('seda_school_pool_gcs_4.1.csv')
+stanford_cov <- read.csv("seda_cov_school_pool_4.1.csv")
+
+stanford_data_clean <- stanford_data %>% 
+  filter(stateabb == 'CA') %>% 
+  select(sedasch, sedaschname, fips, stateabb, subcat, subgroup, gradecenter, gap, contains("avg"), -ends_with("se")) %>%
+  mutate(standardized_school_id = paste0(0, sedasch)) %>% # adding 0 in front of school id to match the format of the school dataset
+  left_join(stanford_cov)
+```
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+length(levels(factor(stanford_data_clean$standardized_school_id)))
+```
+
+stanford_data AND stanford_cov identify eachother by sedasch
+
+stanford_data AND stanford_cov identified by standardized_school_id -- 8512
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+
+
+# physical_fitness_data <- read.csv('physical_fitness_testing_ca.csv')
+
+
+ca_school_details <- read_excel("ca_school_details.xlsx") # CA schools metadata
+
+
+```
+
+
+
+
+
+
+
+
+```{r}
+
+
+
+
+names(stanford_data)
+names(stanford_cov)
+```
