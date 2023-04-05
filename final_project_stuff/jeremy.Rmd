@@ -30,7 +30,11 @@ grouped_merged_table <- merged_table %>%
     ela_data_currstatus = mean(ela_data_currstatus, na.rm = TRUE),
     gcs_mn_avg_ol = mean(gcs_mn_avg_ol, na.rm = TRUE),
   ) %>%
-  ungroup() %>%
+  ungroup()
+
+graph_ready <- grouped_merged_table %>%
+  na.omit() %>% #only looking at the same schools. this line is doing a lot though
+  filter(pp_total_raw < 20000) %>% # removes 2 schools
   # normalize the metrics
     mutate(
         science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = min_max_norm(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard),
@@ -38,11 +42,7 @@ grouped_merged_table <- merged_table %>%
         science_data_Life.Sciences.Domain.Percent.Above.Standard = min_max_norm(science_data_Life.Sciences.Domain.Percent.Above.Standard),
         ela_data_currstatus = min_max_norm(ela_data_currstatus),
         gcs_mn_avg_ol = min_max_norm(gcs_mn_avg_ol)
-    )
-
-graph_ready <- grouped_merged_table %>%
-  na.omit() %>% #only looking at the same schools. this line is doing a lot though
-  filter(pp_total_raw < 20000) %>% # removes 2 schools
+    ) %>%
   group_by(CDSCode) %>%
   pivot_longer(cols=c(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard,science_data_Physical.Sciences.Domain.Percent.Above.Standard,science_data_Life.Sciences.Domain.Percent.Above.Standard,ela_data_currstatus,gcs_mn_avg_ol))
 ```
