@@ -1,21 +1,19 @@
-
-metrics:
-science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard
-science_data_Physical.Sciences.Domain.Percent.Above.Standard
-science_data_Life.Sciences.Domain.Percent.Above.Standard
-ela_data_currstatus
-gcs_mn_avg_ol - gradecenter
-
-by:
-pp_total_raw
+```{r}
+library(ggplot2)
+library(tidyverse)
+```
 
 ```{r}
 min_max_norm <- function(x) {
-    (x - min(x)) / (max(x) - min(x))
+    (x - min(x, na.rm=TRUE)) / (max(x, na.rm=TRUE) - min(x, na.rm=TRUE))
 }
 
 # model metrics by per pupil funding
 grouped_merged_table <- merged_table %>%
+  filter(flag_nerds == 'false' || is.na(flag_nerds)) %>%
+  filter(flag_f33 != '1' || is.na(flag_f33)) %>%
+  mutate(pp_total_raw = as.numeric(pp_total_raw))%>%
+  filter(pp_total_raw < 100000) %>% #filters 1 school out
   # mutate to then as.numeric
     mutate(
         science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard),
@@ -24,14 +22,15 @@ grouped_merged_table <- merged_table %>%
         ela_data_currstatus = as.numeric(ela_data_currstatus),
         gcs_mn_avg_ol = as.numeric(gcs_mn_avg_ol)
     ) %>%
-  group_by(pp_total_raw, CDSCode) %>%
+  group_by(CDSCode, pp_total_raw) %>%
   summarise(
     science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = mean(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),
     science_data_Physical.Sciences.Domain.Percent.Above.Standard = mean(science_data_Physical.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),
     science_data_Life.Sciences.Domain.Percent.Above.Standard = mean(science_data_Life.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),
     ela_data_currstatus = mean(ela_data_currstatus, na.rm = TRUE),
-    gcs_mn_avg_ol = mean(gcs_mn_avg_ol, na.rm = TRUE)
+    gcs_mn_avg_ol = mean(gcs_mn_avg_ol, na.rm = TRUE),
   ) %>%
+  ungroup() %>%
   # normalize the metrics
     mutate(
         science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = min_max_norm(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard),
@@ -41,20 +40,26 @@ grouped_merged_table <- merged_table %>%
         gcs_mn_avg_ol = min_max_norm(gcs_mn_avg_ol)
     )
 
-grouped_merged_table
+graph_ready <- grouped_merged_table %>%
+  na.omit() %>% #only looking at the same schools. this line is doing a lot though
+  filter(pp_total_raw < 20000) %>% # removes 2 schools
+  group_by(CDSCode) %>%
+  pivot_longer(cols=c(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard,science_data_Physical.Sciences.Domain.Percent.Above.Standard,science_data_Life.Sciences.Domain.Percent.Above.Standard,ela_data_currstatus,gcs_mn_avg_ol))
+```
 
-grouped_merged_table %>%
-  ggplot(aes(x = pp_total_raw)) +
-  geom_point(aes(y = science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard), color = "red") +
-  geom_point(aes(y = science_data_Physical.Sciences.Domain.Percent.Above.Standard), color = "blue") +
-  geom_point(aes(y = science_data_Life.Sciences.Domain.Percent.Above.Standard), color = "green") +
-  geom_point(aes(y = ela_data_currstatus), color = "purple") +
-  geom_point(aes(y = gcs_mn_avg_ol), color = "orange") +
+```{r}
+  
+graph_ready %>%
+  ggplot(aes(color = name, y = value, x = pp_total_raw)) +
+  geom_point(alpha=0.3)+
+  facet_wrap(~name)+
+  geom_smooth()+
   labs(x = "Per Pupil Funding", y = "Metric") +
   theme_bw() +
   theme(
     legend.title = element_blank(),
-    legend.text = element_text(size = 8)
+    legend.text = element_text(size = 8),
+    legend.position = "none"
   )
 ```
 
