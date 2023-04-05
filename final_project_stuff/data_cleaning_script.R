@@ -20,6 +20,7 @@ ca_school_details <- read_excel("ca_school_details.xlsx") # CA schools metadata
 
 ca_school_details_clean <- ca_school_details %>%
   filter(StatusType == "Active") %>%
+  filter(NCESSchool != "No Data") %>%
   filter(School != "No Data") %>%
   mutate(school_id = paste0(NCESDist, NCESSchool))
 
