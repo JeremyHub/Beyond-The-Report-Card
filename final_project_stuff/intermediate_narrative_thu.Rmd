@@ -9,8 +9,7 @@ output: html_document
 
 ## Description & motivation of research questions
 
-
-
+Initially, our focus was on the correlation between affordable housing and educational achievement. However, during the process of selecting appropriate educational proxies, we found ourselves delving into the factors behind the measurements of these proxies. As a result, we decided to seek the guidance of Leslie, who specializes in public policies in education. We hope to gain a better understanding of the educational proxies currently in use, and to investigate whether there are additional factors that impact educational outcomes and potentially render the current proxies interchangeable or distinct from other measures.
 
 
 ## Dataset description
