@@ -1,0 +1,36 @@
+---
+title: "Beyond the Report Card: Investigating the Factors that Define Educational Achievement"
+author: "Thu Dang, Nathaniel Reimer, Jeremy Hubinger"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Intermediate Narrative
+
+## Description & motivation of research questions
+
+
+
+
+## Dataset description
+
+
+
+
+
+## Ethical issues (who may be harmed and who may benefit)
+
+
+
+
+## Analyses with a short description of results
+
+
+
+
+## Project plan
+
+
+
+
+## Summary of contributions
