@@ -4,6 +4,7 @@ library(tidyr)
 library(neuralnet) # install.packages(neuralnet)
 library(tidyverse)
 ```
+In this tutorial, we will use `neuralnet` to perform Neural Networks in R. We intended to use `keras` and `tensorflow` for this tutorial as well, but unfortunately it does not run on M1 laptops. You can read more in the Resources section in the Google Docs tutorial.
 
 # Read in the data
 
@@ -32,13 +33,13 @@ test =train[-picked,]
 
 # Build a neural network on the data!
 
-+ `model` is what variables the nueralnet should take into account and what it is trying to predict. If you have done any modeling in 155 or 253, this kind of thing will look very familar. Feel free to change the model and see what happens.
++ `model` is what variables the `neuralnet` should take into account and what it is trying to predict. If you have done any modeling in 155 or 253, this will look very familiar. Feel free to change the model and see what happens.
 
 + `data` is the data to use (we will use the data we reserved for training)
 
-+ `hidden` is the number of hidden nodes that the network will have. Increasing these numbers and / or adding more layers (numbers) to the list will increase training time but might improve model performance.
++ `hidden` is the number of hidden nodes that the network will have. Increasing these numbers and / or adding more layers (numbers) to the list will increase training time but can potentially improve model performance.
 
-+ `linear.output` tells the model if the thing it is trying to predict is categorical or numerical in nature. We are trying to predict house price, which is numerical, so we will set it to TRUE.
++ `linear.output` tells the model if what it is trying to predict is categorical or numerical in nature. We are trying to predict house price, which is numerical, so we will set it to TRUE.
 
 ```{r}
 model = neuralnet(SalePrice ~ LotArea + OverallQual,
@@ -50,15 +51,15 @@ linear.output = TRUE
 
 # Check the shape of our model
 
-We can see a our model, the shape, and the parameters belonging to each of the layer in our neural network model.
+We can use the function `plot(model)` to see the shape and the parameters belonging to each of the layer in our neural network model.
 
- Read here for more detailed explanation on how to calculate the number of trainable parameters and a relevant exercise: https://aldozaimi.wordpress.com/2020/02/13/determine-the-number-of-trainable-parameters-in-a-neural-network/#:~:text=There%20is%20a%20simple%20rule,the%20number%20of%20output%20units.
+Read here for more detailed explanation on how to calculate the number of trainable parameters and a relevant exercise: https://aldozaimi.wordpress.com/2020/02/13/determine-the-number-of-trainable-parameters-in-a-neural-network/#:~:text=There%20is%20a%20simple%20rule,the%20number%20of%20output%20units.
 
 ```{r}
 plot(model,rep = "best")
 ```
 
-# Look at Results
+# Looking at the Results
 
 Overall, the standardized error is ~0.002 (your results may vary because there is a lot of randomness in this process) for our model. 
 
@@ -74,10 +75,9 @@ diff
 
 # Making Sense of the Result
 
- In order to make sense of this number, we have to convert it to the scale of our outcome variable, which is house price. Since we use `min-max scaling` for this dataset, this line below helps us convert the error to the same scale with the outcome variable.
+In order to make sense of this number, we have to convert it to the scale of our outcome variable, which is house price. Since we use `min-max scaling` for this dataset, this line below helps us convert the error to the same scale with the outcome variable.
  
 ```{r}
-
 diff$mean * (max(all_data$SalePrice) - min(all_data$SalePrice)) + min(all_data$SalePrice)
 ```
 
@@ -101,13 +101,13 @@ cars_data_clean <- cars_data %>%
 head(cars_data_clean)
 ```
 
-# Seperate Training and Testing
+# Separate Training and Testing
 
 ```{r}
 sample_size = ???
 picked = sample(seq_len(nrow(train)),size = sample_size)
-development =train[???
-holdout =train[???
+development = train[???]
+holdout = train[???]
 ```
 
 # Train Your Model
