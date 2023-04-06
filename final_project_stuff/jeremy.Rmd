@@ -15,13 +15,14 @@ grouped_merged_table <- merged_table %>%
   mutate(pp_total_raw = as.numeric(pp_total_raw))%>%
   filter(pp_total_raw < 100000) %>% #filters 1 school out
   # mutate to then as.numeric
-    mutate(
-        science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard),
-        science_data_Physical.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Physical.Sciences.Domain.Percent.Above.Standard),
-        science_data_Life.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Life.Sciences.Domain.Percent.Above.Standard),
-        ela_data_currstatus = as.numeric(ela_data_currstatus),
-        gcs_mn_avg_ol = as.numeric(gcs_mn_avg_ol)
-    ) %>%
+  mutate(
+      science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard),
+      science_data_Physical.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Physical.Sciences.Domain.Percent.Above.Standard),
+      science_data_Life.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Life.Sciences.Domain.Percent.Above.Standard),
+      ela_data_currstatus = as.numeric(ela_data_currstatus),
+      gcs_mn_avg_ol = as.numeric(gcs_mn_avg_ol)
+  ) %>%
+  mutate(ela_data_currstatus = ela_data_currstatus * ela_data_currdenom) %>%
   group_by(CDSCode, pp_total_raw) %>%
   summarise(
     science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = mean(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),

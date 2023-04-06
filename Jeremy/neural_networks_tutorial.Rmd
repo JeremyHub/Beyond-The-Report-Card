@@ -8,11 +8,11 @@ library(tidyverse)
 
 # Read in the data
 
-- Step 1: Read in the data and separate it out into training data and test data. The test data that we have reserved will only be used at the very end to evaluate the model.
+- Step 1: Read in the data.
 
 - Step 2: Use a scaling method to standardize the numeric variables. Different numeric variables measure different things, hence they have different scalings. In order to maximize the neural network model, we have to standardize the numerical variables to the same scale. There are different standardization methods we can use, i.e. standard scaling, min-max scaling. We'll be using min-max scaling for this dataset.
 
-- Step 3: Split the dataset into training and testing set. 
+- Step 3: Split the dataset into training and testing set. The test data that we have reserved will only be used at the very end to evaluate the model.
 
 ```{r}
 # Step 1:
@@ -29,34 +29,15 @@ test <- train[0:500,] # the first 500 rows belongs to the test set
 train <- train[500:nrow(train),] # the rest of the dataset belongs to the training set
 ```
 
-# Seperate out the output columns
-
-For the training and testing data, we separate out the columns that will be used for output into and X and Y datasets. The X dataset will have all of the columns that are used as predictors, the Y dataset will be used to tell the model what the outcome was from the corresponding row in the X dataset.
-
-
-
-
-# Reshaping the data
-
-We then have to reshape the data into a 2D array and get rid of the column names. The 2D array's new shape must match the shape of the input layer of the neural network, which is 33 for this dataset (the number of columns to be used as predictors). Reshaping the data is a crucial step in preparing the data for neural network training. It ensures that the input data matches the shape expected by the neural network and doesn't have any extra information like column names that the network doesn't know how to parse.
-
-
-
-
 # Build a neural network on the data!
 
-- Step 1: Prepare the linear stack of layers using `keras_model_sequential()`
++ `model` is what variables the nueralnet should take into account and what it is trying to predict. If you have done any modeling in 155 or 253, this kind of thing will look very familar. Feel free to change the model and see what happens.
 
-- Step 2: Use `layer_dense()` to add a densely-connected neural network layer to the framework built previously. 
++ `data` is the data to use (we will use the data we reserved for training)
 
-+ `units` allows us to specify the number of neurons you want to use in this model. `units = 256` creates a dense layer with 256 neurons. 
++ `hidden` is the number of hidden nodes that the network will have. Increasing these numbers and / or adding more layers (numbers) to the list will increase training time but might improve model performance.
 
-+ `activation` allows us to determine whether a neuron should be activated or not (and how much weight to give that activation). Some common activation functions are ReLU, sigmoid, and tanh. If you want to read more on ReLU activation function, read here: https://machinelearningmastery.com/rectified-linear-activation-function-for-deep-learning-neural-networks/#:~:text=The%20rectified%20linear%20activation%20function,otherwise%2C%20it%20will%20output%20zero.
-
-+ `input_shape` is the dimensionality of the input aka the number of predictor columns in the dataset. This argument is required when using this layer as the first layer in a model.
-
-- Step 3: Use `layer_dropout()` to apply dropout to the input. Dropout is a technique used in neural networks to prevent overfitting. This technique drops out some neurons in the training set, which allows other neurons to be more well-rounded aka to pick up patterns to generalize on data they have never seen before. `rate` parameter ranges from 0 to 1, allowing us to specify the fraction of the neurons that we should drop along the way.
-
++ `linear.output` tells the model if the thing it is trying to predict is categorical or numerical in nature. We are trying to predict house price, which is numerical, so we will set it to TRUE.
 
 ```{r}
 model = neuralnet(SalePrice ~ LotArea + OverallQual,
@@ -68,56 +49,40 @@ linear.output = TRUE
 
 # Check the shape of our model
 
-We can see a brief summary of the shape and the parameters belonging to each of the layer in our neural network model. 
+We can see a our model, the shape, and the parameters belonging to each of the layer in our neural network model. 
 
-- Output shape is the information about the shape of the layer as determined above when we build out the model. 
+The input nodes' values are governed by what the input is for any particular row in the dataset. Then that value is multiplied by the values on the lines leading to the next nodes, and so on and so on until it gets to the end.
 
-- The “Param #” column shows you the number of parameters that are trained for each layer. The trainable parameters refer to the weights and biases of the connections between neurons in the network (ie. 1 parameter means 1 connection between 2 neurons). During the training process, these parameters are adjusted in response to the input data and the desired output, in order to minimize the difference between the predicted output and the actual output.
-
-- For the fully connected layers, the number of trainable parameters can be computed by (n + 1) × m, where n is the number of input units and m is the number of output units. The +1 term in the equation takes into account the bias terms. Read here for more detailed explanation on how to calculate the number of trainable parameters and a relevant exercise: https://aldozaimi.wordpress.com/2020/02/13/determine-the-number-of-trainable-parameters-in-a-neural-network/#:~:text=There%20is%20a%20simple%20rule,the%20number%20of%20output%20units.
+ Read here for more detailed explanation on how to calculate the number of trainable parameters and a relevant exercise: https://aldozaimi.wordpress.com/2020/02/13/determine-the-number-of-trainable-parameters-in-a-neural-network/#:~:text=There%20is%20a%20simple%20rule,the%20number%20of%20output%20units.
 
 ```{r}
 plot(model,rep = "best")
 ```
 
-# Compile the model
-
-Model compilation is the last step of creating the model, i.e. it gets the model ready to be trained on data. There are 3 components to specify: loss, optimizer, and metrics
-
-- Loss function: The loss function measures how well the model is performing on the training data. It calculates the difference between the predicted output and the actual output, and produces a single scalar value that represents the error or loss. The goal of training the network is to minimize this loss function, by adjusting the weights and biases of the network.
-
-- Optimizer: The optimizer is a key component responsible for updating the weights and biases of the network by leveraging the gradients of the loss function. Different optimizers are available, each with unique benefits and drawbacks, such as stochastic gradient descent (SGD), Adam, and RMSprop.
-
-- Metrics: The metrics are used to evaluate the performance of the model during training and testing. These metrics can include accuracy, precision, recall, F1 score, and others. They are useful for monitoring the progress of the model and for comparing different models. In this example, we use MAE, which stands for mean absolute error, as our evaluation metrics. 
-
-
-# Fit the Model & Define Training Length
-
-At this step, we fit the training data to the model and evaluate the model's quality. `Epoch` refers to every time the model runs through the entire training dataset. Since we specify `epochs` to be 300 here, the model will run through the entire training dataset 300 times. The more the error gets reduced, the better the neural network model gets. 
-
-The word `val` in `val_loss` and `val_mae` stands for validation, and these variables represent the value of the cost function on validation data sets. The validation set is determined in the argument `validation_split` in the `fit()` function. Here, we specify `validation_split = 0.2`, meaning that in each epoch, the model gets trained on 80% of the training set and then gets validated on the remaining 20% of the training set. If you're familiar with cross-validation from 253, this is essentially it :) Monitoring model's performance on both training and validation sets helps avoid overfitting. 
-
-
-# Plot the Model History
-
-After that, we plot the loss and mae values for both the training and validation sets. This is the same as the graph on your right-hand side when the model gets fitted. 
-
-
 # Look at Results
 
-Overall, the standardized `mae` is ~0.03 (your results may vary because there is a lot of randomness in this process) for our model. In order to make sense of this number, we have to convert it to the scale of our outcome variable, which is house price. Since we use `min-max scaling` for this dataset, the second line of code in the code block below helps us convert the `mae` to the same scale with the outcome variable. 
+Overall, the standardized error is ~0.002 (your results may vary because there is a lot of randomness in this process) for our model. 
 
 ```{r}
 pred <- predict(model, test)
 
 diff <- cbind(pred, test) %>%
   mutate(diff = pred-SalePrice) %>%
-  summarize(mean=mean(diff))
+  summarize(mean_diff=mean(diff))
+
+diff
+```
+
+# Making Sense of the Result
+
+ In order to make sense of this number, we have to convert it to the scale of our outcome variable, which is house price. Since we use `min-max scaling` for this dataset, this line below helps us convert the error to the same scale with the outcome variable.
+ 
+```{r}
 
 diff$mean * (max(all_data$SalePrice) - min(all_data$SalePrice)) + min(all_data$SalePrice)
 ```
 
-Since the `mae` is ~60k (again, your results may vary quite widely), this means that the average absolute difference between the predicted house prices and the actual house prices in the test dataset is approximately $60K. 
+Since the error is ~36k (again, your results may vary), this means that the average absolute difference between the predicted house prices and the actual house prices in the test dataset is approximately $36K.
 
 ## Exercise
 
@@ -133,58 +98,43 @@ cars_data_clean <- cars_data %>%
   mutate_at(c("bhp_power","Engine","rpm_power","nm_torque","rpm_torque"), ~ as.numeric(gsub("(\\s)*[a-zA-Z]*", "",.))) %>%
   select(-Fuel.Type,-Transmission,-Location,-Color,-Drivetrain,-Model,-Seller.Type,-Owner) %>%
   na.omit() %>%
-  mutate(Make = as.numeric(as.factor(Make))) # make converted to number so that model can predict class
+  mutate(Make = as.factor(Make))
 head(cars_data_clean)
 ```
 
 # Seperate Training and Testing
 
 ```{r}
-test <- cars_data_clean[
-train <- cars_data_clean[
-```
-
-# Buld Your Model (hint: input shape is number of predictor columns)
-
-```{r}
-model <- keras_model_sequential()
-model %>% 
-  layer_dense(units = 256, activation = 'relu', input_shape = c(...)) %>% 
-  ...
-  layer_dense(units = 1, activation = 'softmax') # keep this line. units = 1 is for the output and softmax is an activation function good for classification models.
-```
-
-# Make Sure The Model Parameters Look Correct
-
-```{r}
-
-```
-
-# Compile Your Model
-
-```{r}
-# code below is an example of model parameters for a categorical output (this does not need changing)
-model %>% compile(
-  loss = 'categorical_crossentropy',
-  optimizer = optimizer_rmsprop(),
-  metrics = c('accuracy')
-)
+test <- cars_data_clean[???
+train <- cars_data_clean[???
 ```
 
 # Train Your Model
 
-```{r}
-history <- model %>% fit(
-```
-
-# Look at the Results
++ `act.fct` allows us to determine whether a neuron should be activated or not (and how much weight to give that activation). Some common activation functions are ReLU, sigmoid, and tanh. If you want to read more on ReLU activation function, read here: https://machinelearningmastery.com/rectified-linear-activation-function-for-deep-learning-neural-networks/#:~:text=The%20rectified%20linear%20activation%20function,otherwise%2C%20it%20will%20output%20zero.
 
 ```{r}
-model %>% evaluate(
+model = neuralnet(Year ~ ???,
+data=train,
+hidden=c(???),
+linear.output = TRUE,
+act.fct="tanh"
+)
 ```
 
-# How Good is That Accuracy? (hint: there are 32 unique makes in the dataset)
+# Look at the Model
 
 ```{r}
-
+plot(model,rep = "best")
 ```
+
+# How Good is it?
+
+```{r}
+predict(model, test) %>%
+  cbind(pred, test) %>%
+  mutate(diff = pred-Year) %>%
+  summarize(mean=mean(diff))
+```
+
+# Play Around with the Above and See if You Can Improve It!
