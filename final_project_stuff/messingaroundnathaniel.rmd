@@ -212,6 +212,11 @@ wide_merged_data %>% ggplot(aes(x=as.numeric(science_data_Percentage.Standard.Me
   geom_point(alpha = .3) + 
   geom_smooth(color="grey",method=lm) + theme_nr() + labs(x = "Percent Proficient on State Science Test", y="Maximum* Percent Proficient on NAEP Math Test", caption = "*True value is hidden to protect student privacy at smaller schools")
 
+wide_merged_data %>%
+  ggplot(aes(x=as.numeric(perhsp), y=(as.numeric(perfrl)))) +
+  geom_point(alpha = .05) + 
+  geom_smooth(color="black") + theme_nr() + labs(x = "Percent Hispanic", y="Percent Eligible fro Free and Reduced Lunch")
+
 
 wide_merged_data %>% filter(!is.na(urbanicity)) %>%
   ggplot(aes(x=as.numeric(perfrl),y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),color=State)) +
@@ -220,6 +225,15 @@ wide_merged_data %>% filter(!is.na(urbanicity)) %>%
   guides(color=FALSE) + 
   theme_nr()+
   labs(x="Percent Eligible for Free and Reduced Lunch", y="Grade Cohort Score")+
+  geom_hline(yintercept = 0)
+
+wide_merged_data %>% filter(!is.na(urbanicity)) %>%
+  ggplot(aes(x=as.numeric(perhsp),y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),color=State)) +
+  geom_point(alpha = .05) +
+  geom_smooth()+
+  guides(color=FALSE) + 
+  theme_nr()+
+  labs(x="Percent Hispanic", y="Grade Cohort Score")+
   geom_hline(yintercept = 0)
 
 
@@ -251,7 +265,7 @@ ggplot(data = world) +
 # -------------------------------------------------
 ggplot(data = world) +
   geom_sf(data = counties, fill='#f0f1f9') + 
-  geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +
+  geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5, size=.5) +
   theme_classic() +
   scale_color_met_c("Benedictus",direction = 1) +
   scale_size_area(max_size = 7) + theme_nr() +
