@@ -149,6 +149,9 @@ wide_merged_data <- ca_school_details_clean %>%
   mutate(ncesid = paste0(NCESDist,NCESSchool)) %>%
   left_join(ela_mth_proficiency_ranges, by=c("ncesid"="NCESSCH"))
 
+
+save(wide_merged_data, file="wide_merged_data.Rdata")
+
 names(wide_merged_data)
 ```
 
@@ -265,10 +268,10 @@ ggplot(data = world) +
 # -------------------------------------------------
 ggplot(data = world) +
   geom_sf(data = counties, fill='#f0f1f9') + 
-  geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5, size=.5) +
+  geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +
   theme_classic() +
   scale_color_met_c("Benedictus",direction = 1) +
-  scale_size_area(max_size = 7) + theme_nr() +
+  scale_size_area(max_size = 2) + theme_nr() +
   labs(x="Longitude",y="Latitude",color="Grade Cohort Score",title = "Los Angeles and San Diego Academic\nPerformance")+guides(size=FALSE)+theme(legend.position = c(.3,.3)) +
   coord_sf(xlim=c(-117,-120), ylim= c(32,35))
 ```
