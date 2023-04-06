@@ -6,6 +6,9 @@ date: "2023-04-03"
 ```{r}
 library(tidyverse)
 library(readxl)
+library(MetBrewer)
+library(sf)
+library(rnaturalearth) 
 ```
 
 ## Data Sources
@@ -167,14 +170,45 @@ wide_merged_data %>% ggplot(aes(x=as.numeric(science_data_Percentage.Standard.Me
 wide_merged_data %>% ggplot(aes(x=as.numeric(pp_total_norm_NERDS), y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)), xintercept = )) +
   geom_point(alpha = .1) + 
   geom_smooth(method = lm) + 
-  facet_wrap(~urbanicity) + 
+  facet_wrap(~locale) + 
   scale_x_continuous(limits = c(8000,18000))
+
+wide_merged_data %>% ggplot(aes(x=as.numeric(pp_total_norm_NERDS), y=as.numeric(Zip), xintercept = )) +
+  geom_point(alpha = .1) + 
+  geom_smooth()+
+  # facet_wrap(~locale) + 
+  scale_x_continuous(limits = c(0,25000))
+
+
+wide_merged_data %>% ggplot(aes(y=as.numeric(pp_total_norm_NERDS),color=locale)) +
+  geom_boxplot(alpha = .1) +
+  scale_y_continuous(limits = c(5000,35000))
+
+
 ```
 
-```{r fig.width==10,fig.height=20}
-wide_merged_data %>% filter(!is.na(gradecenter)) %>%
-ggplot(aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)))) +
-  geom_point(alpha=.5) + theme_classic()
-wide_merged_data$MTH_PCTPROF_max[!is.na(wide_merged_data$MTH_PCTPROF_max) & !is.na(wide_merged_data$gradecenter)]
-```
+```{r}
+counties <- st_as_sf(maps::map("county", plot = FALSE, fill = TRUE))
+counties <- subset(counties, grepl("california", counties$ID))
+world <- ne_countries(scale = "medium", returnclass = "sf")
 
+ggplot(data = world) +
+  geom_sf(data = counties, fill='#e0f0e3') + 
+  geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter))),size=.3) +
+  theme_classic() +
+  scale_color_met_c("Benedictus",direction = 1)
+
+
+
+ggplot(data = world) +
+  geom_sf(data = counties, fill='#e0f0e3') + 
+  geom_point(data = (wide_merged_data) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=as.numeric(perhsp)),size=.3) +
+  theme_classic() +
+  scale_color_met_c("Benedictus",direction = 1)
+
+
+ggplot(data = world) +
+  geom_sf(data = counties, fill='#e0f0e3') + 
+  geom_point(data = (wide_merged_data%>%filter(as.numeric(pp_total_norm_NERDS)>8000 & as.numeric(pp_total_norm_NERDS) < 25000)) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(pp_total_norm_NERDS))),size=.3) +
+  theme_classic() + scale_color_met_c("Benedictus",direction = 1)
+```
