@@ -1,8 +1,7 @@
 ```{r}
-#library(keras)
 library(dplyr)
 library(tidyr)
-library(neuralnet)
+library(neuralnet) # install.packages(neuralnet)
 library(tidyverse)
 ```
 
@@ -22,11 +21,13 @@ all_data <- read.csv('https://raw.githubusercontent.com/JeremyHub/STAT-456-Final
 train <- all_data[,sapply(all_data, is.numeric)] %>%
   sapply(function(x) (x - min(x)) / (max(x) - min(x))) %>% # applies the function to perform min-max scaling
   as.data.frame() %>%
-  select(-LotFrontage,-MasVnrArea,-GarageYrBlt) %>% # filters out all non-numeric columns as the model doesn't know how to handle strings (if you wanted it to handle categorical strings, you could map each string to a number and let the model figure out that it is categorical)
+  select(-LotFrontage,-MasVnrArea,-GarageYrBlt) %>%
   na.omit()
 
-test <- train[0:500,] # the first 500 rows belongs to the test set
-train <- train[500:nrow(train),] # the rest of the dataset belongs to the training set
+sample_size = 500
+picked = sample(seq_len(nrow(train)),size = sample_size)
+train =train[picked,]
+test =train[-picked,]
 ```
 
 # Build a neural network on the data!
@@ -105,8 +106,10 @@ head(cars_data_clean)
 # Seperate Training and Testing
 
 ```{r}
-test <- cars_data_clean[???
-train <- cars_data_clean[???
+sample_size = ???
+picked = sample(seq_len(nrow(train)),size = sample_size)
+development =train[???
+holdout =train[???
 ```
 
 # Train Your Model
@@ -125,13 +128,13 @@ act.fct="tanh"
 # Look at the Model
 
 ```{r}
-plot(model,rep = "best")
+plot(???,rep = "best")
 ```
 
 # How Good is it?
 
 ```{r}
-predict(model, test) %>%
+???(model, test) %>%
   cbind(pred, test) %>%
   mutate(diff = pred-Year) %>%
   summarize(mean=mean(diff))
