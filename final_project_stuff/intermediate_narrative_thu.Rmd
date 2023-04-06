@@ -1,0 +1,62 @@
+---
+title: "Beyond the Report Card: Investigating the Factors that Define Educational Achievement"
+author: "Thu Dang, Nathaniel Reimer, Jeremy Hubinger"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Intermediate Narrative
+
+## Description & motivation of research questions
+
+Initially, our focus was on the correlation between affordable housing and educational achievement. However, during the process of selecting appropriate educational proxies, we found ourselves delving into the factors behind the measurements of these proxies. As a result, we decided to seek the guidance of Leslie, who specializes in public policies in education. We hope to gain a better understanding of the educational proxies currently in use, and to investigate whether there are additional factors that impact educational outcomes and potentially render the current proxies interchangeable or distinct from other measures.
+
+
+## Dataset description
+
+The data set we have includes a range of school-related variables such as location details, funding, and aggregated scores in various subjects. Specifically, the score variables cover the general grade-cohort-standardized achievement score, as well as scores in reading, science, and physical education. 
+
+We aggregate our dataset from 5 different datasets. We use data from *fill in Jeremy's data* and data from the Educational Opportunity Project at Stanford University.
+
+**Jeremy adds in his data description**
+
+
+**Educational Opportunity Project at Stanford University**
+
+Add description
+
+You should have a description of the datasets you use. At this point, this can be just a few example records and description of their purpose.
+
+
+## Ethical issues (who may be harmed and who may benefit)
+
+To ensure privacy concerns are addressed, we take measures to aggregate the data at the school level. However, we recognize that there may be potential issues with bias in the data collection process and data accuracy as a result.
+
+Regarding potential bias, the data is sourced from various sources, and it is possible that each school may have different processes for collecting the data. With the exception of the Educational Opportunity Project at Stanford University, we do not have information on the number of students for whom the data is collected, nor the demographic makeup of those students. As a result, we acknowledge that there may be inherent biases in the data that we cannot control due to a lack of information.
+
+Regarding data accuracy, as we do not have detailed documentation for all of the datasets, it is challenging to ascertain their accuracy. However, we have confidence in the reliability of the government and highly-credited sources from which the data originates. Given this, we consider these datasets to be our most reliable option at present.
+
+
+## Analyses with a short description of results
+
+*Thu's results*
+
+
+*Jeremy's results*
+
+
+*Nathaniel's results*
+
+
+Brianna's note: I should be able to download the datasets you share and run your single RMD to reproduce it. Include any datasets, analysis, visualizations, etc. you have should be included in the RMD.
+
+For each result (visualization, table, or data point), you should have a sentence or two describing the result.
+
+
+
+## Project plan
+
+
+
+
+## Summary of contributions
