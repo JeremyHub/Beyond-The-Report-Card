@@ -232,7 +232,7 @@ world <- ne_countries(scale = "medium", returnclass = "sf")
 
 ggplot(data = world) +
   geom_sf(data = counties, fill='#f0f1f9') + 
-  geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.25) +
+  geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +
   theme_classic() +
   scale_color_met_c("Benedictus",direction = 1) +
   scale_size_area(max_size = 2) + theme_nr() +
@@ -241,7 +241,7 @@ ggplot(data = world) +
 # ----------------------------------------------------
 ggplot(data = world) +
   geom_sf(data = counties, fill='#f0f1f9') + 
-  geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.25) +
+  geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +
   theme_classic() +
   scale_color_met_c("Benedictus",direction = 1) +
   scale_size_area(max_size = 7) + theme_nr() +
@@ -251,7 +251,7 @@ ggplot(data = world) +
 # -------------------------------------------------
 ggplot(data = world) +
   geom_sf(data = counties, fill='#f0f1f9') + 
-  geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.25) +
+  geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +
   theme_classic() +
   scale_color_met_c("Benedictus",direction = 1) +
   scale_size_area(max_size = 7) + theme_nr() +
@@ -266,5 +266,5 @@ ggplot(data = world) +
   theme_classic() +
   scale_color_met_c("Benedictus",direction = 1) +
   scale_size_area(max_size = 2) + theme_nr() +
-  labs(x="Longitude",y="Latitude",color="Grade Cohort Score",title = "California School Location and Per Student\nSpending")+guides(size=FALSE)+theme(legend.position = c(.8,.8))
+  labs(x="Longitude",y="Latitude",color="Per Student Spending",title = "California School Location and Per Student\nSpending")+guides(size=FALSE)+theme(legend.position = c(.8,.8))
 ```
