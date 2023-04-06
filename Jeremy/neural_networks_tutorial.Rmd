@@ -50,9 +50,7 @@ linear.output = TRUE
 
 # Check the shape of our model
 
-We can see a our model, the shape, and the parameters belonging to each of the layer in our neural network model. 
-
-The input nodes' values are governed by what the input is for any particular row in the dataset. Then that value is multiplied by the values on the lines leading to the next nodes, and so on and so on until it gets to the end.
+We can see a our model, the shape, and the parameters belonging to each of the layer in our neural network model.
 
  Read here for more detailed explanation on how to calculate the number of trainable parameters and a relevant exercise: https://aldozaimi.wordpress.com/2020/02/13/determine-the-number-of-trainable-parameters-in-a-neural-network/#:~:text=There%20is%20a%20simple%20rule,the%20number%20of%20output%20units.
 
