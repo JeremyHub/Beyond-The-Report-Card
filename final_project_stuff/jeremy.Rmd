@@ -23,7 +23,7 @@ grouped_merged_table <- merged_table %>%
       gcs_mn_avg_ol = as.numeric(gcs_mn_avg_ol)
   ) %>%
   mutate(ela_data_currstatus = ela_data_currstatus * ela_data_currdenom) %>%
-  group_by(CDSCode, pp_total_raw) %>%
+  group_by(CDSCode, pp_total_raw, Latitude, Longitude) %>%
   summarise(
     science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = mean(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),
     science_data_Physical.Sciences.Domain.Percent.Above.Standard = mean(science_data_Physical.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),
@@ -49,13 +49,14 @@ graph_ready <- grouped_merged_table %>%
 ```
 
 ```{r}
-  
+fl <- c("English Language Arts", "Grade Cohort Standardized", "Earth + Space", "Life Sciences", "Physical Sciences")
+names(fl) <- c("ela_data_currstatus", "gcs_mn_avg_ol", "science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard", "science_data_Life.Sciences.Domain.Percent.Above.Standard", "science_data_Physical.Sciences.Domain.Percent.Above.Standard")
 graph_ready %>%
-  ggplot(aes(color = name, y = value, x = pp_total_raw)) +
+  ggplot(aes(color = name, y = Latitude, x = Longitude, color=value/pp_total_raw)) +
   geom_point(alpha=0.3)+
-  facet_wrap(~name)+
+  facet_wrap(~name, labeller=labeller(name=fl))+
   geom_smooth()+
-  labs(x = "Per Pupil Funding", y = "Metric") +
+  labs(x = "Per Pupil Funding", y = "Normalized Metric", title = "Metric Performance by Total Per-Pupil Funding") +
   theme_bw() +
   theme(
     legend.title = element_blank(),
@@ -63,4 +64,20 @@ graph_ready %>%
     legend.position = "none"
   )
 ```
+```{r}
+ls(merged_table)
+merged_table %>%
+  select(enroll_raw, schooltot_raw, gradespan) %>%
+  na.omit() %>%
+  group_by(gradespan) %>%
+  count() %>%
+  left_join(merged_table) %>%
+  select(enroll_raw, schooltot_raw, gradespan, n) %>%
+  na.omit() %>%
+  filter(n > 1000) %>%
+  ggplot(aes(x=enroll_raw, y=schooltot_raw)) +
+  geom_point() +
+  facet_wrap(~gradespan)
+```
+
 
