@@ -12,6 +12,10 @@ library(rnaturalearth)
 library(ggplot2)
 ```
 
+```{r load wide data, include=FALSE}
+load("wide_merged_data.Rdata")
+```
+
 # Intermediate Narrative
 
 ## Description & motivation of research questions
@@ -155,10 +159,6 @@ theme_nr <- function(){
     )
   )
 }
-```
-
-```{r load wide data, include=FALSE}
-load("wide_merged_data.Rdata")
 ```
 
 ```{r funding models}
