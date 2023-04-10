@@ -189,32 +189,6 @@ graph_ready %>%
 *Nathaniel's results*
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
-theme_nr <- function(){
-  theme_minimal() %+replace%
-  theme(
-    
-    axis.ticks = element_line(),
-    
-    plot.title = element_text(
-      size = 14,
-      hjust = 0
-    ),
-    plot.subtitle = element_text(
-      size = 10,
-      hjust = 0
-    ),
-    plot.caption = element_text(
-      size = 8,
-      hjust = 1
-    ),
-    axis.title = element_text(
-      size = 10
-    ),
-    axis.text = element_text(
-      size = 8
-    )
-  )
-}
 ```
 
 ```{r funding models, warning=FALSE, results='hide'}
@@ -249,8 +223,11 @@ wide_merged_data %>%
     scale_y_continuous(limits = c(-4, 4)) +
     scale_color_discrete(labels = c("Raw Spending", "Adjusted Spending")) + 
     labs(x = "Per Student Funding", y = "Grade Cohort Score", color="") + 
-    theme_nr() + 
+    theme_minimal() + 
     theme(legend.position = c(.8,.81))
+```
+```{r}
+
 ```
 
 
