@@ -8,7 +8,8 @@ output: html_document
 library(tidyverse)
 library(MetBrewer)
 library(sf)
-library(rnaturalearth) 
+library(rnaturalearth)
+library(ggplot2)
 ```
 
 # Intermediate Narrative
@@ -22,13 +23,19 @@ Initially, our focus was on the correlation between affordable housing and educa
 
 The data set we have includes a range of school-related variables such as location details, funding, and aggregated scores in various subjects. Specifically, the score variables cover the general grade-cohort-standardized achievement score, as well as scores in reading, science, and physical education. 
 
-We aggregate our data from 5 different datasets. We use data from *fill in Jeremy's data* and data from the Educational Opportunity Project at Stanford University.
+We aggregate our dataset from 5 different datasets. We use data from The California Department of Education, Georgetown University, and the Educational Opportunity Project at Stanford University.
 
 **Science Testing Data**
+Our science test data is from the California Department of Education, specifically, from the 2021-2022 school year. It is from the California Science Test, in which there are three different categories. Life sciences, Physical sciences, and Earth and Space sciences.
 
 **English Testing Data**
+The data we have for English Language Arts / Literature is also from the California Department of Education, specifically from 2022. It tells us for each student group within each school their level of proficiency.
+
+**Pys Ed Data**
+Our PE data comes from the California Department Education from the 2018-2019 school year. It has 7 different types of exercises and each school's grade's proficiency on each type of exercise.
 
 **School Funding Data**
+Our school funding data is aggregated 2019-2020 data from different federal and state sources. It is compiled into the dataset we are using by Georgetown University researchers. It has information about funding going to a school from the state, local, and federal governments, as well as metadata about the school such as enrollment, as well as data about the income levels of the students at the school.
 
 
 **Educational Opportunity Project at Stanford University**
@@ -52,13 +59,72 @@ Regarding data accuracy, as we do not have detailed documentation for all of the
 
 Taken out of context, our analyses and graphics have the potential to negatively impact educational policy. Particularly since we will be looking at demographics and funding data. We need to be careful and deliberate in our analysis in order to minimize harm.
 
-
 ## Analyses with a short description of results
 
 *Thu's results*
 
 
 *Jeremy's results*
+I analyzed only the schools for which we have all data available. (as in the intersection of our datasets.) Amoung these schools, across all metrics, an increase in per-pupil government (both state and federal) spending correlated with a decrease in performance. Initial reactions is that these results are becuase of the increase in per-pupil spending when a high percentage of students are english learners, in the foster care system, or on free/reduced lunch.
+
+```{r}
+min_max_norm <- function(x) {
+    (x - min(x, na.rm=TRUE)) / (max(x, na.rm=TRUE) - min(x, na.rm=TRUE))
+}
+
+# model metrics by per pupil funding
+grouped_merged_table <- merged_table %>%
+  filter(flag_nerds == 'false' || is.na(flag_nerds)) %>%
+  filter(flag_f33 != '1' || is.na(flag_f33)) %>%
+  mutate(pp_total_raw = as.numeric(pp_total_raw))%>%
+  filter(pp_total_raw < 100000) %>% #filters 1 school out
+  # mutate to then as.numeric
+  mutate(
+      science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard),
+      science_data_Physical.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Physical.Sciences.Domain.Percent.Above.Standard),
+      science_data_Life.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Life.Sciences.Domain.Percent.Above.Standard),
+      ela_data_currstatus = as.numeric(ela_data_currstatus),
+      gcs_mn_avg_ol = as.numeric(gcs_mn_avg_ol)
+  ) %>%
+  mutate(ela_data_currstatus = ela_data_currstatus * ela_data_currdenom) %>%
+  group_by(CDSCode, pp_total_raw, Latitude, Longitude) %>%
+  summarise(
+    science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = mean(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),
+    science_data_Physical.Sciences.Domain.Percent.Above.Standard = mean(science_data_Physical.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),
+    science_data_Life.Sciences.Domain.Percent.Above.Standard = mean(science_data_Life.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),
+    ela_data_currstatus = mean(ela_data_currstatus, na.rm = TRUE),
+    gcs_mn_avg_ol = mean(gcs_mn_avg_ol, na.rm = TRUE),
+  ) %>%
+  ungroup()
+
+graph_ready <- grouped_merged_table %>%
+  na.omit() %>% #only looking at the same schools. this line is doing a lot though
+  filter(pp_total_raw < 20000) %>% # removes 2 schools
+  # normalize the metrics
+    mutate(
+        science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = min_max_norm(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard),
+        science_data_Physical.Sciences.Domain.Percent.Above.Standard = min_max_norm(science_data_Physical.Sciences.Domain.Percent.Above.Standard),
+        science_data_Life.Sciences.Domain.Percent.Above.Standard = min_max_norm(science_data_Life.Sciences.Domain.Percent.Above.Standard),
+        ela_data_currstatus = min_max_norm(ela_data_currstatus),
+        gcs_mn_avg_ol = min_max_norm(gcs_mn_avg_ol)
+    ) %>%
+  group_by(CDSCode) %>%
+  pivot_longer(cols=c(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard,science_data_Physical.Sciences.Domain.Percent.Above.Standard,science_data_Life.Sciences.Domain.Percent.Above.Standard,ela_data_currstatus,gcs_mn_avg_ol))
+fl <- c("English Language Arts", "Grade Cohort Standardized", "Earth + Space", "Life Sciences", "Physical Sciences")
+names(fl) <- c("ela_data_currstatus", "gcs_mn_avg_ol", "science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard", "science_data_Life.Sciences.Domain.Percent.Above.Standard", "science_data_Physical.Sciences.Domain.Percent.Above.Standard")
+graph_ready %>%
+  ggplot(aes(color = name, y = pp_total_raw, x = value)) +
+  geom_point(alpha=0.3)+
+  facet_wrap(~name, labeller=labeller(name=fl))+
+  geom_smooth()+
+  labs(x = "Per Pupil Funding", y = "Normalized Metric", title = "Metric Performance by Total Per-Pupil Funding") +
+  theme_bw() +
+  theme(
+    legend.title = element_blank(),
+    legend.text = element_text(size = 8),
+    legend.position = "none"
+  )
+```
 
 
 *Nathaniel's results*
