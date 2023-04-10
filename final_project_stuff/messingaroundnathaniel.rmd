@@ -150,7 +150,7 @@ wide_merged_data <- ca_school_details_clean %>%
   left_join(ela_mth_proficiency_ranges, by=c("ncesid"="NCESSCH"))
 
 
-save(wide_merged_data, file="wide_merged_data.Rdata")
+save(wide_merged_data, file="wide_merged_data.RData")
 
 names(wide_merged_data)
 ```

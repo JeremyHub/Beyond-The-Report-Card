@@ -4,56 +4,67 @@ author: "Thu Dang, Nathaniel Reimer, Jeremy Hubinger"
 date: "`r Sys.Date()`"
 output: html_document
 ---
-```{r}
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r, include=FALSE}
 library(tidyverse)
 library(MetBrewer)
 library(sf)
 library(rnaturalearth)
 library(ggplot2)
+library(dplyr)
+library(classInt) #install.packages('classInt')
+library(ggspatial) #install.packages('ggspatial')
+library(ggthemes) #install.packages('ggthemes')
+
 ```
 
-```{r load wide data, include=FALSE}
-load("wide_merged_data.Rdata")
+```{r load wide data}
+load("CombinedDataLongFormat.RData")
+load("wide_merged_data.RData")
 ```
 
-# Intermediate Narrative
 
-## Description & motivation of research questions
+# Description & motivation of research questions
 
-Initially, our focus was on the correlation between affordable housing and educational achievement. However, during the process of selecting appropriate educational proxies, we found ourselves delving into the factors behind the measurements of these proxies. As a result, we decided to seek the guidance of Leslie, who specializes in public policies in education. We hope to gain a better understanding of the educational proxies currently in use, and to investigate whether there are additional factors that impact educational outcomes and potentially render the current proxies interchangeable or distinct from other measures.
+Initially, our focus was on the correlation between affordable housing and educational achievement. However, during the process of selecting appropriate educational proxies, we found ourselves delving into the factors behind the measurements of these proxies. As a result, we decided to seek the guidance of Professor Lesley Lavery, who specializes in public policies in education. We hope to gain a better understanding of the educational proxies currently in use, and to investigate whether there are additional factors that impact educational outcomes and potentially render the current proxies interchangeable or distinct from other measures.
 
 
-## Dataset description
+# Dataset description
 
 The data set we have includes a range of school-related variables such as location details, funding, and aggregated scores in various subjects. Specifically, the score variables cover the general grade-cohort-standardized achievement score, as well as scores in reading, science, and physical education. 
 
 We aggregate our dataset from 5 different datasets. We use data from The California Department of Education, Georgetown University, and the Educational Opportunity Project at Stanford University.
 
 **Science Testing Data**
-Our science test data is from the California Department of Education, specifically, from the 2021-2022 school year. It is from the California Science Test, in which there are three different categories. Life sciences, Physical sciences, and Earth and Space sciences.
+
+Our science test data is from the California Department of Education, specifically, from the 2021-2022 school year. It is from the California Science Test, in which there are three different categories, namely Life sciences, Physical sciences, and Earth and Space sciences.
 
 **English Testing Data**
+
 The data we have for English Language Arts / Literature is also from the California Department of Education, specifically from 2022. It tells us for each student group within each school their level of proficiency.
 
-**Pys Ed Data**
+**Physical Education Data**
+
 Our PE data comes from the California Department Education from the 2018-2019 school year. It has 7 different types of exercises and each school's grade's proficiency on each type of exercise.
 
 **School Funding Data**
+
 Our school funding data is aggregated 2019-2020 data from different federal and state sources. It is compiled into the dataset we are using by Georgetown University researchers. It has information about funding going to a school from the state, local, and federal governments, as well as metadata about the school such as enrollment, as well as data about the income levels of the students at the school.
 
+**Educational Opportunity Project at Stanford University (SEDA)**
 
-**Educational Opportunity Project at Stanford University**
-
-Add description
-
-You should have a description of the datasets you use. At this point, this can be just a few example records and description of their purpose.
+The SEDA we're using contains school-level standardized academic achievement data across all Californian schools. These achievement scores are graded and cohort standardized against the NAEP standard, indicating whether the students in a particular school and grade level are meeting the national standard for their grade. For instance, if a school's 4th-grade students score 3.5, it indicates that they are lagging behind the national standard by 0.5 points. The achievement estimates are calculated using Ordinary Least Square (OLS) and Empirical Bayesian (EB) techniques.
 
 **School Details**
 
 This contains metadata on 10629 California Schools. Including both the nationally used NCES id and the California CDS code. We use this to join our data from our different sources. This dataset also contains the longitude and latitude of the schools which has been very useful for EDA so far.   
 
 
-## Ethical issues (who may be harmed and who may benefit)
+# Ethical issues (who may be harmed and who may benefit)
 
 To ensure privacy concerns are addressed, we take measures to aggregate the data at the school level. However, we recognize that there may be potential issues with bias in the data collection process and data accuracy as a result.
 
@@ -67,11 +78,55 @@ Taken out of context, our analyses and graphics have the potential to negatively
 
 *Thu's results*
 
-
-*Jeremy's results*
-I analyzed only the schools for which we have all data available. (as in the intersection of our datasets.) Amoung these schools, across all metrics, an increase in per-pupil government (both state and federal) spending correlated with a decrease in performance. Initial reactions is that these results are becuase of the increase in per-pupil spending when a high percentage of students are english learners, in the foster care system, or on free/reduced lunch.
+```{r}
+# Read CA counties shapefile
+ca_counties <- read_sf('CA_Counties')
+ca_counties <- ca_counties %>%
+  st_transform(crs = "NAD83")
+```
 
 ```{r}
+school_map <- merged_table %>%
+  select(CDSCode, School, gradecenter, gcs_mn_avg_ol, Longitude, Latitude) %>%
+  filter(!is.na(gradecenter) & !is.na(gcs_mn_avg_ol)) %>% #7390 after NA gradecenter, 6997 after both conditions
+  distinct %>%
+  mutate(diff_from_gradecenter = gcs_mn_avg_ol - gradecenter) %>%
+  mutate(gcs_type = ifelse(diff_from_gradecenter < 0, "Below NAEP Average", ifelse(diff_from_gradecenter > 0, "Above NAEP Average", "At NAEP Average")))
+
+school_map_sf <- school_map %>% 
+  st_as_sf(coords = c('Longitude', 'Latitude'), crs = "NAD83")
+```
+
+```{r}
+# Joining school with county map
+school_county_sf <- st_join(school_map_sf, ca_counties) 
+
+grade_diff_by_county <- school_county_sf %>%
+  st_drop_geometry() %>% #removes geometry - makes calculation more efficient 
+  group_by(NAMELSAD) %>%
+  summarise(mean_gcs_diff = mean(diff_from_gradecenter))
+
+grade_diff_by_county_geo <- ca_counties %>%
+  left_join(grade_diff_by_county, by="NAMELSAD")
+
+breaks_qt_grade <- classIntervals(c(min(grade_diff_by_county_geo$mean_gcs_diff) - .00001, grade_diff_by_county_geo$mean_gcs_diff), n = 4, style = "quantile")
+
+grade_diff_by_county_with_breaks_geo <- grade_diff_by_county_geo %>%
+  mutate(grade_diff_cat = factor(cut(mean_gcs_diff, breaks=breaks_qt_grade$brks)))
+
+ggplot() + 
+  geom_sf(data=grade_diff_by_county_with_breaks_geo, aes(fill=grade_diff_cat)) + 
+  scale_fill_viridis_d() + 
+  labs(fill = "Achievement Score Difference \nfrom NAEP standard", color = "", title = "Grade Cohort Standardized Achievement Score Difference from NAEP standard \nby California County", subtitle= "according to the Educational Opportunity Project at Stanford University") +
+  theme_map() + 
+  theme(legend.position = "right") 
+```
+
+*Jeremy's results*
+
+We examined solely the schools for which we have complete data available, i.e., the schools in the intersection of our datasets. Among these schools, across all metrics, an increase in per-pupil government spending (both state and federal) showed a negative correlation with performance. At first glance, the outcomes appear to be linked to the increase in per-pupil spending when there is a significant percentage of students who are English learners, in the foster care system, or eligible for free/reduced lunch.
+
+```{r message=FALSE, warning=FALSE}
 min_max_norm <- function(x) {
     (x - min(x, na.rm=TRUE)) / (max(x, na.rm=TRUE) - min(x, na.rm=TRUE))
 }
@@ -132,6 +187,7 @@ graph_ready %>%
 
 
 *Nathaniel's results*
+
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 theme_nr <- function(){
   theme_minimal() %+replace%
@@ -161,7 +217,7 @@ theme_nr <- function(){
 }
 ```
 
-```{r funding models}
+```{r funding models, warning=FALSE, results='hide'}
 fundingmod<-wide_merged_data %>% 
   filter(!is.na(pp_total_raw)&!is.na(perfrl)) %>% 
   lm(formula = as.numeric(pp_total_raw) ~ as.numeric(perfrl) + 
@@ -178,7 +234,7 @@ fundingmod$coefficients
 lunchfundingmod$coefficients
 ```
 
-```{r, fig.height=6,fig.width=8}
+```{r message=FALSE, fig.height=6,fig.width=8, warning=FALSE}
 fl<-c("Adjusted Spending","Raw Spending")
 
 wide_merged_data %>%
@@ -198,16 +254,25 @@ wide_merged_data %>%
 ```
 
 
-
-Brianna's note: I should be able to download the datasets you share and run your single RMD to reproduce it. Include any datasets, analysis, visualizations, etc. you have should be included in the RMD.
-
-For each result (visualization, table, or data point), you should have a sentence or two describing the result.
-
-
-
 ## Project plan
 
+Moving forward, we would love to: 
 
+- Expand further on funding metrics and explore ways to adjust them in a way that they don't give a false picture when taken out of context
+
+- Identify more potential metrics through bivariate visualizations and adjust them so that we can put all of them together into a model that explains different education proxies
+
+- Tell a better story with missing data
 
 
 ## Summary of contributions
+
+Thu, Nathaniel, and Jeremy all contribute equally to this checkpoint. Specifically:
+
+- Thu was responsible for cleaning and standardizing school identifiers to merge all datasets together in long format. She also cleaned the data for and visualized the general map displaying the deviation in SEDA scores from the national standard for each county, which provides a broad overview of academic achievement levels in Californian counties. Lastly, she consolidated the narration for the results and also this write-up using all of Jeremy and Nathaniel's inputs, and organized the slides for the intermediate presentation.
+
+- Nathaniel was responsible for cleaning and merging the dataset into a wide format, as well as creating several visualizations that aided us in developing a narrative about the funding for this intermediate visualization. Additionally, he proposed a new concept for modeling an adjusted funding metric, which will provide us with a more comprehensive understanding of the correlation between funding and academic achievement at the school level.
+
+- Jeremy was responsible for conducting various analyses to compare the trend of different educational proxies as school funding increases. Due to his extensive knowledge about California, he is the primary result interpreter of the team. This enables us to contextualize the outcomes and generate ideas for future steps. Furthermore, he played a role in exploring different potential variables by cleaning the data for and visualizing various bivariate graphs.
+
+
