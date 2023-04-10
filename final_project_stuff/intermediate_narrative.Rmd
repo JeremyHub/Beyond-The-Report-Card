@@ -4,6 +4,12 @@ author: "Thu Dang, Nathaniel Reimer, Jeremy Hubinger"
 date: "`r Sys.Date()`"
 output: html_document
 ---
+```{r}
+library(tidyverse)
+library(MetBrewer)
+library(sf)
+library(rnaturalearth) 
+```
 
 # Intermediate Narrative
 
@@ -16,7 +22,7 @@ Initially, our focus was on the correlation between affordable housing and educa
 
 The data set we have includes a range of school-related variables such as location details, funding, and aggregated scores in various subjects. Specifically, the score variables cover the general grade-cohort-standardized achievement score, as well as scores in reading, science, and physical education. 
 
-We aggregate our dataset from 5 different datasets. We use data from *fill in Jeremy's data* and data from the Educational Opportunity Project at Stanford University.
+We aggregate our data from 5 different datasets. We use data from *fill in Jeremy's data* and data from the Educational Opportunity Project at Stanford University.
 
 **Science Testing Data**
 
@@ -44,7 +50,7 @@ Regarding potential bias, the data is taken from various sources, and it is poss
 
 Regarding data accuracy, as we do not have detailed documentation for all of the datasets, it is challenging to ascertain their accuracy. However, we have confidence in the reliability of the government and highly-credited sources from which the data originates. Given this, we consider these datasets to be our most reliable option at present.
 
-Taken out of context, our analyses and graphics have the potential to negatively impact educational policy. We need to be careful and deliberate in our analysis in order to minimize harm.
+Taken out of context, our analyses and graphics have the potential to negatively impact educational policy. Particularly since we will be looking at demographics and funding data. We need to be careful and deliberate in our analysis in order to minimize harm.
 
 
 ## Analyses with a short description of results
@@ -56,6 +62,75 @@ Taken out of context, our analyses and graphics have the potential to negatively
 
 
 *Nathaniel's results*
+```{r message=FALSE, warning=FALSE, include=FALSE}
+theme_nr <- function(){
+  theme_minimal() %+replace%
+  theme(
+    
+    axis.ticks = element_line(),
+    
+    plot.title = element_text(
+      size = 14,
+      hjust = 0
+    ),
+    plot.subtitle = element_text(
+      size = 10,
+      hjust = 0
+    ),
+    plot.caption = element_text(
+      size = 8,
+      hjust = 1
+    ),
+    axis.title = element_text(
+      size = 10
+    ),
+    axis.text = element_text(
+      size = 8
+    )
+  )
+}
+```
+
+```{r load wide data, include=FALSE}
+load("wide_merged_data.Rdata")
+```
+
+```{r funding models}
+fundingmod<-wide_merged_data %>% 
+  filter(!is.na(pp_total_raw)&!is.na(perfrl)) %>% 
+  lm(formula = as.numeric(pp_total_raw) ~ as.numeric(perfrl) + 
+       as.numeric(lep_flag) + 
+       as.numeric(perfrl)*as.numeric(lep_flag)) %>%
+  summary()
+
+lunchfundingmod<-wide_merged_data %>% 
+  filter(!is.na(pp_total_raw)&!is.na(perfrl)) %>% 
+  lm(formula = as.numeric(pp_total_raw) ~ as.numeric(perfrl)) %>%
+  summary()
+
+fundingmod$coefficients
+lunchfundingmod$coefficients
+```
+
+```{r, fig.height=6,fig.width=8}
+fl<-c("Adjusted Spending","Raw Spending")
+
+wide_merged_data %>%
+  mutate(pp_total_raw_frl_adjusted = as.numeric(pp_total_raw) - as.numeric(perfrl)*lunchfundingmod$coefficients[2],
+  pp_total_raw = as.numeric(pp_total_raw)) %>%
+  pivot_longer(cols = c(pp_total_raw_frl_adjusted,pp_total_raw)) %>%
+  ggplot(aes(x=value, y=gcs_mn_avg_ol-gradecenter, color = name)) + 
+    geom_point(alpha = .1)+
+    geom_smooth() +
+    geom_hline(yintercept = 0, alpha=.5) + 
+    scale_x_continuous(limits = c(8000,18000)) +
+    scale_y_continuous(limits = c(-4, 4)) +
+    scale_color_discrete(labels = c("Raw Spending", "Adjusted Spending")) + 
+    labs(x = "Per Student Funding", y = "Grade Cohort Score", color="") + 
+    theme_nr() + 
+    theme(legend.position = c(.8,.81))
+```
+
 
 
 Brianna's note: I should be able to download the datasets you share and run your single RMD to reproduce it. Include any datasets, analysis, visualizations, etc. you have should be included in the RMD.
