@@ -235,11 +235,11 @@ wide_merged_data %>%
 
 Moving forward, we would love to: 
 
-- Expand further on funding metrics and explore ways to adjust them in a way that they don't give a false picture when taken out of context
+- Expand further on funding metrics and explore ways to adjust them in a way that they don't give a false picture when taken out of context (nathaniel has put in some work in this regard and we have a plan to accomplish this)
 
 - Identify more potential metrics through bivariate visualizations and adjust them so that we can put all of them together into a model that explains different education proxies
 
-- Tell a better story with missing data
+- Tell a better story with missing data (for example, why certain data is missing, where is it from, where does the data in our different datasets overlap and where does it not, are there trends here or not)
 
 
 ## Summary of contributions
@@ -250,6 +250,6 @@ Thu, Nathaniel, and Jeremy all contribute equally to this checkpoint. Specifical
 
 - Nathaniel was responsible for cleaning and merging the dataset into a wide format, as well as creating several visualizations that aided us in developing a narrative about the funding for this intermediate visualization. Additionally, he proposed a new concept for modeling an adjusted funding metric, which will provide us with a more comprehensive understanding of the correlation between funding and academic achievement at the school level.
 
-- Jeremy was responsible for conducting various analyses to compare the trend of different educational proxies as school funding increases. Due to his extensive knowledge about California, he is the primary result interpreter of the team. This enables us to contextualize the outcomes and generate ideas for future steps. Furthermore, he played a role in exploring different potential variables by cleaning the data for and visualizing various bivariate graphs.
+- Jeremy was responsible for gathering and aggregating some of the initial datasets that Thu then later merged with another one. He also conducted various analyses to compare the trend of different educational proxies as school funding increases. Due to his extensive knowledge about California, he is the primary result interpreter of the team. This enables us to contextualize the outcomes and generate ideas for future steps. Furthermore, he played a role in exploring different potential variables by cleaning the data for and visualizing various bivariate graphs.
 
 
