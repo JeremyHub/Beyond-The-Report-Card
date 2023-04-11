@@ -191,7 +191,19 @@ graph_ready %>%
 
 *Nathaniel's results*
 
-```{r message=FALSE, warning=FALSE, include=FALSE}
+
+```{r message=FALSE, warning=FALSE}
+counties <- st_as_sf(maps::map("county", plot = FALSE, fill = TRUE))
+counties <- subset(counties, grepl("california", counties$ID))
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+ggplot(data = world) +
+  geom_sf(data = counties, fill='#f0f1f9') + 
+  geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=as.numeric(pp_total_raw),size=as.numeric(ncesenroll)), alpha =.5) + 
+  theme_minimal() +
+  scale_color_gradient(low='#FFE400', high = '#611BB8', limits=c(8000,18000)) +
+  scale_size_area(max_size = 2) +
+  labs(x="Longitude",y="Latitude",color="Raw Spending",title = "California School Location and Spending")+guides(size=FALSE)+theme(legend.position = c(.8,.8))
 ```
 
 ```{r funding models, warning=FALSE, results='hide'}
@@ -224,11 +236,47 @@ wide_merged_data %>%
     geom_hline(yintercept = 0, alpha=.5) + 
     scale_x_continuous(limits = c(8000,18000)) +
     scale_y_continuous(limits = c(-4, 4)) +
-    scale_color_discrete(labels = c("Raw Spending", "Adjusted Spending")) + 
+    scale_color_discrete(type = c("#454545", '#611BB8'), labels = c("Raw Spending", "Adjusted Spending")) + 
     labs(x = "Per Student Funding", y = "Grade Cohort Score", color="") + 
     theme_minimal() + 
     theme(legend.position = c(.8,.81))
+
+wide_merged_data %>%
+  mutate(pp_total_raw_frl_adjusted = as.numeric(pp_total_raw) - as.numeric(perfrl)*lunchfundingmod$coefficients[2],
+  pp_total_raw = as.numeric(pp_total_raw)) %>%
+  pivot_longer(cols = c(pp_total_raw_frl_adjusted,pp_total_raw)) %>%
+ ggplot(aes(x=as.numeric(perhsp),value,color=name)) +
+      geom_point(alpha = .05) +
+      geom_smooth(method=lm) + 
+      theme_minimal()+
+      theme(legend.position = c(.2,.9) ) + 
+      labs(x="Percent Hispanic", y="Per student funding", color="")+
+      scale_y_continuous(limits = c(5000,20000)) +
+      scale_color_discrete(type = c("#454545", '#611BB8'), labels = c("Raw Spending", "Adjusted Spending"))
 ```
+```{r message=FALSE, warning=FALSE}
+wide_merged_data %>% filter(!is.na(urbanicity)) %>%
+  ggplot(aes(x=as.numeric(pp_total_raw), y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)), color=urbanicity)) +
+  geom_point(alpha = .1) + 
+  geom_smooth(method = lm) + 
+  facet_wrap(~urbanicity) + 
+  scale_x_continuous(limits = c(8000,18000)) + 
+  theme_minimal()+
+  labs(y="Grade Cohort Score", x= "Per Student Spending") + guides(color=FALSE) +   geom_hline(yintercept = 0)
+
+wide_merged_data %>% filter(!is.na(urbanicity)) %>% mutate(pp_total_raw_frl_adjusted = as.numeric(pp_total_raw) - as.numeric(perfrl)*lunchfundingmod$coefficients[2],
+  pp_total_raw = as.numeric(pp_total_raw)) %>%
+  ggplot(aes(x=as.numeric(pp_total_raw_frl_adjusted), y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)), color=urbanicity)) +
+  geom_point(alpha = .1) + 
+  geom_smooth(method = lm) + 
+  facet_wrap(~urbanicity) + 
+  scale_x_continuous(limits = c(8000,18000)) + 
+  theme_minimal()+
+  labs(y="Grade Cohort Score", x= "Adjusted Per Student Spending") + guides(color=FALSE) +   geom_hline(yintercept = 0)
+```
+
+
+
 
 
 ## Project plan
