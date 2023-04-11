@@ -78,6 +78,9 @@ Taken out of context, our analyses and graphics have the potential to negatively
 
 *Thu's results*
 
+This map shows the deviation in SEDA scores from the national standard for each county, providing a broad overview of academic achievement levels in Californian counties. Overall, areas in cities or richer suburbs (Silicon Valley, Los Angeles, San Diego) have higher academic performance than national average, shown through brigher colors (yellow and green). On the other hand, areas with fewer schools (e.g. Inyo – a national forest area) have lower academic performance than national average, denoted by darker (blue and purple) colors.
+
+
 ```{r}
 # Read CA counties shapefile
 ca_counties <- read_sf('CA_Counties')
