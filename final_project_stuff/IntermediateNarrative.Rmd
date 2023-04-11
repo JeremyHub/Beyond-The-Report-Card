@@ -226,16 +226,13 @@ wide_merged_data %>%
     theme_minimal() + 
     theme(legend.position = c(.8,.81))
 ```
-```{r}
-
-```
 
 
 ## Project plan
 
 Moving forward, we would love to: 
 
-- Expand further on funding metrics and explore ways to adjust them in a way that they don't give a false picture when taken out of context (nathaniel has put in some work in this regard and we have a plan to accomplish this)
+- Expand further on funding metrics and explore ways to adjust them in a way that they don't give a false picture when taken out of context (Nathaniel has put in some work in this regard and we have a plan to accomplish this)
 
 - Identify more potential metrics through bivariate visualizations and adjust them so that we can put all of them together into a model that explains different education proxies
 
