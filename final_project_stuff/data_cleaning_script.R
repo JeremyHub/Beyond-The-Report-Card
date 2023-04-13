@@ -9,12 +9,12 @@ library(readxl)
 
 ## Import data
 
-school_data <- read.csv('ca_education.csv') # dataset of public K-12 spending by school
-ela_metric_data <- read.csv('ca_edu_metrics.csv') # 2022 Academic Indicator (English Language Arts/Literacy) Data File
-physical_fitness_data <- read.csv('physical_fitness_testing_ca.csv')
-science_metric_data <- read.csv('science_ca_assesment.csv', sep = "^")
-stanford_data <- read_csv('seda_school_pool_gcs_4.1.csv')
-ca_school_details <- read_excel("ca_school_details.xlsx") # CA schools metadata
+school_data <- read.csv('AllDatasets/ca_education.csv') # dataset of public K-12 spending by school
+ela_metric_data <- read.csv('AllDatasets/ca_edu_metrics.csv') # 2022 Academic Indicator (English Language Arts/Literacy) Data File
+physical_fitness_data <- read.csv('AllDatasets/physical_fitness_testing_ca.csv')
+science_metric_data <- read.csv('AllDatasets/science_ca_assesment.csv', sep = "^")
+stanford_data <- read_csv('AllDatasets/seda_school_pool_gcs_4.1.csv')
+ca_school_details <- read_excel("AllDatasets/ca_school_details.xlsx") # CA schools metadata
 
 ## Clean CA school metadata
 
@@ -83,5 +83,3 @@ merged_table <- left_join(ca_school_details_clean, school_data_clean, by=c('scho
 
 
 save(merged_table,file = 'CombinedDataLongFormat.RData')
-
-write.csv(merged_table, "CombinedDataLongFormat.csv")
