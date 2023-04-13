@@ -150,138 +150,138 @@ wide_merged_data <- ca_school_details_clean %>%
   left_join(ela_mth_proficiency_ranges, by=c("ncesid"="NCESSCH"))
 
 
-save(wide_merged_data, file="wide_merged_data.RData")
+save(wide_merged_data, file="WideMergedData.RData")
 
 names(wide_merged_data)
 ```
 
 ```{r}
-length(unique(wide_merged_data$CDSCode)) #10629 unique schools from the metadata
-length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$schoolname) == FALSE])) #4385 unique matched schools for Jeremy's california school data
-length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$sedasch) == FALSE])) #7390 unique matched schools for Stanford data
-length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$ela_data_cds) == FALSE])) #814 unique matched schools for ela data
-length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$science_data_cds) == FALSE])) #495 unique matched schools for science data
-length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$PE_data_cds) == FALSE])) #501 unique matched schools for pe data
+# length(unique(wide_merged_data$CDSCode)) #10629 unique schools from the metadata
+# length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$schoolname) == FALSE])) #4385 unique matched schools for Jeremy's california school data
+# length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$sedasch) == FALSE])) #7390 unique matched schools for Stanford data
+# length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$ela_data_cds) == FALSE])) #814 unique matched schools for ela data
+# length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$science_data_cds) == FALSE])) #495 unique matched schools for science data
+# length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$PE_data_cds) == FALSE])) #501 unique matched schools for pe data
 ```
 ```{r message=FALSE, warning=FALSE, include=FALSE}
-theme_nr <- function(){
-  font <- "AvantGarde"
-  theme_minimal() %+replace%
-  theme(
-    panel.grid = element_blank(),
-    
-    axis.ticks = element_line(),
-    
-    plot.title = element_text(
-      family = font,
-      size = 14,
-      hjust = 0
-    ),
-    plot.subtitle = element_text(
-      family = font,
-      size = 10,
-      hjust = 0
-    ),
-    plot.caption = element_text(
-      family = font,
-      size = 8,
-      hjust = 1
-    ),
-    axis.title = element_text(
-      family = font,
-      size = 10
-    ),
-    axis.text = element_text(
-      family = font,
-      size = 8
-    )
-  )
-}
+# theme_nr <- function(){
+#   font <- "AvantGarde"
+#   theme_minimal() %+replace%
+#   theme(
+#     panel.grid = element_blank(),
+#     
+#     axis.ticks = element_line(),
+#     
+#     plot.title = element_text(
+#       family = font,
+#       size = 14,
+#       hjust = 0
+#     ),
+#     plot.subtitle = element_text(
+#       family = font,
+#       size = 10,
+#       hjust = 0
+#     ),
+#     plot.caption = element_text(
+#       family = font,
+#       size = 8,
+#       hjust = 1
+#     ),
+#     axis.title = element_text(
+#       family = font,
+#       size = 10
+#     ),
+#     axis.text = element_text(
+#       family = font,
+#       size = 8
+#     )
+#   )
+# }
 ```
 
 ```{r warning=FALSE}
-wide_merged_data %>% filter(!is.na(urbanicity)) %>%
-  ggplot(aes(x=as.numeric(pp_total_norm_NERDS), y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)), color=urbanicity)) +
-  geom_point(alpha = .1) + 
-  geom_smooth(method = lm) + 
-  facet_wrap(~urbanicity) + 
-  scale_x_continuous(limits = c(8000,18000)) + 
-  theme_nr()+
-  labs(y="Grade Cohort Score", x= "Per Student Spending") + guides(color=FALSE) +   geom_hline(yintercept = 0)
+# wide_merged_data %>% filter(!is.na(urbanicity)) %>%
+#   ggplot(aes(x=as.numeric(pp_total_norm_NERDS), y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)), color=urbanicity)) +
+#   geom_point(alpha = .1) + 
+#   geom_smooth(method = lm) + 
+#   facet_wrap(~urbanicity) + 
+#   scale_x_continuous(limits = c(8000,18000)) + 
+#   theme_nr()+
+#   labs(y="Grade Cohort Score", x= "Per Student Spending") + guides(color=FALSE) +   geom_hline(yintercept = 0)
 
 ```
 ```{r fig.width=5,fig.height=5}
-wide_merged_data %>% ggplot(aes(x=as.numeric(science_data_Percentage.Standard.Met.and.Above_13), y=(as.numeric(MTH_PCTPROF_max)))) +
-  geom_point(alpha = .3) + 
-  geom_smooth(color="grey",method=lm) + theme_nr() + labs(x = "Percent Proficient on State Science Test", y="Maximum* Percent Proficient on NAEP Math Test", caption = "*True value is hidden to protect student privacy at smaller schools")
-
-wide_merged_data %>%
-  ggplot(aes(x=as.numeric(perhsp), y=(as.numeric(perfrl)))) +
-  geom_point(alpha = .05) + 
-  geom_smooth(color="black") + theme_nr() + labs(x = "Percent Hispanic", y="Percent Eligible fro Free and Reduced Lunch")
-
-
-wide_merged_data %>% filter(!is.na(urbanicity)) %>%
-  ggplot(aes(x=as.numeric(perfrl),y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),color=State)) +
-  geom_point(alpha = .05) +
-  geom_smooth(method=lm)+
-  guides(color=FALSE) + 
-  theme_nr()+
-  labs(x="Percent Eligible for Free and Reduced Lunch", y="Grade Cohort Score")+
-  geom_hline(yintercept = 0)
-
-wide_merged_data %>% filter(!is.na(urbanicity)) %>%
-  ggplot(aes(x=as.numeric(perhsp),y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),color=State)) +
-  geom_point(alpha = .05) +
-  geom_smooth()+
-  guides(color=FALSE) + 
-  theme_nr()+
-  labs(x="Percent Hispanic", y="Grade Cohort Score")+
-  geom_hline(yintercept = 0)
+# wide_merged_data %>% ggplot(aes(x=as.numeric(science_data_Percentage.Standard.Met.and.Above_13), y=(as.numeric(MTH_PCTPROF_max)))) +
+#   geom_point(alpha = .3) + 
+#   geom_smooth(color="grey",method=lm) + theme_nr() + labs(x = "Percent Proficient on State Science Test", y="Maximum* Percent Proficient on NAEP Math Test", caption = "*True value is hidden to protect student privacy at smaller schools")
+# 
+# wide_merged_data %>%
+#   ggplot(aes(x=as.numeric(perhsp), y=(as.numeric(perfrl)))) +
+#   geom_point(alpha = .05) + 
+#   geom_smooth(color="black") + theme_nr() + labs(x = "Percent Hispanic", y="Percent Eligible fro Free and Reduced Lunch")
+# 
+# 
+# wide_merged_data %>% filter(!is.na(urbanicity)) %>%
+#   ggplot(aes(x=as.numeric(perfrl),y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),color=State)) +
+#   geom_point(alpha = .05) +
+#   geom_smooth(method=lm)+
+#   guides(color=FALSE) + 
+#   theme_nr()+
+#   labs(x="Percent Eligible for Free and Reduced Lunch", y="Grade Cohort Score")+
+#   geom_hline(yintercept = 0)
+# 
+# wide_merged_data %>% filter(!is.na(urbanicity)) %>%
+#   ggplot(aes(x=as.numeric(perhsp),y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),color=State)) +
+#   geom_point(alpha = .05) +
+#   geom_smooth()+
+#   guides(color=FALSE) + 
+#   theme_nr()+
+#   labs(x="Percent Hispanic", y="Grade Cohort Score")+
+#   geom_hline(yintercept = 0)
 
 
 ```
 
 ```{r fig.width=5, fig.height=7.5}
-counties <- st_as_sf(maps::map("county", plot = FALSE, fill = TRUE))
-counties <- subset(counties, grepl("california", counties$ID))
-world <- ne_countries(scale = "medium", returnclass = "sf")
-
-ggplot(data = world) +
-  geom_sf(data = counties, fill='#f0f1f9') + 
-  geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +
-  theme_classic() +
-  scale_color_met_c("Benedictus",direction = 1) +
-  scale_size_area(max_size = 2) + theme_nr() +
-  labs(x="Longitude",y="Latitude",color="Grade Cohort Score",title = "California School Location and Academic\nPerformance")+guides(size=FALSE)+theme(legend.position = c(.8,.8))
-
-# ----------------------------------------------------
-ggplot(data = world) +
-  geom_sf(data = counties, fill='#f0f1f9') + 
-  geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +
-  theme_classic() +
-  scale_color_met_c("Benedictus",direction = 1) +
-  scale_size_area(max_size = 7) + theme_nr() +
-  labs(x="Longitude",y="Latitude",color="Grade Cohort Score",title = "Bay Area Academic Performance")+guides(size=FALSE)+theme(legend.position = c(.28,.3)) +
-  coord_sf(xlim=c(-121.25,-123.5), ylim= c(36.75,38.75))
-
-# -------------------------------------------------
-ggplot(data = world) +
-  geom_sf(data = counties, fill='#f0f1f9') + 
-  geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +
-  theme_classic() +
-  scale_color_met_c("Benedictus",direction = 1) +
-  scale_size_area(max_size = 2) + theme_nr() +
-  labs(x="Longitude",y="Latitude",color="Grade Cohort Score",title = "Los Angeles and San Diego Academic\nPerformance")+guides(size=FALSE)+theme(legend.position = c(.3,.3)) +
-  coord_sf(xlim=c(-117,-120), ylim= c(32,35))
+# counties <- st_as_sf(maps::map("county", plot = FALSE, fill = TRUE))
+# counties <- subset(counties, grepl("california", counties$ID))
+# world <- ne_countries(scale = "medium", returnclass = "sf")
+# 
+# ggplot(data = world) +
+#   geom_sf(data = counties, fill='#f0f1f9') + 
+#   geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +
+#   theme_classic() +
+#   scale_color_met_c("Benedictus",direction = 1) +
+#   scale_size_area(max_size = 2) + theme_nr() +
+#   labs(x="Longitude",y="Latitude",color="Grade Cohort Score",title = "California School Location and Academic\nPerformance")+guides(size=FALSE)+theme(legend.position = c(.8,.8))
+# 
+# # ----------------------------------------------------
+# ggplot(data = world) +
+#   geom_sf(data = counties, fill='#f0f1f9') + 
+#   geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +
+#   theme_classic() +
+#   scale_color_met_c("Benedictus",direction = 1) +
+#   scale_size_area(max_size = 7) + theme_nr() +
+#   labs(x="Longitude",y="Latitude",color="Grade Cohort Score",title = "Bay Area Academic Performance")+guides(size=FALSE)+theme(legend.position = c(.28,.3)) +
+#   coord_sf(xlim=c(-121.25,-123.5), ylim= c(36.75,38.75))
+# 
+# # -------------------------------------------------
+# ggplot(data = world) +
+#   geom_sf(data = counties, fill='#f0f1f9') + 
+#   geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +
+#   theme_classic() +
+#   scale_color_met_c("Benedictus",direction = 1) +
+#   scale_size_area(max_size = 2) + theme_nr() +
+#   labs(x="Longitude",y="Latitude",color="Grade Cohort Score",title = "Los Angeles and San Diego Academic\nPerformance")+guides(size=FALSE)+theme(legend.position = c(.3,.3)) +
+#   coord_sf(xlim=c(-117,-120), ylim= c(32,35))
 ```
 
 ```{r}
-ggplot(data = world) +
-  geom_sf(data = counties, fill='#f0f1f9') + 
-  geom_point(data =((wide_merged_data %>% filter(!is.na(pp_total_norm_NERDS) & as.numeric(pp_total_norm_NERDS) > 7000 & as.numeric(pp_total_norm_NERDS) < 25000))), aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=as.numeric(pp_total_norm_NERDS),size=as.numeric(ncesenroll)), alpha =.25) +
-  theme_classic() +
-  scale_color_met_c("Benedictus",direction = 1) +
-  scale_size_area(max_size = 2) + theme_nr() +
-  labs(x="Longitude",y="Latitude",color="Per Student Spending",title = "California School Location and Per Student\nSpending")+guides(size=FALSE)+theme(legend.position = c(.8,.8))
+# ggplot(data = world) +
+#   geom_sf(data = counties, fill='#f0f1f9') + 
+#   geom_point(data =((wide_merged_data %>% filter(!is.na(pp_total_norm_NERDS) & as.numeric(pp_total_norm_NERDS) > 7000 & as.numeric(pp_total_norm_NERDS) < 25000))), aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=as.numeric(pp_total_norm_NERDS),size=as.numeric(ncesenroll)), alpha =.25) +
+#   theme_classic() +
+#   scale_color_met_c("Benedictus",direction = 1) +
+#   scale_size_area(max_size = 2) + theme_nr() +
+#   labs(x="Longitude",y="Latitude",color="Per Student Spending",title = "California School Location and Per Student\nSpending")+guides(size=FALSE)+theme(legend.position = c(.8,.8))
 ```
