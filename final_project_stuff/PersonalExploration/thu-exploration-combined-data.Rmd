@@ -1,0 +1,190 @@
+---
+title: "STAT 456 Final Project Exploration"
+author: "Thu Dang"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r}
+
+# install.packages('remotes')
+# install.packages("USAboundariesData", repos = "https://ropensci.r-universe.dev", type = "source")
+# remotes::install_github("ropensci/USAboundariesData")
+
+library(tidyverse)
+library(dplyr)
+library(sf)
+library(tidycensus)
+library(USAboundaries)  
+library(classInt) #install.packages('classInt')
+library(ggspatial) #install.packages('ggspatial')
+library(ggthemes) #install.packages('ggthemes')
+
+```
+
+```{r}
+load("CombinedDataLongFormat.RData")
+```
+
+```{r}
+null_value_count <- merged_table %>% 
+  summarise_all((funs(sum(is.na(.))))) 
+
+col_summary <- summary(merged_table)
+
+colnames(merged_table)
+
+length(unique(merged_table$CDSCode)) #10629 unique schools from the metadata
+length(unique(merged_table$CDSCode[is.na(merged_table$schoolname) == FALSE])) #4385 unique matched schools for Jeremy's california school data
+length(unique(merged_table$CDSCode[is.na(merged_table$sedasch) == FALSE])) #7390 unique matched schools for Stanford data
+length(unique(merged_table$CDSCode[is.na(merged_table$ela_data_cds) == FALSE])) #814 unique matched schools for ela data
+length(unique(merged_table$CDSCode[is.na(merged_table$science_data_cds) == FALSE])) #495 unique matched schools for science data
+length(unique(merged_table$CDSCode[is.na(merged_table$PE_data_cds) == FALSE])) #501 unique matched schools for pe data
+
+# merged_table %>% 
+#   filter(is.na(merged_table$sedasch) == FALSE) %>%
+#   group_by(gap) %>%
+#   summarise(count = n())
+```
+
+```{r}
+# Read CA cities shapefile
+ca_places <- read_sf('ca-places-boundaries')
+# ca_cities_tg <- read_sf('tl_2019_06_cousub')
+st_crs(ca_places) # WGS 84 / Pseudo-Mercator 
+
+# Read CA counties shapefile
+ca_counties <- read_sf('CA_Counties')
+st_crs(ca_counties) # WGS 84 / Pseudo-Mercator 
+ca_counties <- ca_counties %>%
+  st_transform(crs = "NAD83")
+```
+
+```{r}
+school_map <- merged_table %>%
+  select(CDSCode, School, gradecenter, gcs_mn_avg_ol, Longitude, Latitude) %>%
+  filter(!is.na(gradecenter) & !is.na(gcs_mn_avg_ol)) %>% #7390 after NA gradecenter, 6997 after both conditions
+  distinct %>%
+  mutate(diff_from_gradecenter = gcs_mn_avg_ol - gradecenter) %>%
+  mutate(gcs_type = ifelse(diff_from_gradecenter < 0, "Below NAEP Average", ifelse(diff_from_gradecenter > 0, "Above NAEP Average", "At NAEP Average")))
+
+school_map_sf <- school_map %>% 
+  st_as_sf(coords = c('Longitude', 'Latitude'), crs = "NAD83")
+```
+
+```{r}
+# Set school_map_sf data to have the same st_crs as counties
+# school_map_sf <- school_map_sf %>%
+#   st_set_crs(st_crs(ca_counties))
+# st_crs(school_map_sf)
+```
+
+```{r}
+school_county_sf <- st_join(school_map_sf, ca_counties) 
+head(school_county_sf)
+```
+
+```{r}
+schools_by_county <- school_county_sf %>%
+  st_drop_geometry() %>% #removes geometry - makes calculation more efficient 
+  group_by(NAMELSAD) %>%
+  count() 
+head(schools_by_county)
+```
+
+```{r}
+# length(unique(ca_counties$GEOID))
+# length(unique(ca_counties$NAMELSAD))
+```
+
+
+```{r}
+summary(schools_by_county$n)
+
+schools_by_county %>%
+  arrange(desc(n)) %>%
+  head()
+```
+
+
+
+
+```{r}
+# Exploring counties and cities in CA by making a choropleth map 
+ggplot() +
+  geom_sf(data = ca_counties, fill = 'wheat', color = "tan") + #establishing my counties basemap
+  geom_sf(data = school_map_sf, mapping = aes(color = diff_from_gradecenter), alpha = 0.8)+ #cities layer
+  scale_color_viridis_c() + #continuous (gradient) color scale
+  labs(title = "Grade Cohort Standardized Scores across California counties") + 
+  theme_map() + 
+  theme(legend.position = "bottom")  #move legend
+```
+
+```{r}
+# Adding school 
+
+school_count_by_county_geo <- ca_counties %>%
+  left_join(schools_by_county, by="NAMELSAD")
+
+ggplot() + 
+  geom_sf(data = school_count_by_county_geo, aes(fill=n)) +
+  scale_fill_viridis_c() + 
+  labs(fill = "Number of Schools", color = "", title = "Number of schools by California County", subtitle= "according to the Educational Opportunity Project at Stanford University")+
+  theme_classic() +
+  theme(axis.line = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = "bottom",
+        plot.title.position = "plot",
+        plot.title = element_text(size = 10),
+        plot.subtitle = element_text(size = 8))
+```
+
+```{r}
+# Create breaks in number of schools for school count categories
+
+breaks_qt <- classIntervals(c(min(school_count_by_county_geo$n) - .00001, school_count_by_county_geo$n), n = 5, style = "quantile")
+
+#use cut() and the breaks we created to make a catagorical variable
+schools_by_county_with_breaks <- school_count_by_county_geo %>%
+  mutate(school_count_cat = factor(cut(n, breaks = breaks_qt$brks)))
+```
+
+```{r}
+ggplot() + 
+  geom_sf(data=schools_by_county_with_breaks, aes(fill=school_count_cat)) + 
+  scale_fill_viridis_d() + 
+  labs(fill = "Number of Schools", color = "", title = "Number of schools by California County", subtitle= "according to the Educational Opportunity Project at Stanford University") +
+  theme_map() + 
+  theme(legend.position = "right") 
+```
+
+
+```{r}
+grade_diff_by_county <- school_county_sf %>%
+  st_drop_geometry() %>% #removes geometry - makes calculation more efficient 
+  group_by(NAMELSAD) %>%
+  summarise(mean_gcs_diff = mean(diff_from_gradecenter))
+head(grade_diff_by_county)
+```
+
+```{r}
+grade_diff_by_county_geo <- ca_counties %>%
+  left_join(grade_diff_by_county, by="NAMELSAD")
+
+breaks_qt_grade <- classIntervals(c(min(grade_diff_by_county_geo$mean_gcs_diff) - .00001, grade_diff_by_county_geo$mean_gcs_diff), n = 4, style = "quantile")
+
+grade_diff_by_county_with_breaks_geo <- grade_diff_by_county_geo %>%
+  mutate(grade_diff_cat = factor(cut(mean_gcs_diff, breaks=breaks_qt_grade$brks)))
+```
+
+```{r}
+ggplot() + 
+  geom_sf(data=grade_diff_by_county_with_breaks_geo, aes(fill=grade_diff_cat)) + 
+  scale_fill_viridis_d() + 
+  labs(fill = "Achievement Score Difference \nfrom NAEP standard", color = "", title = "Grade Cohort Standardized Achievement Score Difference from NAEP standard \nby California County", subtitle= "according to the Educational Opportunity Project at Stanford University") +
+  theme_map() + 
+  theme(legend.position = "right") 
+```
+
+
