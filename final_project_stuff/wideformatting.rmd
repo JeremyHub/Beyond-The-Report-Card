@@ -138,6 +138,17 @@ length(levels(factor(ca_school_details_clean$school_id)))
 
 ca_school_details_clean identified by school_id -- 10629
 
+### growth_aggr
+
+```{r}
+growth_aggr <- read_excel("AllDatasets/growthaggr.xlsx")
+
+growth_aggr_clean <- growth_aggr %>% filter(rtype == "S") %>% 
+  filter(studentgroup == "ALL") %>%
+  pivot_wider(names_from = subject, values_from = c(n_growthscores, growthscore, decilerank))
+```
+
+
 ## Joining
 
 ```{r}
@@ -147,6 +158,7 @@ wide_merged_data <- ca_school_details_clean %>%
   left_join(ela_wide, by = c("CDSCode"="ela_data_cds_standardized")) %>% 
   left_join(stanford_data_clean, by=c('school_id'='standardized_school_id')) %>% 
   mutate(ncesid = paste0(NCESDist,NCESSchool)) %>%
+  left_join(growth_aggr_clean, by = c('CDSCode' = 'cds')) %>%
   left_join(ela_mth_proficiency_ranges, by=c("ncesid"="NCESSCH"))
 
 
