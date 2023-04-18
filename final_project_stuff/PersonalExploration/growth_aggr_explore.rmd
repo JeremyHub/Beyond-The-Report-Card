@@ -1,0 +1,51 @@
+---
+title: "growthaggr"
+output: html_document
+date: "2023-04-17"
+---
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+load("../WideMergedData.RData")
+```
+
+
+
+```{r}
+lunchfundingmod<-wide_merged_data %>% 
+  filter(!is.na(pp_total_raw)&!is.na(perfrl)) %>% 
+  lm(formula = as.numeric(pp_total_raw) ~ as.numeric(perfrl)) %>%
+  summary()
+```
+
+
+```{r}
+wide_merged_data %>%
+  mutate(pp_total_raw_frl_adjusted = as.numeric(pp_total_raw) - as.numeric(perfrl)*lunchfundingmod$coefficients[2],
+  pp_total_raw = as.numeric(pp_total_raw)) %>%
+  ggplot(aes(x=pp_total_raw_frl_adjusted,y = as.numeric(growthscore_math))) +
+      geom_point(alpha = .05) +
+      geom_smooth() + 
+      theme_minimal()+
+      scale_x_continuous(limits = c(8000,20000))
+      theme(legend.position = c(.2,.9) )
+```
+      
+```{r, fig.width=5, fig.height=5}
+wide_merged_data %>%
+  ggplot(aes(y=growthscore_math, x=growthscore_ela)) +
+    geom_point(alpha = .1) + 
+    geom_abline(slope = 1, intercept = 0) +
+    scale_x_continuous(limits = c(0, 152)) +
+    scale_y_continuous(limits = c(0, 152))
+
+wide_merged_data %>% 
+  pivot_longer(cols = c(growthscore_math,growthscore_ela)) %>%
+  ggplot(aes(y = value, x= name)) +
+  geom_boxplot()
+```
+
+

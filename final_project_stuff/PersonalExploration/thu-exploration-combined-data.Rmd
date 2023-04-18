@@ -19,12 +19,29 @@ library(USAboundaries)
 library(classInt) #install.packages('classInt')
 library(ggspatial) #install.packages('ggspatial')
 library(ggthemes) #install.packages('ggthemes')
+library(readxl)
 
 ```
 
 ```{r}
-load("CombinedDataLongFormat.RData")
+load("../CombinedDataLongFormat.RData")
+load("../WideMergedData.RData")
 ```
+
+```{r}
+growth_data <- read_excel("../AllDatasets/growthaggr.xlsx")
+```
+
+```{r}
+growth_data
+```
+
+```{r}
+wide_merged_data
+```
+
+
+
 
 ```{r}
 null_value_count <- merged_table %>% 
@@ -46,6 +63,26 @@ length(unique(merged_table$CDSCode[is.na(merged_table$PE_data_cds) == FALSE])) #
 #   group_by(gap) %>%
 #   summarise(count = n())
 ```
+
+# Exploring characteristics of schools with missing ELA and science data
+
+## Focus on ELA first
+
+```{r}
+merged_table %>% 
+  select(starts_with("ela"))
+
+# unique(merged_table$)
+```
+
+```{r}
+unique(merged_table$FundingType)
+```
+
+
+
+
+# Maps
 
 ```{r}
 # Read CA cities shapefile
