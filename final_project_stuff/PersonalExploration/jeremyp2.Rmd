@@ -8,7 +8,7 @@ library(dplyr)
 library(classInt) #install.packages('classInt')
 library(ggspatial) #install.packages('ggspatial')
 library(ggthemes) #install.packages('ggthemes')
-
+library(tidymodels)
 ```
 
 ```{r}
@@ -90,10 +90,49 @@ ggplot() +
 ```
 
 ```{r}
+school_map_sf <- wide_merged_data %>%
+  filter(!is.na(growthscore_math)) %>%
+  st_as_sf(coords = c('Longitude', 'Latitude'), crs = "NAD83")
+
+ggplot() + 
+  geom_sf(data=ca_counties) +
+  geom_sf(data=school_map_sf, size=0.2) +
+  theme_map() + 
+  theme(legend.position = "right") 
+```
+
+```{r}
 merged_table %>%
   #filter(!is.na(PE_data_cds) & !is.na(science_data_cds)) %>%
   #filter(!is.na(PE_data_cds) | !is.na(science_data_cds)) %>%
   filter(xor(!is.na(PE_data_cds), !is.na(science_data_cds))) %>%
   distinct(CDSCode)
+
+ls(merged_table)
 ```
 
+
+```{r}
+numeric <- merged_table %>%
+  mutate(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard)) %>%
+  mutate(science_data_Life.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Life.Sciences.Domain.Percent.Above.Standard)) %>%
+  mutate(science_data_Physical.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Physical.Sciences.Domain.Percent.Above.Standard)) %>%
+  mutate(PE_data_Perc5a = as.numeric(PE_data_Perc5a)) %>%
+  mutate(PE_data_Perc7a = as.numeric(PE_data_Perc7a)) %>%
+  mutate(PE_data_Perc9a = as.numeric(PE_data_Perc9a)) %>%
+  mutate(enroll_raw = as.numeric(enroll_raw)) %>%
+  mutate(pp_total_raw = as.numeric(pp_total_raw))
+```
+
+```{r}
+lm_spec <- 
+    linear_reg() %>% 
+    set_engine(engine = 'lm') %>% 
+    set_mode('regression')
+
+mod1 <- fit(lm_spec, 
+    ela_data_currstatus ~ science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard + PE_data_Perc5a + PE_data_Perc7a + PE_data_Perc9a + enroll_raw + pp_total_raw + Magnet, 
+    data = numeric)
+
+mod1 %>% tidy()
+```
