@@ -20,11 +20,13 @@ library(classInt) #install.packages('classInt')
 library(ggspatial) #install.packages('ggspatial')
 library(ggthemes) #install.packages('ggthemes')
 
+colortheme = "Derain"
+
 ```
 
 ```{r load wide data}
 load("CombinedDataLongFormat.RData")
-load("wide_merged_data.RData")
+load("WideMergedData.RData")
 ```
 
 
@@ -122,9 +124,9 @@ grade_diff_by_county_with_breaks_geo <- grade_diff_by_county_geo %>%
 
 ggplot() + 
   geom_sf(data=grade_diff_by_county_with_breaks_geo, aes(fill=grade_diff_cat)) + 
-  scale_fill_viridis_d(labels=c('1-2 grades lower than national average', 'Less than 1 grade lower than average', '0-1 grade higher than national average')) +
+  scale_fill_met_d(name = "Derain",labels=c('1-2 grades lower than national average', 'Less than 1 grade lower than average', '0-1 grade higher than national average'), direction=-1) +
   # scale_fill_manual(values = c("red","yellow","seagreen2"))+
-  labs(fill = "Achievement Score Difference \nfrom NAEP standard", color = "", title = "Grade Cohort Standardized Achievement Score Difference from NAEP standard \nby California County", subtitle= "according to the Educational Opportunity Project at Stanford University") +
+  labs(fill = "Achievement Score Difference \nfrom NAEP standard", color = colortheme, title = "Grade Cohort Standardized Achievement Score Difference from NAEP standard \nby California County", subtitle= "according to the Educational Opportunity Project at Stanford University") +
   theme_map() + 
   theme(legend.position = "right") 
 ```
@@ -189,7 +191,8 @@ graph_ready %>%
     legend.title = element_blank(),
     legend.text = element_text(size = 8),
     legend.position = "none"
-  )
+  ) +
+  scale_color_met_d(name = colortheme)
 ```
 
 
@@ -197,17 +200,66 @@ graph_ready %>%
 
 
 ```{r message=FALSE, warning=FALSE}
-counties <- st_as_sf(maps::map("county", plot = FALSE, fill = TRUE))
-counties <- subset(counties, grepl("california", counties$ID))
-world <- ne_countries(scale = "medium", returnclass = "sf")
 
-ggplot(data = world) +
-  geom_sf(data = counties, fill='#f0f1f9') + 
-  geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=as.numeric(pp_total_raw),size=as.numeric(ncesenroll)), alpha =.5) + 
-  theme_minimal() +
-  scale_color_gradient(low='#FFE400', high = '#611BB8', limits=c(8000,18000)) +
-  scale_size_area(max_size = 2) +
-  labs(x="Longitude",y="Latitude",color="Raw Spending",title = "California School Location and Spending")+guides(size=FALSE)+theme(legend.position = c(.8,.8))
+lunchfundingmod<-wide_merged_data %>% 
+  filter(!is.na(pp_total_raw)&!is.na(perfrl)) %>% 
+  lm(formula = as.numeric(pp_total_raw) ~ as.numeric(perfrl)) %>%
+  summary()
+
+school_map <- wide_merged_data %>%
+  mutate(pp_total_raw_frl_adjusted = as.numeric(pp_total_raw) - as.numeric(perfrl)*lunchfundingmod$coefficients[2],
+  pp_total_raw = as.numeric(pp_total_raw)) %>%
+  select(CDSCode, School, pp_total_raw, pp_total_raw_frl_adjusted, Longitude, Latitude) %>%
+  filter(!is.na(pp_total_raw) & !is.na(pp_total_raw_frl_adjusted)) %>% #7390 after NA gradecenter, 6997 after both conditions
+  distinct %>%
+  mutate(fund_cat = ifelse(pp_total_raw < 10000, "< 9999", ifelse(pp_total_raw < 15000, "9999 < Funding < 14999", ifelse(pp_total_raw < 20000, "14999 < Funding < 19999", "> 19999"))))
+
+school_map_sf <- school_map %>% 
+  st_as_sf(coords = c('Longitude', 'Latitude'), crs = "NAD83")
+
+
+school_county_sf <- st_join(school_map_sf, ca_counties) 
+
+grade_diff_by_county <- school_county_sf %>%
+  st_drop_geometry() %>% #removes geometry - makes calculation more efficient 
+  group_by(NAMELSAD) %>%
+  summarise(mean_fund = mean(pp_total_raw))
+
+grade_diff_by_county_geo <- ca_counties %>%
+  left_join(grade_diff_by_county, by="NAMELSAD")
+# 
+# summary(grade_diff_by_county_geo$mean_gcs_diff)
+
+# breaks_qt_grade <- classIntervals(c(min(grade_diff_by_county_geo$mean_gcs_diff) - .00001, grade_diff_by_county_geo$mean_gcs_diff), n = 4, style = "quantile")
+
+grade_diff_by_county_with_breaks_geo <- grade_diff_by_county_geo %>%
+  mutate(fund_cat = factor(cut(mean_fund, breaks=c(0, 7500, 12500, 17500, 22500, Inf))))
+
+ggplot() + 
+  geom_sf(data=grade_diff_by_county_with_breaks_geo, aes(fill=fund_cat)) + 
+  scale_fill_met_d(name = "Derain",labels=c('1-2 grades lower than national average', 'Less than 1 grade lower than average', '0-1 grade higher than national average'), direction=-1) +
+  # scale_fill_manual(values = c("red","yellow","seagreen2"))+
+  labs(fill = "Achievement Score Difference \nfrom NAEP standard", color = colortheme, title = "Grade Cohort Standardized Achievement Score Difference from NAEP standard \nby California County", subtitle= "according to the Educational Opportunity Project at Stanford University") +
+  theme_map() + 
+  theme(legend.position = "right") 
+
+
+
+
+
+
+# counties <- st_as_sf(maps::map("county", plot = FALSE, fill = TRUE))
+# counties <- subset(counties, grepl("california", counties$ID))
+# world <- ne_countries(scale = "medium", returnclass = "sf")
+# 
+# ggplot(data = world) +
+#   geom_sf(data = counties, fill='#f0f1f9') + 
+#   geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=as.numeric(pp_total_raw),size=as.numeric(ncesenroll)), alpha =.1) + 
+#   theme_map() +
+#   scale_color_gradientn(colors = met.brewer(name = "Derain"), limits=c(8000,30000)) +
+#   scale_size_area(max_size = 2) +
+#   labs(x="Longitude",y="Latitude",color="Raw Spending",title = "California School Location and Spending")+guides(size=FALSE)+
+#   theme(legend.position = c(.8,.6))
 ```
 
 Spending per student varies significantly across the state. We thought that this might explain some of the funding-achievement issue we had come across. After seeing that the same negative relationship existed to some degree in each locale we decided that location, or at least type of area, was not the factor we were looking for. It is also worth noting that the 'Rural' and 'Town' areas seem to be under performing for some reason.
