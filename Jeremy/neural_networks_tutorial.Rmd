@@ -44,7 +44,7 @@ test =train[-picked,]
 ```{r}
 model = neuralnet(SalePrice ~ LotArea + OverallQual,
 data=train,
-hidden=c(4,2),
+hidden=c(4,2,2),
 linear.output = TRUE
 )
 ```

@@ -20,6 +20,7 @@ library(classInt) #install.packages('classInt')
 library(ggspatial) #install.packages('ggspatial')
 library(ggthemes) #install.packages('ggthemes')
 library(readxl)
+library(readr)
 
 ```
 
@@ -37,7 +38,7 @@ growth_data
 ```
 
 ```{r}
-wide_merged_data
+wide_merged_data %>% select()
 ```
 
 
@@ -49,7 +50,7 @@ null_value_count <- merged_table %>%
 
 col_summary <- summary(merged_table)
 
-colnames(merged_table)
+# colnames(merged_table)
 
 length(unique(merged_table$CDSCode)) #10629 unique schools from the metadata
 length(unique(merged_table$CDSCode[is.na(merged_table$schoolname) == FALSE])) #4385 unique matched schools for Jeremy's california school data
@@ -86,13 +87,13 @@ unique(merged_table$FundingType)
 
 ```{r}
 # Read CA cities shapefile
-ca_places <- read_sf('ca-places-boundaries')
+ca_places <- read_sf('../ca-places-boundaries')
 # ca_cities_tg <- read_sf('tl_2019_06_cousub')
-st_crs(ca_places) # WGS 84 / Pseudo-Mercator 
+# st_crs(ca_places) # WGS 84 / Pseudo-Mercator 
 
 # Read CA counties shapefile
-ca_counties <- read_sf('CA_Counties')
-st_crs(ca_counties) # WGS 84 / Pseudo-Mercator 
+ca_counties <- read_sf('../CA_Counties')
+# st_crs(ca_counties) # WGS 84 / Pseudo-Mercator 
 ca_counties <- ca_counties %>%
   st_transform(crs = "NAD83")
 ```
@@ -223,5 +224,90 @@ ggplot() +
   theme_map() + 
   theme(legend.position = "right") 
 ```
+
+
+```{r}
+math_ca_gcs_df <- read_csv("math_ca_gcs_df.csv")
+```
+
+```{r}
+rla_ca_gcs_df <- read_csv("rla_ca_gcs_df.csv")
+```
+
+```{r}
+library(leaflet) #install.packages("leaflet")
+```
+
+
+```{r}
+unique(math_ca_gcs_df$grade)
+```
+
+```{r}
+summary_data <- ca_counties %>%
+  left_join(math_ca_gcs_df, by=c("NAMELSAD" = "sedacountyname")) %>%
+  filter(student_category %in% c('ecd','nec')) %>%
+  filter(!is.na(gcs_value)) %>%
+  select(NAMELSAD, grade, year, gcs_value, student_category, clean_student_category) %>%
+  mutate(gcs_diff = gcs_value - grade) %>%
+  st_drop_geometry() %>%
+  group_by(NAMELSAD, grade, student_category, clean_student_category) %>%
+  summarise(mean_gcs_diff = mean(gcs_diff)) %>%
+  ungroup()
+
+summary_data_with_geo <- ca_counties %>%
+  select(NAMELSAD) %>%
+  left_join(summary_data, by="NAMELSAD")
+
+```
+
+```{r}
+summary_data_with_geo %>%
+  
+```
+
+
+```{r}
+summary_data %>%
+  filter(grade==3) %>%
+  ggplot(aes(x=NAMELSAD, y=mean_gcs_diff, fill=clean_student_category)) + 
+  geom_col()  +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
+  theme(legend.position = "bottom")
+```
+
+```{r}
+summary_data %>%
+  filter(grade==8) %>%
+  ggplot(aes(x=NAMELSAD, y=mean_gcs_diff, fill=clean_student_category)) + 
+  geom_col()  +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
+  theme(legend.position = "bottom")
+```
+
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
