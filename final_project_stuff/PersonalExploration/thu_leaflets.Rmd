@@ -1,0 +1,178 @@
+---
+title: "STAT 456 Final Project Exploration"
+author: "Thu Dang"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r load libraries}
+
+# install.packages('remotes')
+# install.packages("USAboundariesData", repos = "https://ropensci.r-universe.dev", type = "source")
+# remotes::install_github("ropensci/USAboundariesData")
+
+library(tidyverse)
+library(dplyr)
+library(sf)
+library(tidycensus)
+library(USAboundaries)  
+library(classInt) #install.packages('classInt')
+library(ggspatial) #install.packages('ggspatial')
+library(ggthemes) #install.packages('ggthemes')
+library(readxl)
+library(readr)
+library(leaflet) #install.packages("leaflet")
+library(leaflet.extras) #install.packages("leaflet.extras")
+```
+
+```{r load RData files}
+load("../CombinedDataLongFormat.RData")
+load("../WideMergedData.RData")
+```
+
+```{r load cleaned dataset for county achievement metrics}
+math_ca_gcs_df <- read_csv("math_ca_gcs_df.csv")
+rla_ca_gcs_df <- read_csv("rla_ca_gcs_df.csv")
+```
+
+
+```{r}
+# unique(math_ca_gcs_df$grade) # dataset containing data from grade 3 to 8
+```
+
+```{r}
+summary_math_data <- ca_counties %>%
+  left_join(math_ca_gcs_df, by=c("NAMELSAD" = "sedacountyname")) %>%
+  filter(student_category %in% c('ecd','nec')) %>%
+  filter(!is.na(gcs_value) & !is.na(student_category)) %>%
+  select(NAMELSAD, grade, year, gcs_value, student_category, clean_student_category) %>%
+  mutate(gcs_diff = gcs_value - grade) %>%
+  st_drop_geometry() %>%
+  group_by(NAMELSAD, student_category, clean_student_category) %>%
+  summarise(mean_gcs_diff = mean(gcs_diff)) %>%
+  ungroup()
+
+summary_math_data %>% filter(NAMELSAD == 'Alpine County')
+
+
+summary_math_data_with_geo <- ca_counties %>%
+  select(NAMELSAD) %>%
+  left_join(summary_math_data, by="NAMELSAD")
+
+summary(summary_math_data_with_geo$mean_gcs_diff)
+
+summary_math_data_with_geo <- summary_math_data_with_geo %>%
+  mutate(mean_gcs_diff_cat = factor(cut(mean_gcs_diff, breaks=c(-3, -2, -1, 0, 1, 2, 3))))
+
+length(unique(summary_math_data_with_geo$mean_gcs_diff_cat))
+
+summary_math_data_with_geo %>% filter(is.na(mean_gcs_diff_cat))
+```
+
+```{r leaflet color palette}
+pal <- colorFactor(
+  palette = met.brewer(palname,6)[1:6],
+  domain = summary_math_data$mean_gcs_diff_cat
+)
+```
+
+# Economically Disadvantaged Status
+
+An indication that students meet the state criteria for classification as economically disadvantaged.
+
+Most states use free and reduced-price lunch (FRPL) eligibility to measure economic disadvantage, but the meaning of this measure has eroded substantially, particularly because students are eligible for a second year of universal free meals via pandemic waivers.
+
+Definition for California in this link: https://documentation.calpads.org/Glossary/AccountabilitySubgroupData/Socio-EconomicallyDisadvantagedSubgroup/#socio-economically-disadvantaged-subgroup
+
+Question: Does it make sense to aggregate by grade and year? See YoY trend? 
+
+
+```{r map of gcs for the economically disadvantaged student category, aggregated by grade and year per county}
+leaflet(summary_math_data_with_geo %>% filter(student_category == 'ecd')) %>%
+  addPolygons(
+    fillColor = ~pal(mean_gcs_diff_cat),
+    opacity = .25,
+    color = "white",
+    fillOpacity = .5,
+    group = "County",
+    popup = ~paste0(NAMELSAD, 
+                    "<br>Grade Distance from National Average: ", round(mean_gcs_diff, digits = 3)
+    )
+  )  %>% 
+  addProviderTiles(providers$CartoDB.Positron) %>%
+    addLayersControl(
+    baseGroups = "County",
+    position = "topright"
+  ) %>%
+  addLegend(colors = met.brewer(palname,6)[1:6], values = ~mean_gcs_diff_cat, title = NULL, labels = c('Within 2+ grades LOWER than national average','Between 1-2 grades LOWER than national average', 'Within 1 grade LOWER than national average', 'Within 1 grade HIGHER than national average', 'Between 1-2 grades HIGHER than national average', 'Within 2+ grades HIGHER than national average'), group = "Economically Disadvantaged")
+```
+
+```{r map of gcs for the NON-economically disadvantaged student category, aggregated by grade and year per count}
+leaflet(summary_math_data_with_geo %>% filter(student_category == 'nec')) %>%
+  addPolygons(
+    fillColor = ~pal(mean_gcs_diff_cat),
+    opacity = .25,
+    color = "white",
+    fillOpacity = .5,
+    group = "County",
+    popup = ~paste0(NAMELSAD, 
+                    "<br>Grade Distance from National Average: ", round(mean_gcs_diff, digits = 3)
+    )
+  )  %>% 
+  addProviderTiles(providers$CartoDB.Positron) %>%
+    addLayersControl(
+    baseGroups = "County",
+    position = "topright"
+  ) %>%
+  addLegend(colors = met.brewer(palname,6)[1:6], values = ~mean_gcs_diff_cat, title = NULL, labels = c('Within 2+ grades LOWER than national average','Between 1-2 grades LOWER than national average', 'Within 1 grade LOWER than national average', 'Within 1 grade HIGHER than national average', 'Between 1-2 grades HIGHER than national average', 'Within 2+ grades HIGHER than national average'), group = "Non-Economically Disadvantaged")
+```
+
+```{r}
+leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+    addLayersControl(
+    baseGroups = "County",
+    position = "topright"
+  ) %>%
+  addPolygons(
+    data = summary_math_data_with_geo %>% filter(student_category == 'ecd'),
+    fillColor = ~pal(mean_gcs_diff_cat),
+    opacity = .25,
+    color = "white",
+    fillOpacity = .5,
+    group = "Economically Disadvantaged",
+    popup = ~paste0(NAMELSAD, 
+                    "<br>Grade Distance from National Average: ", round(mean_gcs_diff, digits = 3)
+    )
+  )  %>% 
+  addPolygons(
+    data = summary_math_data_with_geo %>% filter(student_category == 'nec'),
+    fillColor = ~pal(mean_gcs_diff_cat),
+    opacity = .25,
+    color = "white",
+    fillOpacity = .5,
+    group = "Non-Economically Disadvantaged",
+    popup = ~paste0(NAMELSAD, 
+                    "<br>Grade Distance from National Average: ", round(mean_gcs_diff, digits = 3)
+    )
+  )  %>% 
+  addLayersControl(baseGroups = c("Economically Disadvantaged", "Non-Economically Disadvantaged"),
+                   position = "bottomleft", options = layersControlOptions(collapsed = FALSE)) %>% 
+  addLegend(colors = met.brewer(palname,6)[1:6], values = ~mean_gcs_diff_cat, title = NULL, labels = c('Within 2+ grades LOWER than national average','Between 1-2 grades LOWER than national average', 'Within 1 grade LOWER than national average', 'Within 1 grade HIGHER than national average', 'Between 1-2 grades HIGHER than national average', 'Within 2+ grades HIGHER than national average'), group = "Economically Disadvantaged")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

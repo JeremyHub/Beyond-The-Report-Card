@@ -247,11 +247,11 @@ unique(math_ca_gcs_df$grade)
 summary_data <- ca_counties %>%
   left_join(math_ca_gcs_df, by=c("NAMELSAD" = "sedacountyname")) %>%
   filter(student_category %in% c('ecd','nec')) %>%
-  filter(!is.na(gcs_value)) %>%
+  filter(!is.na(gcs_value) & !is.na(student_category)) %>%
   select(NAMELSAD, grade, year, gcs_value, student_category, clean_student_category) %>%
   mutate(gcs_diff = gcs_value - grade) %>%
   st_drop_geometry() %>%
-  group_by(NAMELSAD, grade, student_category, clean_student_category) %>%
+  group_by(NAMELSAD, student_category, clean_student_category) %>%
   summarise(mean_gcs_diff = mean(gcs_diff)) %>%
   ungroup()
 
@@ -259,12 +259,55 @@ summary_data_with_geo <- ca_counties %>%
   select(NAMELSAD) %>%
   left_join(summary_data, by="NAMELSAD")
 
+summary(summary_data_with_geo$mean_gcs_diff)
+
+summary_data_with_geo <- summary_data_with_geo %>%
+  mutate(mean_gcs_diff_cat = factor(cut(mean_gcs_diff, breaks=c(-3, -2, -1, 0, 1, 2, 3))))
+
 ```
 
 ```{r}
-summary_data_with_geo %>%
-  
+pal <- colorFactor(
+  palette = met.brewer(palname,4)[1:4],
+  domain = grade_diff_by_county_with_breaks_geo$grade_diff_cat
+)
+
+leaflet(summary_data_with_geo %>% filter(student_category == 'ecd')) %>%
+  addPolygons(
+    fillColor = ~pal(mean_gcs_diff_cat),
+    opacity = .25,
+    color = "white",
+    fillOpacity = .5,
+    group = "County",
+    popup = ~paste0(NAMELSAD, 
+                    "<br>Grade Distance from National Average: ", round(mean_gcs_diff, digits = 3),
+    )
+  )  %>% 
+  addProviderTiles(providers$CartoDB.Positron) %>%
+    addLayersControl(
+    baseGroups = "County",
+    position = "topright"
+  ) %>%
+  addLegend(colors = met.brewer(palname,4)[1:4], values = ~mean_gcs_diff_cat, title = NULL, labels = c('Less than 2 grades lower than national average','1-2 grades lower than national average', 'Less than 1 grade lower than national average', '0-1 grade higher than national average'), className = "info legend County")
 ```
+
+```{r}
+leaflet(summary_data_with_geo %>% filter(student_category == 'nec')) %>%
+  addPolygons(
+    fillColor = ~pal(mean_gcs_diff_cat),
+    opacity = .25,
+    color = "white",
+    fillOpacity = .5,
+    group = "County"
+  )  %>% 
+  addProviderTiles(providers$CartoDB.Positron) %>%
+    addLayersControl(
+    baseGroups = "County",
+    position = "topright"
+  ) %>%
+  addLegend(colors = met.brewer(palname,4)[1:4], values = ~mean_gcs_diff_cat, title = NULL, labels = c('Less than 2 grades lower than national average','1-2 grades lower than national average', 'Less than 1 grade lower than national average', '0-1 grade higher than national average'), className = "info legend County")
+```
+
 
 
 ```{r}

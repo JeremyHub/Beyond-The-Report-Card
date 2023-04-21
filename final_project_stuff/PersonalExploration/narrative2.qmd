@@ -86,7 +86,7 @@ leaflet(grade_diff_by_county_with_breaks_geo) %>%
     position = "topright"
 
   ) %>%
-  addLegend(colors = met.brewer(palname,3)[1:3], values = ~grade_diff_cat, title = NULL, labels = c('1-2 grades lower than national average', 'Less than 1 grade lower than average', '0-1 grade higher than national average'), className = "info legend County")
+  addLegend(colors = met.brewer(palname,3)[1:3], values = ~grade_diff_cat, title = NULL, labels = c('Between 1-2 grades LOWER than national average', 'Within 1 grade LOWER than national average', 'Within 1 grade HIGHER than national average'), className = "info legend County")
 
 ```
 
@@ -205,7 +205,7 @@ leaflet(mapdata) %>% addProviderTiles(providers$CartoDB.Positron) %>%
          updateLegend();
          this.on('baselayerchange', el => updateLegend());
       }"
-   ) # JS from https://gis.stackexchange.com/questions/342090/cannot-bind-legend-layer-to-polygon-layer-in-leaflet-r
+   ) # JavaScript  from https://gis.stackexchange.com/questions/342090/cannot-bind-legend-layer-to-polygon-layer-in-leaflet-r
 
 
 ```
@@ -281,4 +281,68 @@ wide_merged_data %>% filter(!is.na(urbanicity)) %>% mutate(pp_total_raw_frl_adju
   scale_x_continuous(limits = c(8000,18000)) + 
   theme_minimal()+
   labs(y="Grade Cohort Score", x= "Adjusted Per Student Spending") + guides(color="none") +   geom_hline(yintercept = 0)
+```
+
+```{r load cleaned dataset for county achievement metrics}
+math_ca_gcs_df <- read_csv("../AllDatasets/math_ca_gcs_df.csv")
+rla_ca_gcs_df <- read_csv("../AllDatasets/rla_ca_gcs_df.csv")
+```
+
+```{r data cleaning for ecd and nec leaflet}
+summary_math_data <- ca_counties %>%
+  left_join(math_ca_gcs_df, by=c("NAMELSAD" = "sedacountyname")) %>%
+  filter(student_category %in% c('ecd','nec')) %>%
+  filter(!is.na(gcs_value) & !is.na(student_category)) %>%
+  select(NAMELSAD, grade, year, gcs_value, student_category, clean_student_category) %>%
+  mutate(gcs_diff = gcs_value - grade) %>%
+  st_drop_geometry() %>%
+  group_by(NAMELSAD, student_category, clean_student_category) %>%
+  summarise(mean_gcs_diff = mean(gcs_diff)) %>%
+  ungroup()
+
+summary_math_data_with_geo <- ca_counties %>%
+  select(NAMELSAD) %>%
+  left_join(summary_math_data, by="NAMELSAD")
+
+summary_math_data_with_geo <- summary_math_data_with_geo %>%
+  mutate(mean_gcs_diff_cat = factor(cut(mean_gcs_diff, breaks=c(-3, -2, -1, 0, 1, 2, 3))))
+```
+
+```{r}
+pal <- colorFactor(
+  palette = met.brewer(palname,6)[1:6],
+  domain = summary_math_data$mean_gcs_diff_cat
+)
+
+leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+    addLayersControl(
+    baseGroups = "County",
+    position = "topright"
+  ) %>%
+  addPolygons(
+    data = summary_math_data_with_geo %>% filter(student_category == 'ecd'),
+    fillColor = ~pal(mean_gcs_diff_cat),
+    opacity = .25,
+    color = "white",
+    fillOpacity = .5,
+    group = "Economically Disadvantaged",
+    popup = ~paste0(NAMELSAD, 
+                    "<br>Grade Distance from National Average: ", round(mean_gcs_diff, digits = 3)
+    )
+  )  %>% 
+  addPolygons(
+    data = summary_math_data_with_geo %>% filter(student_category == 'nec'),
+    fillColor = ~pal(mean_gcs_diff_cat),
+    opacity = .25,
+    color = "white",
+    fillOpacity = .5,
+    group = "Non-Economically Disadvantaged",
+    popup = ~paste0(NAMELSAD, 
+                    "<br>Grade Distance from National Average: ", round(mean_gcs_diff, digits = 3)
+    )
+  )  %>% 
+  addLayersControl(baseGroups = c("Economically Disadvantaged", "Non-Economically Disadvantaged"),
+                   position = "bottomleft", options = layersControlOptions(collapsed = FALSE)) %>% 
+  addLegend(colors = met.brewer(palname,6)[1:6], values = ~mean_gcs_diff_cat, title = NULL, labels = c('Within 2+ grades LOWER than national average','Between 1-2 grades LOWER than national average', 'Within 1 grade LOWER than national average', 'Within 1 grade HIGHER than national average', 'Between 1-2 grades HIGHER than national average', 'Within 2+ grades HIGHER than national average'), group = "Economically Disadvantaged")
 ```
