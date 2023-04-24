@@ -149,6 +149,45 @@ graph_ready %>%
     legend.text = element_text(size = 8),
     legend.position = "none")
 ```
+```{r}
+fl <- c("English Language Arts", "Grade Cohort Standardized", "Earth + Space", "Life Sciences", "Physical Sciences", "Math Growth Score", "English Language Arts Growth Score")
+names(fl) <- c("ela_data_currstatus_ALL", "gcs_mn_avg_ol", "science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99", "science_data_Life.Sciences.Domain.Percent.Above.Standard_99", "science_data_Physical.Sciences.Domain.Percent.Above.Standard_99", "growthscore_ela", "growthscore_math")
+
+
+wide_merged_data %>% 
+  mutate(pp_total_raw = as.numeric(pp_total_raw)) %>%
+  mutate(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99 = as.numeric(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99),
+        science_data_Physical.Sciences.Domain.Percent.Above.Standard_99 = as.numeric(science_data_Physical.Sciences.Domain.Percent.Above.Standard_99),
+        science_data_Life.Sciences.Domain.Percent.Above.Standard_99 = as.numeric(science_data_Life.Sciences.Domain.Percent.Above.Standard_99),
+        ela_data_currstatus_ALL = as.numeric(ela_data_currstatus_ALL),
+        gcs_mn_avg_ol = as.numeric(gcs_mn_avg_ol),
+        growthscore_ela = as.numeric(growthscore_ela),
+        growthscore_math = as.numeric(growthscore_math)
+    ) %>% mutate(
+        science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99 = min_max_norm(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99),
+        science_data_Physical.Sciences.Domain.Percent.Above.Standard_99 = min_max_norm(science_data_Physical.Sciences.Domain.Percent.Above.Standard_99),
+        science_data_Life.Sciences.Domain.Percent.Above.Standard_99 = min_max_norm(science_data_Life.Sciences.Domain.Percent.Above.Standard_99),
+        ela_data_currstatus_ALL = min_max_norm(ela_data_currstatus_ALL),
+        gcs_mn_avg_ol = min_max_norm(gcs_mn_avg_ol),
+        growthscore_ela = min_max_norm(growthscore_ela),
+        growthscore_math = min_max_norm(growthscore_math)
+    ) %>% pivot_longer(cols = c(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99, science_data_Physical.Sciences.Domain.Percent.Above.Standard_99, science_data_Life.Sciences.Domain.Percent.Above.Standard_99, ela_data_currstatus_ALL, gcs_mn_avg_ol, growthscore_ela, growthscore_math)) %>%
+  ggplot(aes(x = pp_total_raw, y = value)) +
+    geom_point(alpha=0.3,color = defaultcolor)+
+    facet_wrap(~name, labeller=labeller(name=fl))+
+    geom_smooth(color = defaultcolor)+
+    labs(x = "Per Pupil Funding", y = "Normalized Metric", title = "Metric Performance by Total Per-Pupil Funding") +
+    theme_minimal() +
+    theme(
+      legend.title = element_blank(),
+      legend.text = element_text(size = 8),
+      legend.position = "none") +
+    scale_x_continuous(limits = c(8000,20000))
+```
+
+
+
+
 
 ```{r funding/performance map}
 mapdata <- wide_merged_data %>% filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol)) %>% 
@@ -173,7 +212,8 @@ leaflet(mapdata) %>% addProviderTiles(providers$CartoDB.Positron) %>%
     radius = ~(as.numeric(ncesenroll)/400),
     popup = ~paste0(School, 
                     "<br>Grade Distance from National Average: ", round(diff_from_gradecenter, digits = 3),
-                    "<br>Per Pupil Funding: ", pp_total_raw
+                    "<br>Per Pupil Funding: ", pp_total_raw,
+                    "<br>Enrollment: ", ncesenroll
     ),
     group = "Performance"
   ) %>% 
@@ -187,7 +227,8 @@ leaflet(mapdata) %>% addProviderTiles(providers$CartoDB.Positron) %>%
     radius = ~(as.numeric(ncesenroll)/400),
     popup = ~paste0(School, 
                     "<br>Grade Distance from National Average: ", round(diff_from_gradecenter, digits = 3),
-                    "<br>Per Pupil Funding: ", pp_total_raw
+                    "<br>Per Pupil Funding: ", pp_total_raw,
+                    "<br>Enrollment: ", ncesenroll
     ),
     stroke = ~ifelse(!is.na(pp_total_raw_cat), TRUE, FALSE),
     group = "Funding"
