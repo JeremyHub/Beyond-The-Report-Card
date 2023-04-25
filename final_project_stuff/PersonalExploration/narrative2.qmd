@@ -450,9 +450,6 @@ predictors <- ((data %>% select(-starts_with("science_data"), -starts_with("ela_
   mutate(ncesenroll = as.numeric(ncesenroll))
 ```
 
-
-
-
 ```{r lasso function}
 #| fig-width: 50
 #| fig-height: 10
