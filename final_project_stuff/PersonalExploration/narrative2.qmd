@@ -439,19 +439,21 @@ lm_lasso_spec <-
   set_mode('regression') 
 ```
  cbind(data$ela_data_currstatus_ALL, data$gcs_mn_avg_ol, data$science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99, data$science_data_Life.Sciences.Domain.Percent.Above.Standard_99, data$science_data_Physical.Sciences.Domain.Percent.Above.Standard_99, data$growthscore_ela, data$growthscore_math)
-```{r lasso function}
+```{r}
 outcome <- data %>% select(ela_data_currstatus_ALL, gcs_mn_avg_ol, science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99, science_data_Life.Sciences.Domain.Percent.Above.Standard_99, science_data_Physical.Sciences.Domain.Percent.Above.Standard_99, growthscore_ela, growthscore_math)
 
 predictors <- ((data %>% select(-starts_with("science_data"), -starts_with("ela_data")))[27:151]) %>% select(-census_id,-DATE_CUR,-CATEGORY,-ST_LEAID,-LEANM,-ST_SCHID,-SCHNAM,-GRADE,STNAM,-FIPST,-LEAID,-reported_which,-reportingyear,-studentgroup,-schoolname.y,       -districtname,-countyname,-EILCode,-EILName,-SOC,-DOC,-YearRoundYN,-FederalDFCDistrictID,-Latitude,-Longitude,-AdmFName,-AdmLName,-AdmEmail,-LastUpDate,-school_id,-         schoolname.x,-ncesdistid_admin,-ncesdistid_geo,-distid_stateassigned,-schoolid_stateassigned,-distname,-address,-city,-state,-zip_code,-level.x,-sedasch,-sedaschname         ,-fips,-stateabb,-subcat,-subgroup,-sedalea,-schnam,-schcity,-type,-level.y,-ncesid,-rtype,-SCHOOL_YEAR,-STNAM,-X) %>%
-  select(-contains("growthscore"), -contains("decilerank"), -starts_with("ELA"), -starts_with("MTH"))
+  select(-contains("growthscore"), -contains("decilerank"), -starts_with("ELA"), -starts_with("MTH"), -charter_flag, -coe_flag, -dass_flag)
+```
 
 
+
+
+```{r lasso function}
 do_lasso<-function(variable, data) {
     
     processeddata <- cbind(variable, data) %>%
     filter(complete.cases(.))
-    
-    print(summary(processeddata))
   
     data_rec <- recipe(variable ~ ., data = processeddata) %>%
       step_nzv(all_predictors()) %>%
@@ -468,10 +470,52 @@ do_lasso<-function(variable, data) {
     
     plot(lasso_fit %>% extract_fit_parsnip() %>% pluck('fit'),
       xvar = "lambda")
+      
+      # Create CV folds
+    data_cv10 <- vfold_cv(data, v = 10)
+    
+    # Lasso Model Spec with tune
+    lm_lasso_spec_tune <- 
+      linear_reg() %>%
+      set_args(mixture = 1, penalty = tune()) %>% ## mixture = 1 indicates Lasso
+      set_engine(engine = 'glmnet') %>% #note we are using a different engine
+      set_mode('regression') 
+    
+    # Workflow (Recipe + Model)
+    lasso_wf_tune <- workflow() %>% 
+      add_recipe(data_rec) %>%
+      add_model(lm_lasso_spec_tune) 
+    
+    # Tune Model (trying a variety of values of Lambda penalty)
+    penalty_grid <- grid_regular(
+      penalty(range = c(-5, 3)), #log10 transformed 10^-5 to 10^3
+      levels = 30)
+    
+    tune_res <- tune_grid( # new function for tuning parameters
+      lasso_wf_tune, # workflow
+      resamples = data_cv10, # cv folds
+      metrics = metric_set(rmse, mae),
+      grid = penalty_grid # penalty grid defined above
+    )
+    
+    # Visualize Model Evaluation Metrics from Tuning
+    autoplot(tune_res) + theme_classic()
+    
+    # Summarize Model Evaluation Metrics (CV)
+    collect_metrics(tune_res) %>%
+      filter(.metric == 'rmse') %>% # or choose mae
+      select(penalty, rmse = mean) 
+    
+    best_se_penalty <- select_best(tune_res, metric = 'rmse') # choose penalty value based on lowest mae or rmse
+    best_penalty <- select_best(tune_res, metric = "mae" )
+    # Fit Final Model
+    final_wf <- finalize_workflow(lasso_wf_tune, best_penalty) # incorporates penalty value to workflow
+    
+    final_fit <- fit(final_wf, data = data)
 }
 ```
 
 ```{r}
-# do_lasso(outcome$ela_data_currstatus_ALL, predictors) # Not Working ATM
+do_lasso(outcome$ela_data_currstatus_ALL, predictors)
 ```
 
