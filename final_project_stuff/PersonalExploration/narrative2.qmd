@@ -23,6 +23,10 @@ library(ggthemes) #install.packages('ggthemes')
 library(RColorBrewer)
 library(patchwork)
 library(leaflet)
+library(probably) #install.packages('probably')
+library(glmnet)
+library(tidymodels)
+tidymodels_prefer()
 ```
 
 ```{r color}
@@ -35,61 +39,9 @@ load("../CombinedDataLongFormat.RData")
 load("../WideMergedData.RData")
 ```
 
-```{r maps load shapefile}
-ca_counties <- read_sf('../CA_Counties')
-ca_counties <- ca_counties %>%
-  st_transform(crs = "NAD83")
-```
 
-```{r gcs map data cleaning}
-school_map <- merged_table %>%
-  select(CDSCode, School, gradecenter, gcs_mn_avg_ol, Longitude, Latitude) %>%
-  filter(!is.na(gradecenter) & !is.na(gcs_mn_avg_ol)) %>% #7390 after NA gradecenter, 6997 after both conditions
-  distinct %>%
-  mutate(diff_from_gradecenter = gcs_mn_avg_ol - gradecenter) %>%
-  mutate(gcs_type = ifelse(diff_from_gradecenter < 0, "Below NAEP Average", ifelse(diff_from_gradecenter > 0, "Above NAEP Average", "At NAEP Average")))
 
-school_map_sf <- school_map %>% 
-  st_as_sf(coords = c('Longitude', 'Latitude'), crs = "NAD83")
-
-school_county_sf <- st_join(school_map_sf, ca_counties) 
-
-grade_diff_by_county <- school_county_sf %>%
-  st_drop_geometry() %>% #removes geometry - makes calculation more efficient 
-  group_by(NAMELSAD) %>%
-  summarise(mean_gcs_diff = mean(diff_from_gradecenter))
-
-grade_diff_by_county_geo <- ca_counties %>%
-  left_join(grade_diff_by_county, by="NAMELSAD")
-```
-
-```{r gcs map}
-grade_diff_by_county_with_breaks_geo <- grade_diff_by_county_geo %>%
-  mutate(grade_diff_cat = factor(cut(mean_gcs_diff, breaks=c(-2, -1, 0, 1, 2))))
-
-pal <- colorFactor(
-  palette = met.brewer(palname,3)[1:3],
-  domain = grade_diff_by_county_with_breaks_geo$grade_diff_cat
-)
-
-leaflet(grade_diff_by_county_with_breaks_geo) %>%
-  addPolygons(
-    fillColor = ~pal(grade_diff_cat),
-    opacity = .25,
-    color = "white",
-    fillOpacity = .5,
-    group = "County"
-  )  %>% 
-  addProviderTiles(providers$CartoDB.Positron) %>%
-    addLayersControl(
-    baseGroups = "County",
-    position = "topright"
-
-  ) %>%
-  addLegend(colors = met.brewer(palname,3)[1:3], values = ~grade_diff_cat, title = NULL, labels = c('Between 1-2 grades LOWER than national average', 'Within 1 grade LOWER than national average', 'Within 1 grade HIGHER than national average'), className = "info legend County")
-
-```
-
+## Comparing Performance Metrics
 ```{r metric performance and funding}
 #| warning: false
 #| message: false
@@ -149,12 +101,13 @@ graph_ready %>%
     legend.text = element_text(size = 8),
     legend.position = "none")
 ```
+
 ```{r}
 fl <- c("English Language Arts", "Grade Cohort Standardized", "Earth + Space", "Life Sciences", "Physical Sciences", "Math Growth Score", "English Language Arts Growth Score")
 names(fl) <- c("ela_data_currstatus_ALL", "gcs_mn_avg_ol", "science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99", "science_data_Life.Sciences.Domain.Percent.Above.Standard_99", "science_data_Physical.Sciences.Domain.Percent.Above.Standard_99", "growthscore_ela", "growthscore_math")
 
 
-wide_merged_data %>% 
+multi_metric_data<-wide_merged_data %>% 
   mutate(pp_total_raw = as.numeric(pp_total_raw)) %>%
   mutate(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99 = as.numeric(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99),
         science_data_Physical.Sciences.Domain.Percent.Above.Standard_99 = as.numeric(science_data_Physical.Sciences.Domain.Percent.Above.Standard_99),
@@ -171,7 +124,9 @@ wide_merged_data %>%
         gcs_mn_avg_ol = min_max_norm(gcs_mn_avg_ol),
         growthscore_ela = min_max_norm(growthscore_ela),
         growthscore_math = min_max_norm(growthscore_math)
-    ) %>% pivot_longer(cols = c(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99, science_data_Physical.Sciences.Domain.Percent.Above.Standard_99, science_data_Life.Sciences.Domain.Percent.Above.Standard_99, ela_data_currstatus_ALL, gcs_mn_avg_ol, growthscore_ela, growthscore_math)) %>%
+    ) %>% pivot_longer(cols = c(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99, science_data_Physical.Sciences.Domain.Percent.Above.Standard_99, science_data_Life.Sciences.Domain.Percent.Above.Standard_99, ela_data_currstatus_ALL, gcs_mn_avg_ol, growthscore_ela, growthscore_math))
+
+multi_metric_data %>%
   ggplot(aes(x = pp_total_raw, y = value)) +
     geom_point(alpha=0.3,color = defaultcolor)+
     facet_wrap(~name, labeller=labeller(name=fl))+
@@ -184,10 +139,63 @@ wide_merged_data %>%
       legend.position = "none") +
     scale_x_continuous(limits = c(8000,20000))
 ```
+## At The County Level 
+```{r maps load shapefile}
+ca_counties <- read_sf('../CA_Counties')
+ca_counties <- ca_counties %>%
+  st_transform(crs = "NAD83")
+```
 
+```{r gcs map data cleaning}
+school_map <- merged_table %>%
+  select(CDSCode, School, gradecenter, gcs_mn_avg_ol, Longitude, Latitude) %>%
+  filter(!is.na(gradecenter) & !is.na(gcs_mn_avg_ol)) %>% #7390 after NA gradecenter, 6997 after both conditions
+  distinct %>%
+  mutate(diff_from_gradecenter = gcs_mn_avg_ol - gradecenter) %>%
+  mutate(gcs_type = ifelse(diff_from_gradecenter < 0, "Below NAEP Average", ifelse(diff_from_gradecenter > 0, "Above NAEP Average", "At NAEP Average")))
 
+school_map_sf <- school_map %>% 
+  st_as_sf(coords = c('Longitude', 'Latitude'), crs = "NAD83")
 
+school_county_sf <- st_join(school_map_sf, ca_counties) 
 
+grade_diff_by_county <- school_county_sf %>%
+  st_drop_geometry() %>% #removes geometry - makes calculation more efficient 
+  group_by(NAMELSAD) %>%
+  summarise(mean_gcs_diff = mean(diff_from_gradecenter))
+
+grade_diff_by_county_geo <- ca_counties %>%
+  left_join(grade_diff_by_county, by="NAMELSAD")
+```
+
+```{r gcs map}
+grade_diff_by_county_with_breaks_geo <- grade_diff_by_county_geo %>%
+  mutate(grade_diff_cat = factor(cut(mean_gcs_diff, breaks=c(-2, -1, 0, 1, 2))))
+
+pal <- colorFactor(
+  palette = met.brewer(palname,3)[1:3],
+  domain = grade_diff_by_county_with_breaks_geo$grade_diff_cat
+)
+
+leaflet(grade_diff_by_county_with_breaks_geo) %>%
+  addPolygons(
+    fillColor = ~pal(grade_diff_cat),
+    opacity = .25,
+    color = "white",
+    fillOpacity = .5,
+    group = "County"
+  )  %>% 
+  addProviderTiles(providers$CartoDB.Positron) %>%
+    addLayersControl(
+    baseGroups = "County",
+    position = "topright"
+
+  ) %>%
+  addLegend(colors = met.brewer(palname,3)[1:3], values = ~grade_diff_cat, title = NULL, labels = c('Between 1-2 grades LOWER than national average', 'Within 1 grade LOWER than national average', 'Within 1 grade HIGHER than national average'), className = "info legend County")
+
+```
+
+## At The School Level
 
 ```{r funding/performance map}
 mapdata <- wide_merged_data %>% filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol)) %>% 
@@ -246,6 +254,13 @@ wide_merged_data %>% filter(!is.na(urbanicity)) %>%
   theme_minimal()+
   labs(y="Grade Cohort Score", x= "Per Student Spending") + guides(color="none") +   geom_hline(yintercept = 0)
 ```
+## Funding and Achievement Correlation
+
+```{r load cleaned dataset for county achievement metrics}
+math_ca_gcs_df <- read_csv("../AllDatasets/math_ca_gcs_df.csv")
+rla_ca_gcs_df <- read_csv("../AllDatasets/rla_ca_gcs_df.csv")
+```
+  
 
 ```{r funding model}
 #| message: true
@@ -309,10 +324,7 @@ wide_merged_data %>% filter(!is.na(urbanicity)) %>% mutate(pp_total_raw_frl_adju
   labs(y="Grade Cohort Score", x= "Adjusted Per Student Spending") + guides(color="none") +   geom_hline(yintercept = 0)
 ```
 
-```{r load cleaned dataset for county achievement metrics}
-math_ca_gcs_df <- read_csv("../AllDatasets/math_ca_gcs_df.csv")
-rla_ca_gcs_df <- read_csv("../AllDatasets/rla_ca_gcs_df.csv")
-```
+## Something Something GCS Map
 
 ```{r data cleaning for ecd and nec leaflet}
 summary_math_data <- ca_counties %>%
@@ -372,3 +384,94 @@ leaflet() %>%
                    position = "bottomleft", options = layersControlOptions(collapsed = FALSE)) %>% 
   addLegend(colors = met.brewer(palname,6)[1:6], values = ~mean_gcs_diff_cat, title = NULL, labels = c('Within 2+ grades LOWER than national average','Between 1-2 grades LOWER than national average', 'Within 1 grade LOWER than national average', 'Within 1 grade HIGHER than national average', 'Between 1-2 grades HIGHER than national average', 'Within 2+ grades HIGHER than national average'), group = "Economically Disadvantaged")
 ```
+
+```{r}
+fl <- c("English Language Arts", "Grade Cohort Standardized", "Earth + Space", "Life Sciences", "Physical Sciences", "Math Growth Score", "English Language Arts Growth Score")
+names(fl) <- c("ela_data_currstatus_ALL", "gcs_mn_avg_ol", "science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99", "science_data_Life.Sciences.Domain.Percent.Above.Standard_99", "science_data_Physical.Sciences.Domain.Percent.Above.Standard_99", "growthscore_ela", "growthscore_math")
+
+
+multi_metric_data %>% 
+  mutate(ecdcat = cut(perecd, breaks = c(0,.2,.4,.6,.8,1))) %>%
+  group_by(ecdcat, name) %>% 
+  mutate(medianvalue = median(value[!is.na(value)])) %>%
+  mutate(medianvaluecat = cut(medianvalue, breaks = c(0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1))) %>%
+filter(!is.na(perecd)) %>%
+  ggplot(aes(x = cut(perecd, breaks = c(0,.2,.4,.6,.8,1)), y = value, fill = medianvaluecat)) + 
+    geom_boxplot(alpha = 1) +
+    facet_wrap(~name, labeller=labeller(name=fl)) + 
+    labs(x = "Percent Economically Disadvantaged", y = "Normalized Metric") +
+    theme_minimal() +
+    theme(
+      legend.title = element_blank(),
+      legend.text = element_text(size = 8),
+      legend.position = "none") +
+    scale_fill_manual(values = met.brewer(palname,8)[1:8])
+    
+```
+
+## Choosing Variables
+
+```{r lasso setup}
+data <- wide_merged_data %>% 
+  mutate(pp_total_raw = as.numeric(pp_total_raw)) %>%
+  mutate(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99 = as.numeric(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99),
+        science_data_Physical.Sciences.Domain.Percent.Above.Standard_99 = as.numeric(science_data_Physical.Sciences.Domain.Percent.Above.Standard_99),
+        science_data_Life.Sciences.Domain.Percent.Above.Standard_99 = as.numeric(science_data_Life.Sciences.Domain.Percent.Above.Standard_99),
+        ela_data_currstatus_ALL = as.numeric(ela_data_currstatus_ALL),
+        gcs_mn_avg_ol = as.numeric(gcs_mn_avg_ol),
+        growthscore_ela = as.numeric(growthscore_ela),
+        growthscore_math = as.numeric(growthscore_math)
+    ) %>% mutate(
+        science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99 = min_max_norm(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99),
+        science_data_Physical.Sciences.Domain.Percent.Above.Standard_99 = min_max_norm(science_data_Physical.Sciences.Domain.Percent.Above.Standard_99),
+        science_data_Life.Sciences.Domain.Percent.Above.Standard_99 = min_max_norm(science_data_Life.Sciences.Domain.Percent.Above.Standard_99),
+        ela_data_currstatus_ALL = min_max_norm(ela_data_currstatus_ALL),
+        gcs_mn_avg_ol = min_max_norm(gcs_mn_avg_ol),
+        growthscore_ela = min_max_norm(growthscore_ela),
+        growthscore_math = min_max_norm(growthscore_math)
+    ) 
+
+# Lasso Model Spec
+lm_lasso_spec <- 
+  linear_reg() %>%
+  set_args(mixture = 1, penalty = 0) %>%
+  set_engine(engine = 'glmnet') %>% 
+  set_mode('regression') 
+```
+ cbind(data$ela_data_currstatus_ALL, data$gcs_mn_avg_ol, data$science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99, data$science_data_Life.Sciences.Domain.Percent.Above.Standard_99, data$science_data_Physical.Sciences.Domain.Percent.Above.Standard_99, data$growthscore_ela, data$growthscore_math)
+```{r lasso function}
+outcome <- data %>% select(ela_data_currstatus_ALL, gcs_mn_avg_ol, science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99, science_data_Life.Sciences.Domain.Percent.Above.Standard_99, science_data_Physical.Sciences.Domain.Percent.Above.Standard_99, growthscore_ela, growthscore_math)
+
+predictors <- ((data %>% select(-starts_with("science_data"), -starts_with("ela_data")))[27:151]) %>% select(-census_id,-DATE_CUR,-CATEGORY,-ST_LEAID,-LEANM,-ST_SCHID,-SCHNAM,-GRADE,STNAM,-FIPST,-LEAID,-reported_which,-reportingyear,-studentgroup,-schoolname.y,       -districtname,-countyname,-EILCode,-EILName,-SOC,-DOC,-YearRoundYN,-FederalDFCDistrictID,-Latitude,-Longitude,-AdmFName,-AdmLName,-AdmEmail,-LastUpDate,-school_id,-         schoolname.x,-ncesdistid_admin,-ncesdistid_geo,-distid_stateassigned,-schoolid_stateassigned,-distname,-address,-city,-state,-zip_code,-level.x,-sedasch,-sedaschname         ,-fips,-stateabb,-subcat,-subgroup,-sedalea,-schnam,-schcity,-type,-level.y,-ncesid,-rtype,-SCHOOL_YEAR,-STNAM,-X) %>%
+  select(-contains("growthscore"), -contains("decilerank"), -starts_with("ELA"), -starts_with("MTH"))
+
+
+do_lasso<-function(variable, data) {
+    
+    processeddata <- cbind(variable, data) %>%
+    filter(complete.cases(.))
+    
+    print(summary(processeddata))
+  
+    data_rec <- recipe(variable ~ ., data = processeddata) %>%
+      step_nzv(all_predictors()) %>%
+      step_novel(all_nominal_predictors()) %>%
+      step_normalize(all_numeric_predictors()) %>%
+      step_dummy(all_nominal_predictors())
+    
+    lasso_wf <- workflow() %>%
+      add_recipe(data_rec) %>%
+      add_model(lm_lasso_spec)
+    
+    lasso_fit <- lasso_wf %>%
+      fit(data = processeddata) # Fit to data
+    
+    plot(lasso_fit %>% extract_fit_parsnip() %>% pluck('fit'),
+      xvar = "lambda")
+}
+```
+
+```{r}
+# do_lasso(outcome$ela_data_currstatus_ALL, predictors) # Not Working ATM
+```
+
