@@ -438,16 +438,9 @@ lm_lasso_spec <-
   set_args(mixture = 1, penalty = 0) %>%
   set_engine(engine = 'glmnet') %>% 
   set_mode('regression') 
-```
-<<<<<<< Updated upstream
- cbind(data$ela_data_currstatus_ALL, data$gcs_mn_avg_ol, data$science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99, data$science_data_Life.Sciences.Domain.Percent.Above.Standard_99, data$science_data_Physical.Sciences.Domain.Percent.Above.Standard_99, data$growthscore_ela, data$growthscore_math)
-```{r}
-=======
 
-cbind(data$ela_data_currstatus_ALL, data$gcs_mn_avg_ol, data$science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99, data$science_data_Life.Sciences.Domain.Percent.Above.Standard_99, data$science_data_Physical.Sciences.Domain.Percent.Above.Standard_99, data$growthscore_ela, data\$growthscore_math)
+cbind(data$ela_data_currstatus_ALL, data$gcs_mn_avg_ol, data$science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99, data$science_data_Life.Sciences.Domain.Percent.Above.Standard_99, data$science_data_Physical.Sciences.Domain.Percent.Above.Standard_99, data$growthscore_ela, data$growthscore_math)
 
-```{r lasso function}
->>>>>>> Stashed changes
 outcome <- data %>% select(ela_data_currstatus_ALL, gcs_mn_avg_ol, science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99, science_data_Life.Sciences.Domain.Percent.Above.Standard_99, science_data_Physical.Sciences.Domain.Percent.Above.Standard_99, growthscore_ela, growthscore_math)
 
 predictors <- ((data %>% select(-starts_with("science_data"), -starts_with("ela_data")))[27:151]) %>% select(-census_id,-DATE_CUR,-CATEGORY,-ST_LEAID,-LEANM,-ST_SCHID,-SCHNAM,-GRADE,STNAM,-FIPST,-LEAID,-reported_which,-reportingyear,-studentgroup,-schoolname.y,       -districtname,-countyname,-EILCode,-EILName,-SOC,-DOC,-YearRoundYN,-FederalDFCDistrictID,-Latitude,-Longitude,-AdmFName,-AdmLName,-AdmEmail,-LastUpDate,-school_id,-         schoolname.x,-ncesdistid_admin,-ncesdistid_geo,-distid_stateassigned,-schoolid_stateassigned,-distname,-address,-city,-state,-zip_code,-level.x,-sedasch,-sedaschname         ,-fips,-stateabb,-subcat,-subgroup,-sedalea,-schnam,-schcity,-type,-level.y,-ncesid,-rtype,-SCHOOL_YEAR,-STNAM,-X) %>%
