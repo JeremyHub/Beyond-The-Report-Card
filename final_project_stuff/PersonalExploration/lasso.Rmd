@@ -81,6 +81,7 @@ collect_metrics(tune_res) %>%
   select(penalty, rmse = mean) 
 
 best_penalty <- select_best(tune_res, metric = 'rmse') # choose penalty value based on lowest mae or rmse
+best_se_penalty <- select_by_one_std_err(tune_output, metric = 'mae', desc(penalty))
 
 # Fit Final Model
 final_wf <- finalize_workflow(lasso_wf_tune, best_penalty) # incorporates penalty value to workflow
