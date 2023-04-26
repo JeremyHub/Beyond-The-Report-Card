@@ -1,0 +1,10 @@
+---
+title: "Beyond the Report Card: Investigating the Factors that Define Educational Achievement"
+author: "Thu Dang, Nathaniel Reimer, Jeremy Hubinger"
+---
+
+About this site
+
+```{r}
+1 + 1
+```

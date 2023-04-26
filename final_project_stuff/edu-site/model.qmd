@@ -1,0 +1,48 @@
+---
+title: "Beyond the Report Card: How do we build the model?"
+author: "Thu Dang, Nathaniel Reimer, Jeremy Hubinger"
+execute: 
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r packages}
+library(tidyverse)
+library(MetBrewer)
+library(sf)
+library(rnaturalearth)
+library(classInt) #install.packages('classInt')
+library(ggspatial) #install.packages('ggspatial')
+library(ggthemes) #install.packages('ggthemes')
+library(RColorBrewer)
+library(patchwork)
+library(leaflet)
+library(probably) #install.packages('probably')
+library(glmnet)
+library(tidymodels)
+tidymodels_prefer()
+```
+
+```{r color}
+palname = "Homer2"
+defaultcolor = met.brewer(palname,10)[9]
+```
+
+```{r load datasets}
+load("../CombinedDataLongFormat.RData")
+load("../WideMergedData.RData")
+```
+
+```{r load cleaned dataset for county achievement metrics}
+math_ca_gcs_df <- read_csv("../AllDatasets/math_ca_gcs_df.csv")
+rla_ca_gcs_df <- read_csv("../AllDatasets/rla_ca_gcs_df.csv")
+```
+
+```{r maps load shapefile}
+ca_counties <- read_sf('../CA_Counties')
+ca_counties <- ca_counties %>%
+  st_transform(crs = "NAD83")
+```
+
+# Add LASSO code here

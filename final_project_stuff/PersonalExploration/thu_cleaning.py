@@ -71,3 +71,7 @@ math_ca_gcs.to_csv('math_ca_gcs_df.csv')
 rla_ca_gcs.to_csv('rla_ca_gcs_df.csv')
 # %%
 math_ca_gcs[['sedacountyname',]]
+
+#%%
+math_ca_gcs['clean_student_category'].unique()
+# %%
