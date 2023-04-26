@@ -98,7 +98,7 @@ leaflet(grade_diff_by_county_with_breaks_geo) %>%
 
 ## Aggregated county-level math achievement of students of different socioeconomic status groups
 
-```{r data cleaning for ecd and nec leaflet}
+```{r math data cleaning for ecd and nec leaflet}
 summary_math_data <- ca_counties %>%
   left_join(math_ca_gcs_df, by=c("NAMELSAD" = "sedacountyname")) %>%
   filter(student_category %in% c('ecd','nec')) %>%
@@ -118,7 +118,7 @@ summary_math_data_with_geo <- summary_math_data_with_geo %>%
   mutate(mean_gcs_diff_cat = factor(cut(mean_gcs_diff, breaks=c(-3, -2, -1, 0, 1, 2, 3))))
 ```
 
-```{r ecd performance map}
+```{r math ecd performance map}
 pal <- colorFactor(
   palette = met.brewer(palname,6)[1:6],
   domain = summary_math_data$mean_gcs_diff_cat
@@ -157,6 +157,67 @@ leaflet() %>%
   addLegend(colors = met.brewer(palname,6)[1:6], values = ~mean_gcs_diff_cat, title = NULL, labels = c('2+ years behind','1-2 years behind', 'Less than 1 year behind', 'Less than 1 year ahead', '1-2 years ahead', '2+ years ahead'), group = "Economically Disadvantaged")
 ```
 
+
+## Aggregated county-level language arts achievement (Reasoning Through Language Arts -- RLA) of students of different socioeconomic status groups
+
+```{r rla data cleaning for ecd and nec leaflet}
+summary_rla_data <- ca_counties %>%
+  left_join(rla_ca_gcs_df, by=c("NAMELSAD" = "sedacountyname")) %>%
+  filter(student_category %in% c('ecd','nec')) %>%
+  filter(!is.na(gcs_value) & !is.na(student_category)) %>%
+  select(NAMELSAD, grade, year, gcs_value, student_category, clean_student_category) %>%
+  mutate(gcs_diff = gcs_value - grade) %>%
+  st_drop_geometry() %>%
+  group_by(NAMELSAD, student_category, clean_student_category) %>%
+  summarise(mean_gcs_diff = mean(gcs_diff)) %>%
+  ungroup()
+
+summary_rla_data_with_geo <- ca_counties %>%
+  select(NAMELSAD) %>%
+  left_join(summary_rla_data, by="NAMELSAD")
+
+summary_rla_data_with_geo <- summary_rla_data_with_geo %>%
+  mutate(mean_gcs_diff_cat = factor(cut(mean_gcs_diff, breaks=c(-3, -2, -1, 0, 1, 2, 3))))
+```
+
+```{r rla ecd performance map}
+pal_rla <- colorFactor(
+  palette = met.brewer(palname,6)[1:6],
+  domain = summary_rla_data$mean_gcs_diff_cat
+)
+
+leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+    addLayersControl(
+    baseGroups = "County",
+    position = "topright"
+  ) %>%
+  addPolygons(
+    data = summary_rla_data_with_geo %>% filter(student_category == 'ecd'),
+    fillColor = ~pal_rla(mean_gcs_diff_cat),
+    opacity = .25,
+    color = "white",
+    fillOpacity = .5,
+    group = "Economically Disadvantaged",
+    popup = ~paste0(NAMELSAD, 
+                    "<br>Grade Distance from National Average: ", round(mean_gcs_diff, digits = 3)
+    )
+  )  %>% 
+  addPolygons(
+    data = summary_rla_data_with_geo %>% filter(student_category == 'nec'),
+    fillColor = ~pal_rla(mean_gcs_diff_cat),
+    opacity = .25,
+    color = "white",
+    fillOpacity = .5,
+    group = "Non-Economically Disadvantaged",
+    popup = ~paste0(NAMELSAD, 
+                    "<br>Grade Distance from National Average: ", round(mean_gcs_diff, digits = 3)
+    )
+  )  %>% 
+  addLayersControl(baseGroups = c("Economically Disadvantaged", "Non-Economically Disadvantaged"),
+                   position = "bottomleft", options = layersControlOptions(collapsed = FALSE)) %>% 
+  addLegend(colors = met.brewer(palname,6)[1:6], values = ~mean_gcs_diff_cat, title = NULL, labels = c('2+ years behind','1-2 years behind', 'Less than 1 year behind', 'Less than 1 year ahead', '1-2 years ahead', '2+ years ahead'), group = "Economically Disadvantaged")
+```
 
 
 
