@@ -491,14 +491,16 @@ do_lasso<-function(variable, data) {
     
       number <- nrow(processeddata)
       name <- deparse(substitute(variable))
-      graph <- coefs_lambdas %>% 
+      
+      middle <- coefs_lambdas$lambda[[floor(length(coefs_lambdas$lambda)*0.2)]]
+      
+      coefs_lambdas %>% 
         ggplot(aes(x = lambda, y = coef, group = term, color = var)) +
           labs(subtitle = paste0(name,": ",number)) +
           geom_line() +
           theme_classic() + 
-          theme(legend.position = "right", legend.text=element_text(size=8))
-          
-      graph
+          theme(legend.position = "right", legend.text=element_text(size=8)) +
+          geom_label(data = coefs_lambdas %>% filter(lambda == middle, (coef > 0.001) | (coef < -0.001)), aes(x = lambda, y = coef, label = var))
 }
 ```
 
