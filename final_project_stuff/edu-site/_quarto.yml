@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "Projects in Data Science"
+  title: "Beyond the Report Card"
   navbar:
     left:
       - href: index.qmd
@@ -17,7 +17,7 @@ website:
       - href: model.qmd
         text: Predictor Significance
       - href: result.qmd
-        text: Result & Discussion
+        text: Discussion
   page-footer:
     left: |
       &copy; Thu Dang, Nathaniel Reimer, Jeremy Hubinger 2023<br>

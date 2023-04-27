@@ -1,54 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Beyond the Report Card: Investigating the Factors that Define Educational Achievement using California as a Case Study",
-    "section": "",
-    "text": "Hi everyone, we are Thu, Nathaniel, and Jeremy, and welcome to our Capstone Project for STAT 456: Projects in Data Science. As you can tell from the title, we are interested in exploring the factors that impacting academic achievement, using California as a case study. Meet the team…\n\nYou can explore the diverse aspects of our project by navigating through various tabs on this website. Starting from our project’s inspiration, you can delve into the analysis of academic achievement insights at the county and school levels in California, learn about our model’s construction process, and discover some of the outcomes. Are you excited? Let’s get started!"
-  },
-  {
-    "objectID": "school_insights.html",
-    "href": "school_insights.html",
-    "title": "Beyond the Report Card: What are the insights at the school level that we can observe?",
-    "section": "",
-    "text": "Map of School-level academic achievement categories across California counties\n\n\n\n\n\n\n\n\n\n\n\n\nDoes funding impact school-level academic achievement?\n\n\n\n\n\n\n\n                    Estimate Std. Error  t value     Pr(>|t|)\n(Intercept)        11365.441   184.1742 61.71027 0.000000e+00\nas.numeric(perfrl)  3170.302   283.2011 11.19452 1.334886e-28"
-  },
-  {
-    "objectID": "model.html",
-    "href": "model.html",
-    "title": "Beyond the Report Card: How do we build the model?",
-    "section": "",
-    "text": "LASSO code"
-  },
-  {
-    "objectID": "result.html",
-    "href": "result.html",
-    "title": "Beyond the Report Card: Let’s discuss some results!",
-    "section": "",
-    "text": "Add result here"
-  },
-  {
-    "objectID": "county_insights.html",
-    "href": "county_insights.html",
-    "title": "Beyond the Report Card: What are the insights at the county level that we can observe?",
-    "section": "",
-    "text": "Map of County-level academic achievement categories in California\n\n\n\n\n\n\n\n\n\n\n\nAggregated county-level math achievement of students of different socioeconomic status groups"
-  },
-  {
-    "objectID": "motivation.html",
-    "href": "motivation.html",
-    "title": "Beyond the Report Card: Our Motivation",
-    "section": "",
-    "text": "A change in direction\nInitially, our focus was on the correlation between affordable housing and educational achievement. However, during the process of selecting appropriate educational proxies, we found ourselves delving into the factors behind the measurements of these proxies. As a result, we decided to seek the guidance of Professor Lesley Lavery, who specializes in public policies in education. We hope to gain a better understanding of the educational proxies currently in use and to investigate whether there are additional factors that impact educational outcomes and potentially render the current proxies interchangeable or distinct from other measures.\n\n\nPrevious literature\nThere are several reasons why education proxies differ, including the influence of socioeconomic status, the difficulty in standardizing scores across schools, and variations in school budgets. While % of high school graduates may be a more robust metric to estimate the education achievement level in different areas, it is harder to standardize score-related metrics due to differences in grading scales and the difficulty of obtaining student-level data.\nAdditionally, due to the diverse student body in the US, it is difficult to identify specific teaching approaches that are effective for particular groups of students. The Measures of Effective Teaching Project by the Gates Foundation aimed to establish innovative teacher-evaluation systems incorporating classroom observation rubrics and student achievement growth measures. Although the Gates Foundation allocated $600 million towards this initiative, it turned out to be a challenging task, particularly in identifying effective teaching elements that positively influence students’ academic performance. Consequently, this research heightened our curiosity in examining other factors that contribute to students’ achievements beyond teaching approaches (Will 2018).\n\n\nWhy California?\nVarious socioeconomic factors can affect students’ academic performance, beyond just teaching methods. Given that California is a diverse state with people from different socioeconomic backgrounds, it presents an intriguing case study for our research topic, which focuses on exploring the socioeconomic factors that influence students’ grades.\n\n\n\n\n\nReferences\n\nWill, Madeline. 2018. “‘An Expensive Experiment’: Gates Teacher-Effectiveness Program Shows No Gains for Students.” EducationWeek. https://www.edweek.org/teaching-learning/an-expensive-experiment-gates-teacher-effectiveness-program-shows-no-gains-for-students/2018/06."
-  },
-  {
-    "objectID": "county_insights.html#comparing-performance-metrics",
-    "href": "county_insights.html#comparing-performance-metrics",
-    "title": "Beyond the Report Card: Investigating the Factors that Define Educational Achievement",
-    "section": "Comparing Performance Metrics",
-    "text": "Comparing Performance Metrics\n\nmin_max_norm <- function(x) {\n    (x - min(x, na.rm=TRUE)) / (max(x, na.rm=TRUE) - min(x, na.rm=TRUE))\n}\n\n# model metrics by per pupil funding\ngrouped_merged_table <- merged_table %>%\n  filter(flag_nerds == 'false' || is.na(flag_nerds)) %>%\n  filter(flag_f33 != '1' || is.na(flag_f33)) %>%\n  mutate(pp_total_raw = as.numeric(pp_total_raw))%>%\n  filter(pp_total_raw < 100000) %>% #filters 1 school out\n  # mutate to then as.numeric\n  mutate(\n      science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard),\n      science_data_Physical.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Physical.Sciences.Domain.Percent.Above.Standard),\n      science_data_Life.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Life.Sciences.Domain.Percent.Above.Standard),\n      ela_data_currstatus = as.numeric(ela_data_currstatus),\n      gcs_mn_avg_ol = as.numeric(gcs_mn_avg_ol)\n  ) %>%\n  mutate(ela_data_currstatus = ela_data_currstatus * ela_data_currdenom) %>%\n  group_by(CDSCode, pp_total_raw, Latitude, Longitude) %>%\n  summarise(\n    science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = mean(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),\n    science_data_Physical.Sciences.Domain.Percent.Above.Standard = mean(science_data_Physical.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),\n    science_data_Life.Sciences.Domain.Percent.Above.Standard = mean(science_data_Life.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),\n    ela_data_currstatus = mean(ela_data_currstatus, na.rm = TRUE),\n    gcs_mn_avg_ol = mean(gcs_mn_avg_ol, na.rm = TRUE),\n  ) %>%\n  ungroup()\n\ngraph_ready <- grouped_merged_table %>%\n  na.omit() %>% #only looking at the same schools. this line is doing a lot though\n  filter(pp_total_raw < 20000) %>% # removes 2 schools\n  # normalize the metrics\n    mutate(\n        science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = min_max_norm(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard),\n        science_data_Physical.Sciences.Domain.Percent.Above.Standard = min_max_norm(science_data_Physical.Sciences.Domain.Percent.Above.Standard),\n        science_data_Life.Sciences.Domain.Percent.Above.Standard = min_max_norm(science_data_Life.Sciences.Domain.Percent.Above.Standard),\n        ela_data_currstatus = min_max_norm(ela_data_currstatus),\n        gcs_mn_avg_ol = min_max_norm(gcs_mn_avg_ol)\n    ) %>%\n  group_by(CDSCode) %>%\n  pivot_longer(cols=c(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard,science_data_Physical.Sciences.Domain.Percent.Above.Standard,science_data_Life.Sciences.Domain.Percent.Above.Standard,ela_data_currstatus,gcs_mn_avg_ol))\nfl <- c(\"English Language Arts\", \"Grade Cohort Standardized\", \"Earth + Space\", \"Life Sciences\", \"Physical Sciences\")\nnames(fl) <- c(\"ela_data_currstatus\", \"gcs_mn_avg_ol\", \"science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard\", \"science_data_Life.Sciences.Domain.Percent.Above.Standard\", \"science_data_Physical.Sciences.Domain.Percent.Above.Standard\")\ngraph_ready %>%\n  ggplot(aes(x = pp_total_raw, y = value)) +\n  geom_point(alpha=0.3,color = defaultcolor)+\n  facet_wrap(~name, labeller=labeller(name=fl))+\n  geom_smooth(color = defaultcolor)+\n  labs(x = \"Per Pupil Funding\", y = \"Normalized Metric\", title = \"Metric Performance by Total Per-Pupil Funding\") +\n  theme_minimal() +\n  theme(\n    legend.title = element_blank(),\n    legend.text = element_text(size = 8),\n    legend.position = \"none\")"
-  },
-  {
     "objectID": "school_insights.html#map-of-school-level-academic-achievement-categories-across-california-counties",
     "href": "school_insights.html#map-of-school-level-academic-achievement-categories-across-california-counties",
     "title": "Beyond the Report Card: What are the insights at the school level that we can observe?",
@@ -63,6 +14,20 @@
     "text": "Does funding impact school-level academic achievement?"
   },
   {
+    "objectID": "result.html",
+    "href": "result.html",
+    "title": "Beyond the Report Card: Let’s discuss some results!",
+    "section": "",
+    "text": "Add result here\n\nGrowth score is pretty robust since there are no variables that actually predict it."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Beyond the Report Card: Investigating the Factors that Define Educational Achievement using California as a Case Study",
+    "section": "",
+    "text": "Hi everyone, we are Thu, Nathaniel, and Jeremy, and welcome to our Capstone Project for STAT 456: Projects in Data Science. As you can tell from the title, we are interested in exploring the factors that impacting academic achievement, using California as a case study. Meet the team…\n\nYou can explore the diverse aspects of our project by navigating through various tabs on this website. Starting from our project’s inspiration, you can delve into the analysis of academic achievement insights at the county and school levels in California, learn about our model’s construction process, and discover some of the outcomes. Are you excited? Let’s get started!"
+  },
+  {
     "objectID": "county_insights.html#map-of-county-level-academic-achievement-categories-in-california",
     "href": "county_insights.html#map-of-county-level-academic-achievement-categories-in-california",
     "title": "Beyond the Report Card: What are the insights at the county level that we can observe?",
@@ -70,24 +35,24 @@
     "text": "Map of County-level academic achievement categories in California"
   },
   {
-    "objectID": "county_insights.html#aggregated-county-level-math-achievement-of-students-of-different-socioeconomic-status-groups",
-    "href": "county_insights.html#aggregated-county-level-math-achievement-of-students-of-different-socioeconomic-status-groups",
-    "title": "Beyond the Report Card: What are the insights at the county level that we can observe?",
-    "section": "Aggregated county-level math achievement of students of different socioeconomic status groups",
-    "text": "Aggregated county-level math achievement of students of different socioeconomic status groups"
-  },
-  {
-    "objectID": "county_insights.html#aggregated-county-level-language-arts-achievement-reasoning-through-language-arts-rla-of-students-of-different-socioeconomic-status-groups",
-    "href": "county_insights.html#aggregated-county-level-language-arts-achievement-reasoning-through-language-arts-rla-of-students-of-different-socioeconomic-status-groups",
-    "title": "Beyond the Report Card: What are the insights at the county level that we can observe?",
-    "section": "Aggregated county-level language arts achievement (Reasoning Through Language Arts – RLA) of students of different socioeconomic status groups",
-    "text": "Aggregated county-level language arts achievement (Reasoning Through Language Arts – RLA) of students of different socioeconomic status groups"
-  },
-  {
     "objectID": "county_insights.html#aggregated-county-level-math-and-reasoning-language-arts-rla-achievement-of-students-of-different-socioeconomic-status-groups",
     "href": "county_insights.html#aggregated-county-level-math-and-reasoning-language-arts-rla-achievement-of-students-of-different-socioeconomic-status-groups",
     "title": "Beyond the Report Card: What are the insights at the county level that we can observe?",
     "section": "Aggregated county-level math and reasoning language arts (RLA) achievement of students of different socioeconomic status groups",
     "text": "Aggregated county-level math and reasoning language arts (RLA) achievement of students of different socioeconomic status groups"
+  },
+  {
+    "objectID": "motivation.html",
+    "href": "motivation.html",
+    "title": "Beyond the Report Card: Our Motivation",
+    "section": "",
+    "text": "A change in direction\nInitially, our focus was on the correlation between affordable housing and educational achievement. However, during the process of selecting appropriate educational proxies, we found ourselves delving into the factors behind the measurements of these proxies. As a result, we decided to seek the guidance of Professor Lesley Lavery, who specializes in public policies in education. We hope to gain a better understanding of the educational proxies currently in use and to investigate whether there are additional factors that impact educational outcomes and potentially render the current proxies interchangeable or distinct from other measures.\n\n\nPrevious literature\nThere are several reasons why education proxies differ, including the influence of socioeconomic status, the difficulty in standardizing scores across schools, and variations in school budgets. While % of high school graduates may be a more robust metric to estimate the education achievement level in different areas, it is harder to standardize score-related metrics due to differences in grading scales and the difficulty of obtaining student-level data.\nAdditionally, due to the diverse student body in the US, it is difficult to identify specific teaching approaches that are effective for particular groups of students. The Measures of Effective Teaching Project by the Gates Foundation aimed to establish innovative teacher-evaluation systems incorporating classroom observation rubrics and student achievement growth measures. Although the Gates Foundation allocated $600 million towards this initiative, it turned out to be a challenging task, particularly in identifying effective teaching elements that positively influence students’ academic performance. Consequently, this research heightened our curiosity in examining other factors that contribute to students’ achievements beyond teaching approaches (Will 2018).\n\n\nWhy California?\nVarious socioeconomic factors can affect students’ academic performance, beyond just teaching methods. Given that California is a diverse state with people from different socioeconomic backgrounds, it presents an intriguing case study for our research topic, which focuses on exploring the socioeconomic factors that influence students’ grades.\n\n\n\n\n\nReferences\n\nWill, Madeline. 2018. “‘An Expensive Experiment’: Gates Teacher-Effectiveness Program Shows No Gains for Students.” EducationWeek. https://www.edweek.org/teaching-learning/an-expensive-experiment-gates-teacher-effectiveness-program-shows-no-gains-for-students/2018/06."
+  },
+  {
+    "objectID": "model.html",
+    "href": "model.html",
+    "title": "Beyond the Report Card: What are the significant predictors?",
+    "section": "",
+    "text": "LASSO code"
   }
 ]
