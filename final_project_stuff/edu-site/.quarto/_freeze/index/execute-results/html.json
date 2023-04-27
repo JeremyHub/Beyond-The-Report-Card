@@ -1,0 +1,14 @@
+{
+  "hash": "8f37efecae150d6ca45b8b2e3bb81140",
+  "result": {
+    "markdown": "---\ntitle: \"Beyond the Report Card: Investigating the Factors that Define Educational Achievement\"\ndescription: \"\"\nauthor: \"Thu Dang, Nathaniel Reimer, Jeremy Hubinger\"\ndate: \"2023-05-08\"\ndate-modified: last-modified\nformat: html\neditor: visual\nexecute: \n  echo: false\n  warning: false\n  message: false\n---\n\n::: {.cell}\n::: {.cell-output .cell-output-stdout}\n```\n[1] 2\n```\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
