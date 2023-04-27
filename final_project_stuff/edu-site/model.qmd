@@ -48,6 +48,11 @@ ca_counties <- ca_counties %>%
 # LASSO code
 
 ```{r lasso data setup}
+
+min_max_norm <- function(x) {
+    (x - min(x, na.rm=TRUE)) / (max(x, na.rm=TRUE) - min(x, na.rm=TRUE))
+}
+
 data <- wide_merged_data %>% 
   mutate(pp_total_raw = as.numeric(pp_total_raw)) %>%
   mutate(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99 = as.numeric(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99),
