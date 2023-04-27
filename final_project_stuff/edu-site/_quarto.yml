@@ -15,7 +15,7 @@ website:
       - href: school_insights.qmd
         text: School-Level Insights
       - href: model.qmd
-        text: Model Construction
+        text: Predictor Significance
       - href: result.qmd
         text: Result & Discussion
   page-footer:

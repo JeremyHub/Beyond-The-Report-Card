@@ -1,5 +1,5 @@
 ---
-title: "Beyond the Report Card: How do we build the model?"
+title: "Beyond the Report Card: What are the significant predictors?"
 author: "Thu Dang, Nathaniel Reimer, Jeremy Hubinger"
 execute: 
   echo: false
