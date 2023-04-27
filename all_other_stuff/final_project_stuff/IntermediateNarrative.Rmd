@@ -1,0 +1,370 @@
+---
+title: "Beyond the Report Card: Investigating the Factors that Define Educational Achievement"
+author: "Thu Dang, Nathaniel Reimer, Jeremy Hubinger"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r, include=FALSE}
+library(tidyverse)
+library(MetBrewer)
+library(sf)
+library(rnaturalearth)
+library(ggplot2)
+library(dplyr)
+library(classInt) #install.packages('classInt')
+library(ggspatial) #install.packages('ggspatial')
+library(ggthemes) #install.packages('ggthemes')
+
+colortheme = "Derain"
+
+```
+
+```{r load wide data}
+load("CombinedDataLongFormat.RData")
+load("WideMergedData.RData")
+```
+
+
+# Description & motivation of research questions
+
+Initially, our focus was on the correlation between affordable housing and educational achievement. However, during the process of selecting appropriate educational proxies, we found ourselves delving into the factors behind the measurements of these proxies. As a result, we decided to seek the guidance of Professor Lesley Lavery, who specializes in public policies in education. We hope to gain a better understanding of the educational proxies currently in use, and to investigate whether there are additional factors that impact educational outcomes and potentially render the current proxies interchangeable or distinct from other measures.
+
+
+# Dataset description
+
+The data set we have includes a range of school-related variables such as location details, funding, and aggregated scores in various subjects. Specifically, the score variables cover the general grade-cohort-standardized achievement score, as well as scores in reading, science, and physical education. 
+
+We aggregate our dataset from 5 different datasets. We use data from The California Department of Education, Georgetown University, and the Educational Opportunity Project at Stanford University.
+
+**Science Testing Data** [Codebook](https://github.com/JeremyHub/STAT-456-Final/blob/8ef6fa6ce28785065f583f4c477c5deb11afd442/final_project_stuff/science_docs.pdf)
+
+Our science test data is from the California Department of Education, specifically, from the 2021-2022 school year. It is from the California Science Test, in which there are three different categories, namely Life sciences, Physical sciences, and Earth and Space sciences.
+
+**English Testing Data** [Codebook](https://github.com/JeremyHub/STAT-456-Final/blob/8ef6fa6ce28785065f583f4c477c5deb11afd442/final_project_stuff/ela_docs.pdf)
+
+The data we have for English Language Arts / Literature is also from the California Department of Education, specifically from 2022. It tells us for each student group within each school their level of proficiency.
+
+**Physical Education Data** 
+
+Our PE data comes from the California Department Education from the 2018-2019 school year. It has 7 different types of exercises and each school's grade's proficiency on each type of exercise.
+
+**School Funding Data** [Codebook](https://github.com/JeremyHub/STAT-456-Final/blob/8ef6fa6ce28785065f583f4c477c5deb11afd442/final_project_stuff/school_info_docs.pdf)
+
+Our school funding data is aggregated 2019-2020 data from different federal and state sources. It is compiled into the dataset we are using by Georgetown University researchers. It has information about funding going to a school from the state, local, and federal governments, as well as metadata about the school such as enrollment, as well as data about the income levels of the students at the school.
+
+**Educational Opportunity Project at Stanford University (SEDA)** [Codebook](https://github.com/JeremyHub/STAT-456-Final/blob/82e84dd90db010d96edba2d74dc574c15648a10c/final_project_stuff/stanford_codebook.xlsx) 
+[Covariate Codebook](https://github.com/JeremyHub/STAT-456-Final/blob/82e84dd90db010d96edba2d74dc574c15648a10c/final_project_stuff/stanford_cov_codebook.xlsx)
+
+The SEDA we're using contains school-level standardized academic achievement data across all Californian schools. These achievement scores are graded and cohort standardized against the NAEP standard, indicating whether the students in a particular school and grade level are meeting the national standard for their grade. For instance, if a school's 4th-grade students score 3.5, it indicates that they are lagging behind the national standard by 0.5 points. The achievement estimates are calculated using Ordinary Least Square (OLS) and Empirical Bayesian (EB) techniques.
+
+**School Details**
+
+This contains metadata on 10629 California Schools. Including both the nationally used NCES id and the California CDS code. We use this to join our data from our different sources. This dataset also contains the longitude and latitude of the schools which has been very useful for EDA so far.   
+
+
+# Ethical issues (who may be harmed and who may benefit)
+
+To ensure privacy concerns are addressed, we take measures to aggregate the data at the school level. However, we recognize that there may be potential issues with bias in the data collection process and data accuracy as a result.
+
+Regarding potential bias, the data is taken from various sources, and it is possible that each school may have different processes for collecting the data. With the exception of the Educational Opportunity Project at Stanford University, we do not have information on the number of students for whom the data is collected, nor the demographic makeup of those students. As a result, we acknowledge that there may be inherent biases in the data that we cannot control due to a lack of information.
+
+Regarding data accuracy, as we do not have detailed documentation for all of the datasets, it is challenging to ascertain their accuracy. However, we have confidence in the reliability of the government and highly-credited sources from which the data originates. Given this, we consider these datasets to be our most reliable option at present.
+
+Taken out of context, our analyses and graphics have the potential to negatively impact educational policy. Particularly since we will be looking at demographics and funding data. We need to be careful and deliberate in our analysis in order to minimize harm.
+
+## Analyses with a short description of results
+
+*Thu's results*
+
+This map shows the deviation in SEDA scores from the national standard for each county, providing a broad overview of academic achievement levels in Californian counties. Overall, areas in cities or richer suburbs (Silicon Valley, Los Angeles, San Diego) have higher academic performance than national average, shown through brigher colors (yellow and green). On the other hand, areas with fewer schools (e.g. Inyo – a national forest area) have lower academic performance than national average, denoted by darker (blue and purple) colors.
+
+
+```{r}
+# Read CA counties shapefile
+ca_counties <- read_sf('CA_Counties')
+ca_counties <- ca_counties %>%
+  st_transform(crs = "NAD83")
+```
+
+```{r}
+school_map <- merged_table %>%
+  select(CDSCode, School, gradecenter, gcs_mn_avg_ol, Longitude, Latitude) %>%
+  filter(!is.na(gradecenter) & !is.na(gcs_mn_avg_ol)) %>% #7390 after NA gradecenter, 6997 after both conditions
+  distinct %>%
+  mutate(diff_from_gradecenter = gcs_mn_avg_ol - gradecenter) %>%
+  mutate(gcs_type = ifelse(diff_from_gradecenter < 0, "Below NAEP Average", ifelse(diff_from_gradecenter > 0, "Above NAEP Average", "At NAEP Average")))
+
+school_map_sf <- school_map %>% 
+  st_as_sf(coords = c('Longitude', 'Latitude'), crs = "NAD83")
+```
+
+```{r}
+# Joining school with county map
+school_county_sf <- st_join(school_map_sf, ca_counties) 
+
+grade_diff_by_county <- school_county_sf %>%
+  st_drop_geometry() %>% #removes geometry - makes calculation more efficient 
+  group_by(NAMELSAD) %>%
+  summarise(mean_gcs_diff = mean(diff_from_gradecenter))
+
+grade_diff_by_county_geo <- ca_counties %>%
+  left_join(grade_diff_by_county, by="NAMELSAD")
+# 
+# summary(grade_diff_by_county_geo$mean_gcs_diff)
+
+# breaks_qt_grade <- classIntervals(c(min(grade_diff_by_county_geo$mean_gcs_diff) - .00001, grade_diff_by_county_geo$mean_gcs_diff), n = 4, style = "quantile")
+
+grade_diff_by_county_with_breaks_geo <- grade_diff_by_county_geo %>%
+  mutate(grade_diff_cat = factor(cut(mean_gcs_diff, breaks=c(-2, -1, 0, 1, 2))))
+
+ggplot() + 
+  geom_sf(data=grade_diff_by_county_with_breaks_geo, aes(fill=grade_diff_cat)) + 
+  scale_fill_met_d(name = "Derain",labels=c('1-2 grades lower than national average', 'Less than 1 grade lower than average', '0-1 grade higher than national average'), direction=-1) +
+  # scale_fill_manual(values = c("red","yellow","seagreen2"))+
+  labs(fill = "Achievement Score Difference \nfrom NAEP standard", color = colortheme, title = "Grade Cohort Standardized Achievement Score Difference from NAEP standard \nby California County", subtitle= "according to the Educational Opportunity Project at Stanford University") +
+  theme_map() + 
+  theme(legend.position = "right") 
+```
+
+*Jeremy's results*
+
+We examined solely the schools for which we have complete data available, i.e., the schools in the intersection of our datasets. Among these schools, across all metrics, an increase in per-pupil government spending (both state and federal) showed a negative correlation with performance. At first glance, the outcomes appear to be linked to the increase in per-pupil spending when there is a significant percentage of students who are English learners, in the foster care system, or eligible for free/reduced lunch.
+
+```{r message=FALSE, warning=FALSE}
+min_max_norm <- function(x) {
+    (x - min(x, na.rm=TRUE)) / (max(x, na.rm=TRUE) - min(x, na.rm=TRUE))
+}
+
+# model metrics by per pupil funding
+grouped_merged_table <- merged_table %>%
+  filter(flag_nerds == 'false' || is.na(flag_nerds)) %>%
+  filter(flag_f33 != '1' || is.na(flag_f33)) %>%
+  mutate(pp_total_raw = as.numeric(pp_total_raw))%>%
+  filter(pp_total_raw < 100000) %>% #filters 1 school out
+  # mutate to then as.numeric
+  mutate(
+      science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard),
+      science_data_Physical.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Physical.Sciences.Domain.Percent.Above.Standard),
+      science_data_Life.Sciences.Domain.Percent.Above.Standard = as.numeric(science_data_Life.Sciences.Domain.Percent.Above.Standard),
+      ela_data_currstatus = as.numeric(ela_data_currstatus),
+      gcs_mn_avg_ol = as.numeric(gcs_mn_avg_ol)
+  ) %>%
+  mutate(ela_data_currstatus = ela_data_currstatus * ela_data_currdenom) %>%
+  group_by(CDSCode, pp_total_raw, Latitude, Longitude) %>%
+  summarise(
+    science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = mean(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),
+    science_data_Physical.Sciences.Domain.Percent.Above.Standard = mean(science_data_Physical.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),
+    science_data_Life.Sciences.Domain.Percent.Above.Standard = mean(science_data_Life.Sciences.Domain.Percent.Above.Standard, na.rm = TRUE),
+    ela_data_currstatus = mean(ela_data_currstatus, na.rm = TRUE),
+    gcs_mn_avg_ol = mean(gcs_mn_avg_ol, na.rm = TRUE),
+  ) %>%
+  ungroup()
+
+graph_ready <- grouped_merged_table %>%
+  na.omit() %>% #only looking at the same schools. this line is doing a lot though
+  filter(pp_total_raw < 20000) %>% # removes 2 schools
+  # normalize the metrics
+    mutate(
+        science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard = min_max_norm(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard),
+        science_data_Physical.Sciences.Domain.Percent.Above.Standard = min_max_norm(science_data_Physical.Sciences.Domain.Percent.Above.Standard),
+        science_data_Life.Sciences.Domain.Percent.Above.Standard = min_max_norm(science_data_Life.Sciences.Domain.Percent.Above.Standard),
+        ela_data_currstatus = min_max_norm(ela_data_currstatus),
+        gcs_mn_avg_ol = min_max_norm(gcs_mn_avg_ol)
+    ) %>%
+  group_by(CDSCode) %>%
+  pivot_longer(cols=c(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard,science_data_Physical.Sciences.Domain.Percent.Above.Standard,science_data_Life.Sciences.Domain.Percent.Above.Standard,ela_data_currstatus,gcs_mn_avg_ol))
+fl <- c("English Language Arts", "Grade Cohort Standardized", "Earth + Space", "Life Sciences", "Physical Sciences")
+names(fl) <- c("ela_data_currstatus", "gcs_mn_avg_ol", "science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard", "science_data_Life.Sciences.Domain.Percent.Above.Standard", "science_data_Physical.Sciences.Domain.Percent.Above.Standard")
+graph_ready %>%
+  ggplot(aes(color = name, y = pp_total_raw, x = value)) +
+  geom_point(alpha=0.3)+
+  facet_wrap(~name, labeller=labeller(name=fl))+
+  geom_smooth()+
+  labs(x = "Per Pupil Funding", y = "Normalized Metric", title = "Metric Performance by Total Per-Pupil Funding") +
+  theme_bw() +
+  theme(
+    legend.title = element_blank(),
+    legend.text = element_text(size = 8),
+    legend.position = "none"
+  ) +
+  scale_color_met_d(name = colortheme)
+```
+
+
+*Nathaniel's results*
+
+
+```{r message=FALSE, warning=FALSE}
+
+lunchfundingmod<-wide_merged_data %>% 
+  filter(!is.na(pp_total_raw)&!is.na(perfrl)) %>% 
+  lm(formula = as.numeric(pp_total_raw) ~ as.numeric(perfrl)) %>%
+  summary()
+
+school_map <- wide_merged_data %>%
+  mutate(pp_total_raw_frl_adjusted = as.numeric(pp_total_raw) - as.numeric(perfrl)*lunchfundingmod$coefficients[2],
+  pp_total_raw = as.numeric(pp_total_raw)) %>%
+  select(CDSCode, School, pp_total_raw, pp_total_raw_frl_adjusted, Longitude, Latitude) %>%
+  filter(!is.na(pp_total_raw) & !is.na(pp_total_raw_frl_adjusted)) %>% #7390 after NA gradecenter, 6997 after both conditions
+  distinct %>%
+  mutate(fund_cat = ifelse(pp_total_raw < 10000, "< 9999", ifelse(pp_total_raw < 15000, "9999 < Funding < 14999", ifelse(pp_total_raw < 20000, "14999 < Funding < 19999", "> 19999"))))
+
+school_map_sf <- school_map %>% 
+  st_as_sf(coords = c('Longitude', 'Latitude'), crs = "NAD83")
+
+
+school_county_sf <- st_join(school_map_sf, ca_counties) 
+
+grade_diff_by_county <- school_county_sf %>%
+  st_drop_geometry() %>% #removes geometry - makes calculation more efficient 
+  group_by(NAMELSAD) %>%
+  summarise(mean_fund = mean(pp_total_raw))
+
+grade_diff_by_county_geo <- ca_counties %>%
+  left_join(grade_diff_by_county, by="NAMELSAD")
+# 
+# summary(grade_diff_by_county_geo$mean_gcs_diff)
+
+# breaks_qt_grade <- classIntervals(c(min(grade_diff_by_county_geo$mean_gcs_diff) - .00001, grade_diff_by_county_geo$mean_gcs_diff), n = 4, style = "quantile")
+
+grade_diff_by_county_with_breaks_geo <- grade_diff_by_county_geo %>%
+  mutate(fund_cat = factor(cut(mean_fund, breaks=c(0, 7500, 12500, 17500, 22500, Inf))))
+
+ggplot() + 
+  geom_sf(data=grade_diff_by_county_with_breaks_geo, aes(fill=fund_cat)) + 
+  scale_fill_met_d(name = "Derain",labels=c('1-2 grades lower than national average', 'Less than 1 grade lower than average', '0-1 grade higher than national average'), direction=-1) +
+  # scale_fill_manual(values = c("red","yellow","seagreen2"))+
+  labs(fill = "Achievement Score Difference \nfrom NAEP standard", color = colortheme, title = "Grade Cohort Standardized Achievement Score Difference from NAEP standard \nby California County", subtitle= "according to the Educational Opportunity Project at Stanford University") +
+  theme_map() + 
+  theme(legend.position = "right") 
+
+
+
+
+
+
+# counties <- st_as_sf(maps::map("county", plot = FALSE, fill = TRUE))
+# counties <- subset(counties, grepl("california", counties$ID))
+# world <- ne_countries(scale = "medium", returnclass = "sf")
+# 
+# ggplot(data = world) +
+#   geom_sf(data = counties, fill='#f0f1f9') + 
+#   geom_point(data = (wide_merged_data%>%filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=as.numeric(pp_total_raw),size=as.numeric(ncesenroll)), alpha =.1) + 
+#   theme_map() +
+#   scale_color_gradientn(colors = met.brewer(name = "Derain"), limits=c(8000,30000)) +
+#   scale_size_area(max_size = 2) +
+#   labs(x="Longitude",y="Latitude",color="Raw Spending",title = "California School Location and Spending")+guides(size=FALSE)+
+#   theme(legend.position = c(.8,.6))
+```
+
+Spending per student varies significantly across the state. We thought that this might explain some of the funding-achievement issue we had come across. After seeing that the same negative relationship existed to some degree in each locale we decided that location, or at least type of area, was not the factor we were looking for. It is also worth noting that the 'Rural' and 'Town' areas seem to be under performing for some reason.
+
+```{r message=FALSE, warning=FALSE}
+wide_merged_data %>% filter(!is.na(urbanicity)) %>%
+  ggplot(aes(x=as.numeric(pp_total_raw), y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)), color=urbanicity)) +
+  geom_point(alpha = .1) + 
+  geom_smooth(method = lm) + 
+  facet_wrap(~urbanicity) + 
+  scale_x_continuous(limits = c(8000,18000)) + 
+  theme_minimal()+
+  labs(y="Grade Cohort Score", x= "Per Student Spending") + guides(color=FALSE) +   geom_hline(yintercept = 0)
+```
+
+
+```{r funding models, warning=FALSE, results='hide'}
+fundingmod<-wide_merged_data %>% 
+  filter(!is.na(pp_total_raw)&!is.na(perfrl)) %>% 
+  lm(formula = as.numeric(pp_total_raw) ~ as.numeric(perfrl) + 
+       as.numeric(lep_flag) + 
+       as.numeric(perfrl)*as.numeric(lep_flag)) %>%
+  summary()
+
+lunchfundingmod<-wide_merged_data %>% 
+  filter(!is.na(pp_total_raw)&!is.na(perfrl)) %>% 
+  lm(formula = as.numeric(pp_total_raw) ~ as.numeric(perfrl)) %>%
+  summary()
+
+fundingmod$coefficients
+lunchfundingmod$coefficients
+```
+
+```{r message=FALSE, fig.height=6,fig.width=8, warning=FALSE}
+fl<-c("Adjusted Spending","Raw Spending")
+
+wide_merged_data %>%
+  mutate(pp_total_raw_frl_adjusted = as.numeric(pp_total_raw) - as.numeric(perfrl)*lunchfundingmod$coefficients[2],
+  pp_total_raw = as.numeric(pp_total_raw)) %>%
+  pivot_longer(cols = c(pp_total_raw_frl_adjusted,pp_total_raw)) %>%
+  ggplot(aes(x=value, y=gcs_mn_avg_ol-gradecenter, color = name)) + 
+    geom_point(alpha = .1)+
+    geom_smooth() +
+    geom_hline(yintercept = 0, alpha=.5) + 
+    scale_x_continuous(limits = c(8000,18000)) +
+    scale_y_continuous(limits = c(-4, 4)) +
+    scale_color_discrete(type = c("#454545", '#611BB8'), labels = c("Raw Spending", "Adjusted Spending")) + 
+    labs(x = "Per Student Funding", y = "Grade Cohort Score", color="") + 
+    theme_minimal() + 
+    theme(legend.position = c(.8,.81))
+
+wide_merged_data %>%
+  mutate(pp_total_raw_frl_adjusted = as.numeric(pp_total_raw) - as.numeric(perfrl)*lunchfundingmod$coefficients[2],
+  pp_total_raw = as.numeric(pp_total_raw)) %>%
+  pivot_longer(cols = c(pp_total_raw_frl_adjusted,pp_total_raw)) %>%
+ ggplot(aes(x=as.numeric(perhsp),value,color=name)) +
+      geom_point(alpha = .05) +
+      geom_smooth(method=lm) + 
+      theme_minimal()+
+      theme(legend.position = c(.2,.9) ) + 
+      labs(x="Percent Hispanic", y="Per student funding", color="")+
+      scale_y_continuous(limits = c(5000,20000)) +
+      scale_color_discrete(type = c("#454545", '#611BB8'), labels = c("Raw Spending", "Adjusted Spending"))
+```
+
+We understand that funding for schools in California is based in part on the percent of students eligible for free and reduced lunch, the percent in the foster care system, and the percent that have limited English. So we decided to fit some simple models of funding and these variables. We then adjusted per student spending based on the simplest model: `funding ~ free and reduced lunch`. This flattened the relationship between funding and achievement and flipped the relationship between percent Hispanic and spending.
+
+```{r message=FALSE, warning=FALSE}
+wide_merged_data %>% filter(!is.na(urbanicity)) %>% mutate(pp_total_raw_frl_adjusted = as.numeric(pp_total_raw) - as.numeric(perfrl)*lunchfundingmod$coefficients[2],
+  pp_total_raw = as.numeric(pp_total_raw)) %>%
+  ggplot(aes(x=as.numeric(pp_total_raw_frl_adjusted), y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)), color=urbanicity)) +
+  geom_point(alpha = .1) + 
+  geom_smooth(method = lm) + 
+  facet_wrap(~urbanicity) + 
+  scale_x_continuous(limits = c(8000,18000)) + 
+  theme_minimal()+
+  labs(y="Grade Cohort Score", x= "Adjusted Per Student Spending") + guides(color=FALSE) +   geom_hline(yintercept = 0)
+```
+
+The flattened relationship persists in each area.  
+
+The percent of students eligible for free and reduced lunch directly influences spending in the state of California. However, in wealthy localities with strong property tax bases, funding often exceeds the amount allotted by the state of California. These areas also have a lower percent of students eligible for free and reduced lunch. So our model is not looking directly at the supplemental grant received for the percent of students eligible for free and reduced lunch. Nevertheless we think it provides a more accurate picture than the raw spending metric. 
+
+The adjustment is very very rudimentary and would benefit from more investigation. We could probably use school location in conjunction with census data to get some picture of property taxes and local funding, but variation in local tax and funding structures could make this difficult. 
+
+
+## Project plan
+
+Moving forward, we would love to: 
+
+- Expand further on funding metrics and explore ways to adjust them in a way that they don't give a false picture when taken out of context (Nathaniel has put in some work in this regard and we have a plan to accomplish this)
+
+- Identify more potential metrics through bivariate visualizations and adjust them so that we can put all of them together into a model that explains different education proxies
+
+- Tell a better story with missing data (for example, why certain data is missing, where is it from, where does the data in our different datasets overlap and where does it not, are there trends here or not)
+
+
+## Summary of contributions
+
+Thu, Nathaniel, and Jeremy all contribute equally to this checkpoint. Specifically:
+
+- Thu was responsible for cleaning and standardizing school identifiers to merge all datasets together in long format. She also cleaned the data for and visualized the general map displaying the deviation in SEDA scores from the national standard for each county, which provides a broad overview of academic achievement levels in Californian counties. Lastly, she consolidated the narration for the results and also this write-up using all of Jeremy and Nathaniel's inputs, and organized the slides for the intermediate presentation.
+
+- Nathaniel was responsible for cleaning and merging the dataset into a wide format, as well as creating several visualizations that aided us in developing a narrative about the funding for this intermediate visualization. Additionally, he proposed a new concept for modeling an adjusted funding metric, which will provide us with a more comprehensive understanding of the correlation between funding and academic achievement at the school level.
+
+- Jeremy was responsible for gathering and aggregating some of the initial datasets that Thu then later merged with other datasets. He also conducted various analyses to compare the trend of different educational proxies as school funding increases. Due to his extensive knowledge about California, he is the primary result interpreter of the team. This enables us to contextualize the outcomes and generate ideas for future steps. Furthermore, he played a role in exploring different potential variables by cleaning the data for and visualizing various bivariate graphs.
+
+

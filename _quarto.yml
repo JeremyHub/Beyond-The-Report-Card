@@ -1,0 +1,36 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Beyond the Report Card"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: motivation.qmd
+        text: Motivation
+      - href: county_insights.qmd
+        text: County-Level Insights
+      - href: school_insights.qmd
+        text: School-Level Insights
+      - href: model.qmd
+        text: Predictor Significance
+      - href: result.qmd
+        text: Discussion
+  page-footer:
+    left: |
+      &copy; Thu Dang, Nathaniel Reimer, Jeremy Hubinger 2023<br>
+      All content licensed under <i class='bi-badge-cc'></i>
+      [(CC BY-NC-SA 4.0)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
+    right: |
+      Site built with <a href='https://quarto.org/'>Quarto</a>
+
+format:
+  html:
+    theme: zephyr
+    css: styles.css
+    toc: true
+    
+editor: visual
+

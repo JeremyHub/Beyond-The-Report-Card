@@ -1,0 +1,123 @@
+```{r}
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(tidymodels)
+library(probably) #install.packages('probably')
+library(glmnet)
+tidymodels_prefer()
+
+set.seed(69)
+```
+
+```{r}
+
+# Make sure you set reference level (the outcome you are NOT interested in)
+data <- merged_table %>%
+  mutate(across(c("gcs_mn_avg_eb", "ela_data_currstatus", "pp_total_raw"), as.numeric)) %>%
+  drop_na(c("gcs_mn_avg_eb", "ela_data_currstatus", "ela_data_studentgroup", "Magnet", "pp_total_raw"))
+
+# Lasso Model Spec
+lm_lasso_spec <- 
+  linear_reg() %>%
+  set_args(mixture = 1, penalty = 0) %>% ## mixture = 1 indicates Lasso, we'll choose penalty later
+  set_engine(engine = 'glmnet') %>% #note we are using a different engine
+  set_mode('regression') 
+
+# Recipe with standardization (!)
+data_rec <- recipe( gcs_mn_avg_eb ~ ela_data_currstatus + ela_data_studentgroup + Magnet + pp_total_raw , data = data) %>%
+    step_nzv(all_predictors()) %>% # removes variables with the same value
+    step_novel(all_nominal_predictors()) %>% # important if you have rare categorical variables 
+    step_normalize(all_numeric_predictors()) %>%  # important standardization step for LASSO
+    step_dummy(all_nominal_predictors())  # creates indicator variables for categorical variables
+
+# Workflow (Recipe + Model)
+lasso_wf <- workflow() %>% 
+  add_recipe(data_rec) %>%
+  add_model(lm_lasso_spec)
+
+# Fit Model
+lasso_fit <- lasso_wf %>% 
+  fit(data = data) # Fit to data
+
+plot(lasso_fit %>% extract_fit_parsnip() %>% pluck('fit'), # way to get the original glmnet output
+     xvar = "lambda") # glmnet fits the model with a variety of lambda penalty values
+```
+
+```{r}
+# Create CV folds
+data_cv10 <- vfold_cv(data, v = 10)
+
+# Lasso Model Spec with tune
+lm_lasso_spec_tune <- 
+  linear_reg() %>%
+  set_args(mixture = 1, penalty = tune()) %>% ## mixture = 1 indicates Lasso
+  set_engine(engine = 'glmnet') %>% #note we are using a different engine
+  set_mode('regression') 
+
+# Workflow (Recipe + Model)
+lasso_wf_tune <- workflow() %>% 
+  add_recipe(data_rec) %>%
+  add_model(lm_lasso_spec_tune) 
+
+# Tune Model (trying a variety of values of Lambda penalty)
+penalty_grid <- grid_regular(
+  penalty(range = c(-5, 3)), #log10 transformed 10^-5 to 10^3
+  levels = 30)
+
+tune_res <- tune_grid( # new function for tuning parameters
+  lasso_wf_tune, # workflow
+  resamples = data_cv10, # cv folds
+  metrics = metric_set(rmse, mae),
+  grid = penalty_grid # penalty grid defined above
+)
+
+# Visualize Model Evaluation Metrics from Tuning
+autoplot(tune_res) + theme_classic()
+
+# Summarize Model Evaluation Metrics (CV)
+collect_metrics(tune_res) %>%
+  filter(.metric == 'rmse') %>% # or choose mae
+  select(penalty, rmse = mean) 
+
+best_penalty <- select_best(tune_res, metric = 'rmse') # choose penalty value based on lowest mae or rmse
+best_se_penalty <- select_by_one_std_err(tune_output, metric = 'mae', desc(penalty))
+
+# Fit Final Model
+final_wf <- finalize_workflow(lasso_wf_tune, best_penalty) # incorporates penalty value to workflow
+
+final_fit <- fit(final_wf, data = data)
+
+tidy(final_fit)
+```
+
+```{r}
+final_wf <- finalize_workflow(lasso_wf_tune, best_penalty) # incorporates penalty value to workflow
+final_wf_se <- finalize_workflow(lasso_wf_tune, best_se_penalty) # incorporates penalty value to workflow
+
+final_fit <- fit(final_wf, data = data)
+final_fit_se <- fit(final_wf_se, data = data)
+glmnet_output <- final_fit_se %>% extract_fit_parsnip() %>% pluck('fit') # get the original glmnet output
+
+lambdas <- glmnet_output$lambda
+coefs_lambdas <- 
+  coefficients(glmnet_output, s = lambdas )  %>% 
+  as.matrix() %>%  
+  t() %>% 
+  as.data.frame() %>% 
+  mutate(lambda = lambdas ) %>% 
+  select(lambda, everything(), -`(Intercept)`) %>% 
+  pivot_longer(cols = -lambda, 
+               names_to = "term", 
+               values_to = "coef") %>%
+  mutate(var = purrr::map_chr(term,~.[1]))
+
+coefs_lambdas %>%
+  ggplot(aes(x = lambda, y = coef, group = term, color = var)) +
+  geom_line() +
+  geom_vline(xintercept = best_se_penalty %>% pull(penalty), linetype = 'dashed') + 
+  theme_classic() + 
+  theme(legend.position = "bottom", legend.text=element_text(size=8)) +
+  xlim(0,.9)
+```
+
