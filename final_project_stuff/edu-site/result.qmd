@@ -46,3 +46,5 @@ ca_counties <- ca_counties %>%
 ```
 
 # Add result here
+
+- Growth score is pretty robust since there are no variables that actually predict it. 

@@ -37,9 +37,9 @@
   {
     "objectID": "motivation.html",
     "href": "motivation.html",
-    "title": "Beyond the Report Card: Investigating the Factors that Define Educational Achievement",
+    "title": "Beyond the Report Card: Our Motivation",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "A change in direction\nInitially, our focus was on the correlation between affordable housing and educational achievement. However, during the process of selecting appropriate educational proxies, we found ourselves delving into the factors behind the measurements of these proxies. As a result, we decided to seek the guidance of Professor Lesley Lavery, who specializes in public policies in education. We hope to gain a better understanding of the educational proxies currently in use and to investigate whether there are additional factors that impact educational outcomes and potentially render the current proxies interchangeable or distinct from other measures.\n\n\nPrevious literature\nThere are several reasons why education proxies differ, including the influence of socioeconomic status, the difficulty in standardizing scores across schools, and variations in school budgets. While % of high school graduates may be a more robust metric to estimate the education achievement level in different areas, it is harder to standardize score-related metrics due to differences in grading scales and the difficulty of obtaining student-level data.\nAdditionally, due to the diverse student body in the US, it is difficult to identify specific teaching approaches that are effective for particular groups of students. The Measures of Effective Teaching Project by the Gates Foundation aimed to establish innovative teacher-evaluation systems incorporating classroom observation rubrics and student achievement growth measures. Although the Gates Foundation allocated $600 million towards this initiative, it turned out to be a challenging task, particularly in identifying effective teaching elements that positively influence students’ academic performance. Consequently, this research heightened our curiosity in examining other factors that contribute to students’ achievements beyond teaching approaches (Will 2018).\n\n\nWhy California?\nVarious socioeconomic factors can affect students’ academic performance, beyond just teaching methods. Given that California is a diverse state with people from different socioeconomic backgrounds, it presents an intriguing case study for our research topic, which focuses on exploring the socioeconomic factors that influence students’ grades.\n\n\n\n\n\nReferences\n\nWill, Madeline. 2018. “‘An Expensive Experiment’: Gates Teacher-Effectiveness Program Shows No Gains for Students.” EducationWeek. https://www.edweek.org/teaching-learning/an-expensive-experiment-gates-teacher-effectiveness-program-shows-no-gains-for-students/2018/06."
   },
   {
     "objectID": "county_insights.html#comparing-performance-metrics",
@@ -82,5 +82,12 @@
     "title": "Beyond the Report Card: What are the insights at the county level that we can observe?",
     "section": "Aggregated county-level language arts achievement (Reasoning Through Language Arts – RLA) of students of different socioeconomic status groups",
     "text": "Aggregated county-level language arts achievement (Reasoning Through Language Arts – RLA) of students of different socioeconomic status groups"
+  },
+  {
+    "objectID": "county_insights.html#aggregated-county-level-math-and-reasoning-language-arts-rla-achievement-of-students-of-different-socioeconomic-status-groups",
+    "href": "county_insights.html#aggregated-county-level-math-and-reasoning-language-arts-rla-achievement-of-students-of-different-socioeconomic-status-groups",
+    "title": "Beyond the Report Card: What are the insights at the county level that we can observe?",
+    "section": "Aggregated county-level math and reasoning language arts (RLA) achievement of students of different socioeconomic status groups",
+    "text": "Aggregated county-level math and reasoning language arts (RLA) achievement of students of different socioeconomic status groups"
   }
 ]
