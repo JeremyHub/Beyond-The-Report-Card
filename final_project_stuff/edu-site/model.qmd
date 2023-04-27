@@ -45,4 +45,103 @@ ca_counties <- ca_counties %>%
   st_transform(crs = "NAD83")
 ```
 
-# Add LASSO code here
+# LASSO code
+
+```{r lasso data setup}
+data <- wide_merged_data %>% 
+  mutate(pp_total_raw = as.numeric(pp_total_raw)) %>%
+  mutate(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99 = as.numeric(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99),
+        science_data_Physical.Sciences.Domain.Percent.Above.Standard_99 = as.numeric(science_data_Physical.Sciences.Domain.Percent.Above.Standard_99),
+        science_data_Life.Sciences.Domain.Percent.Above.Standard_99 = as.numeric(science_data_Life.Sciences.Domain.Percent.Above.Standard_99),
+        ela_data_currstatus_ALL = as.numeric(ela_data_currstatus_ALL),
+        gcs = as.numeric(gcs_mn_avg_ol - gradecenter),
+        growthscore_ela = as.numeric(growthscore_ela),
+        growthscore_math = as.numeric(growthscore_math)
+    ) %>% mutate(
+        science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99 = min_max_norm(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99),
+        science_data_Physical.Sciences.Domain.Percent.Above.Standard_99 = min_max_norm(science_data_Physical.Sciences.Domain.Percent.Above.Standard_99),
+        science_data_Life.Sciences.Domain.Percent.Above.Standard_99 = min_max_norm(science_data_Life.Sciences.Domain.Percent.Above.Standard_99),
+        ela_data_currstatus_ALL = min_max_norm(ela_data_currstatus_ALL),
+        gcs = min_max_norm(gcs_mn_avg_ol - gradecenter),
+        growthscore_ela = min_max_norm(growthscore_ela),
+        growthscore_math = min_max_norm(growthscore_math)
+    ) 
+
+# Lasso Model Spec
+lm_lasso_spec <- 
+  linear_reg() %>%
+  set_args(mixture = 1, penalty = 0) %>%
+  set_engine(engine = 'glmnet') %>% 
+  set_mode('regression') 
+```
+
+```{r lasso data split}
+outcome <- data %>% select(ela_data_currstatus_ALL, gcs, science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99, science_data_Life.Sciences.Domain.Percent.Above.Standard_99, science_data_Physical.Sciences.Domain.Percent.Above.Standard_99, growthscore_ela, growthscore_math)
+
+predictors <- ((data %>% select(-starts_with("science_data"), -starts_with("ela_data")))[27:151]) %>% select(-census_id,-DATE_CUR,-CATEGORY,-ST_LEAID,-LEANM,-ST_SCHID,-SCHNAM,-GRADE,STNAM,-FIPST,-LEAID,-reported_which,-reportingyear,-studentgroup,-schoolname.y,       -districtname,-countyname,-EILCode,-EILName,-SOC,-DOC,-YearRoundYN,-FederalDFCDistrictID,-Latitude,-Longitude,-AdmFName,-AdmLName,-AdmEmail,-LastUpDate,-school_id,-         schoolname.x,-ncesdistid_admin,-ncesdistid_geo,-distid_stateassigned,-schoolid_stateassigned,-distname,-address,-city,-state,-zip_code,-level.x,-sedasch,-sedaschname         ,-fips,-stateabb,-subcat,-subgroup,-sedalea,-schnam,-schcity,-type,-level.y,-ncesid,-rtype,-SCHOOL_YEAR,-STNAM,-X, -GSoffered) %>%
+  select(-contains("growthscore"), -contains("decilerank"), -starts_with("ELA"), -starts_with("MTH"), -charter_flag, -coe_flag, -dass_flag, -enrollmetric_raw, -gcs_mn_avg_ol, -gcs_mn_avg_eb) %>%
+  mutate(across(starts_with("pp"), as.numeric)) %>%
+  mutate(across(ends_with("raw"), as.numeric)) %>% 
+  mutate(ncesenroll = as.numeric(ncesenroll))
+```
+
+```{r lasso function}
+#| fig-width: 50
+#| fig-height: 10
+do_lasso<-function(variable, data) {
+    
+    processeddata <- cbind(variable, data) %>%
+      filter(complete.cases(.))
+
+  
+    data_rec <- recipe(variable ~ ., data = processeddata) %>%
+      step_nzv(all_predictors()) %>%
+      step_novel(all_nominal_predictors()) %>%
+      step_normalize(all_numeric_predictors()) %>%
+      step_dummy(all_nominal_predictors())
+    
+    lasso_wf <- workflow() %>%
+      add_recipe(data_rec) %>%
+      add_model(lm_lasso_spec)
+    
+    lasso_fit <- lasso_wf %>%
+      fit(data = processeddata) # Fit to data
+    
+    glmnet_output <- lasso_fit %>% extract_fit_parsnip() %>% pluck('fit')
+    
+    
+    lambdas <- glmnet_output$lambda
+    coefs_lambdas <- 
+      coefficients(glmnet_output, s = lambdas )  %>% 
+      as.matrix() %>%  
+      t() %>% 
+      as.data.frame() %>% 
+      mutate(lambda = lambdas ) %>% 
+      select(lambda, everything(), -`(Intercept)`) %>% 
+      pivot_longer(cols = -lambda, 
+                   names_to = "term", 
+                   values_to = "coef") %>%
+      mutate(var = purrr::map_chr(term,~.[1]))
+    
+      number <- nrow(processeddata)
+      name <- deparse(substitute(variable))
+      
+      middle <- coefs_lambdas$lambda[[floor(length(coefs_lambdas$lambda)*0.2)]]
+      
+      coefs_lambdas %>% 
+        ggplot(aes(x = lambda, y = coef, group = term, color = var)) +
+          labs(subtitle = paste0(name,": ",number)) +
+          geom_line() +
+          theme_classic() + 
+          theme(legend.position = "none", legend.text=element_text(size=8)) +
+          geom_label_repel(data = coefs_lambdas %>% filter(lambda == middle, (coef > 0.001) | (coef < -0.001)), aes(x = lambda, y = coef, label = var))
+        #coord_cartesian(xlim=c(0,max(coefs_lambdas$lambda)*0.5), ylim=c(min(coefs_lambdas$coef)*0.8,max(coefs_lambdas$coef)*0.8))
+}
+```
+
+```{r perform lasso}
+do_lasso(outcome$ela_data_currstatus_ALL, predictors)
+do_lasso(outcome$gcs, predictors)
+do_lasso(outcome$growthscore_ela, predictors)
+do_lasso(outcome$growthscore_math, predictors)
+```
