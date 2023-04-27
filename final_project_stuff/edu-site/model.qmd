@@ -21,6 +21,7 @@ library(leaflet)
 library(probably) #install.packages('probably')
 library(glmnet)
 library(tidymodels)
+library(ggrepel)
 tidymodels_prefer()
 ```
 
