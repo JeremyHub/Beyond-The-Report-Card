@@ -30,17 +30,17 @@ defaultcolor = met.brewer(palname,10)[9]
 ```
 
 ```{r load datasets}
-load("../CombinedDataLongFormat.RData")
-load("../WideMergedData.RData")
+load("CombinedDataLongFormat.RData")
+load("WideMergedData.RData")
 ```
 
 ```{r load cleaned dataset for county achievement metrics}
-math_ca_gcs_df <- read_csv("../AllDatasets/math_ca_gcs_df.csv")
-rla_ca_gcs_df <- read_csv("../AllDatasets/rla_ca_gcs_df.csv")
+math_ca_gcs_df <- read_csv("AllDatasets/math_ca_gcs_df.csv")
+rla_ca_gcs_df <- read_csv("AllDatasets/rla_ca_gcs_df.csv")
 ```
 
 ```{r maps load shapefile}
-ca_counties <- read_sf('../CA_Counties')
+ca_counties <- read_sf('CA_Counties')
 ca_counties <- ca_counties %>%
   st_transform(crs = "NAD83")
 ```
@@ -140,7 +140,6 @@ summary_rla_data_with_geo <- summary_rla_data_with_geo %>%
   mutate(mean_gcs_diff_cat = factor(cut(mean_gcs_diff, breaks=c(-3, -2, -1, 0, 1, 2, 3))))
 ```
 
-
 ```{r math ecd performance map}
 pal <- colorFactor(
   palette = met.brewer(palname,6)[1:6],
@@ -201,6 +200,3 @@ leaflet() %>%
                    position = "bottomleft", options = layersControlOptions(collapsed = FALSE)) %>% 
   addLegend(colors = met.brewer(palname,6)[1:6], values = ~mean_gcs_diff_cat, title = NULL, labels = c('2+ years behind','1-2 years behind', 'Less than 1 year behind', 'Less than 1 year ahead', '1-2 years ahead', '2+ years ahead'), group = "Economically Disadvantaged")
 ```
-
-
-
