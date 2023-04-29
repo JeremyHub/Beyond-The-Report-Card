@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-04-03">
+
+<title>Beyond the Report Card - Untitled</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Beyond the Report Card</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./motivation.html">
+ <span class="menu-text">Motivation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./county_insights.html">
+ <span class="menu-text">County-Level Insights</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./school_insights.html">
+ <span class="menu-text">School-Level Insights</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./model.html">
+ <span class="menu-text">Predictor Significance</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./result.html">
+ <span class="menu-text">Discussion</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-sources" id="toc-data-sources" class="nav-link active" data-scroll-target="#data-sources">Data Sources</a>
+  <ul class="collapse">
+  <li><a href="#school_data" id="toc-school_data" class="nav-link" data-scroll-target="#school_data">school_data</a></li>
+  <li><a href="#ela_metric_data" id="toc-ela_metric_data" class="nav-link" data-scroll-target="#ela_metric_data">ela_metric_data</a></li>
+  <li><a href="#ela-and-math-metrics" id="toc-ela-and-math-metrics" class="nav-link" data-scroll-target="#ela-and-math-metrics">ela and math metrics</a></li>
+  <li><a href="#science_metric_data" id="toc-science_metric_data" class="nav-link" data-scroll-target="#science_metric_data">science_metric_data</a></li>
+  <li><a href="#stanford_data-and-cov" id="toc-stanford_data-and-cov" class="nav-link" data-scroll-target="#stanford_data-and-cov">stanford_data and cov</a></li>
+  <li><a href="#ca_school_details" id="toc-ca_school_details" class="nav-link" data-scroll-target="#ca_school_details">ca_school_details</a></li>
+  <li><a href="#growth_aggr" id="toc-growth_aggr" class="nav-link" data-scroll-target="#growth_aggr">growth_aggr</a></li>
+  </ul></li>
+  <li><a href="#joining" id="toc-joining" class="nav-link" data-scroll-target="#joining">Joining</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Untitled</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 3, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+✔ ggplot2 3.4.0      ✔ purrr   1.0.1 
+✔ tibble  3.1.8      ✔ dplyr   1.0.10
+✔ tidyr   1.2.1      ✔ stringr 1.5.0 
+✔ readr   2.1.3      ✔ forcats 0.5.2 
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MetBrewer)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to GEOS 3.9.3, GDAL 3.5.2, PROJ 8.2.1; sf_use_s2() is TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="data-sources" class="level2">
+<h2 class="anchored" data-anchor-id="data-sources">Data Sources</h2>
+<section id="school_data" class="level3">
+<h3 class="anchored" data-anchor-id="school_data">school_data</h3>
+<p><a href="https://github.com/JeremyHub/STAT-456-Final/blob/8ef6fa6ce28785065f583f4c477c5deb11afd442/final_project_stuff/school_info_docs.pdf">Codebook</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>school_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'AllDatasets/ca_education.csv'</span>) <span class="co"># dataset of public K-12 spending by school</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>school_data_clean <span class="ot">&lt;-</span> school_data <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(flag_nerds <span class="sc">==</span> <span class="st">'false'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(flag_f33 <span class="sc">!=</span> <span class="st">'1'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>school_data identified by ncesid at school level – 10404</p>
+</section>
+<section id="ela_metric_data" class="level3">
+<h3 class="anchored" data-anchor-id="ela_metric_data">ela_metric_data</h3>
+<p><a href="https://github.com/JeremyHub/STAT-456-Final/blob/8ef6fa6ce28785065f583f4c477c5deb11afd442/final_project_stuff/ela_docs.pdf">Codebook</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ela_metric_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'AllDatasets/ca_edu_metrics.csv'</span>) <span class="co"># 2022 Academic Indicator (English Language Arts/Literacy) Data File</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ela_metric_data_clean <span class="ot">&lt;-</span> ela_metric_data <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(cds <span class="sc">&gt;</span> <span class="dv">0</span>, rtype <span class="sc">==</span> <span class="st">'S'</span>) <span class="sc">%&gt;%</span> <span class="co"># school record</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>color, <span class="sc">-</span>box) <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cds_standardized =</span> <span class="fu">as.character</span>(<span class="fu">paste0</span>(<span class="st">"0"</span>, cds)))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(ela_metric_data_clean) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"ela_data_"</span>, <span class="fu">colnames</span>(ela_metric_data_clean))</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>valuecols<span class="ot">&lt;-</span><span class="fu">names</span>(ela_metric_data_clean)[<span class="dv">10</span><span class="sc">:</span><span class="dv">21</span>]</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>ela_wide <span class="ot">&lt;-</span> ela_metric_data_clean <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> ela_data_studentgroup, <span class="at">values_from =</span> valuecols, <span class="at">names_sep =</span> <span class="st">"_"</span>) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ela_data_cds =</span> <span class="fu">as.character</span>(ela_data_cds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using an external vector in selections was deprecated in tidyselect 1.1.0.
+ℹ Please use `all_of()` or `any_of()` instead.
+  # Was:
+  data %&gt;% select(valuecols)
+
+  # Now:
+  data %&gt;% select(all_of(valuecols))
+
+See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</code></pre>
+</div>
+</div>
+<p>ela_metric_data identified by cds at school level – 9845 AND student group – 165532</p>
+</section>
+<section id="ela-and-math-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="ela-and-math-metrics">ela and math metrics</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ela_mth_proficiency_ranges<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"AllDatasets/nathanieldata.csv"</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(GRADE <span class="sc">==</span> <span class="st">"00"</span> <span class="sc">&amp;</span> CATEGORY <span class="sc">==</span> <span class="st">"ALL"</span>) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">NCESSCH =</span> <span class="fu">as.character</span>(NCESSCH), <span class="at">NCESSCH =</span> <span class="fu">paste0</span>(<span class="st">"0"</span>,NCESSCH))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="science_metric_data" class="level3">
+<h3 class="anchored" data-anchor-id="science_metric_data">science_metric_data</h3>
+<p><a href="https://github.com/JeremyHub/STAT-456-Final/blob/8ef6fa6ce28785065f583f4c477c5deb11afd442/final_project_stuff/science_docs.pdf">Codebook</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>science_metric_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'AllDatasets/science_ca_assesment.csv'</span>, <span class="at">sep =</span> <span class="st">"^"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>science_metrics_clean <span class="ot">&lt;-</span> science_metric_data <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cds =</span> <span class="fu">as.character</span>(<span class="fu">paste0</span>(<span class="dv">0</span>, <span class="fu">paste0</span>(<span class="fu">paste0</span>(County.Code,District.Code),<span class="fu">paste0</span>(<span class="dv">0</span>,School.Code))))) <span class="sc">%&gt;%</span> <span class="co"># add cds identifier</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># mutate(cds_standardized = ifelse(nchar(cds) == 13, as.character(paste0(0,cds)), cds)) %&gt;% # there are school codes missing the last 0, this fixes that to match other cds</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(County.Code <span class="sc">&gt;</span> <span class="dv">0</span>, Type.ID <span class="sc">==</span> <span class="dv">07</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>County.Code, <span class="sc">-</span>District.Code, <span class="sc">-</span>School.Code, <span class="sc">-</span>Filler) </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>valuecols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">names</span>(science_metrics_clean)[<span class="dv">8</span><span class="sc">:</span><span class="dv">25</span>],<span class="fu">names</span>(science_metrics_clean)[<span class="dv">4</span><span class="sc">:</span><span class="dv">5</span>])</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>science_metrics_wide <span class="ot">&lt;-</span> science_metrics_clean <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Grade, <span class="at">values_from =</span> valuecols)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(science_metrics_wide) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"science_data_"</span>, <span class="fu">colnames</span>(science_metrics_wide))</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(science_metrics_clean) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"science_data_"</span>, <span class="fu">colnames</span>(science_metrics_clean))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>science_metrics_clean identified by cds_standardized at school level – 8819 AND Grade – 25298</p>
+</section>
+<section id="stanford_data-and-cov" class="level3">
+<h3 class="anchored" data-anchor-id="stanford_data-and-cov">stanford_data and cov</h3>
+<p><a href="https://github.com/JeremyHub/STAT-456-Final/blob/82e84dd90db010d96edba2d74dc574c15648a10c/final_project_stuff/stanford_codebook.xlsx">Codebook</a></p>
+<p><a href="https://github.com/JeremyHub/STAT-456-Final/blob/82e84dd90db010d96edba2d74dc574c15648a10c/final_project_stuff/stanford_cov_codebook.xlsx">Covariate Codebook</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>stanford_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'AllDatasets/seda_school_pool_gcs_4.1.csv'</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>stanford_cov <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"AllDatasets/seda_cov_school_pool_4.1.csv"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>stanford_cov <span class="ot">&lt;-</span> stanford_cov <span class="sc">%&gt;%</span> <span class="fu">filter</span>(stateabb <span class="sc">==</span> <span class="st">"CA"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>stanford_data_clean <span class="ot">&lt;-</span> stanford_data <span class="sc">%&gt;%</span> </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(stateabb <span class="sc">==</span> <span class="st">'CA'</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sedasch, sedaschname, fips, stateabb, subcat, subgroup, gradecenter, gap, <span class="fu">contains</span>(<span class="st">"avg"</span>), <span class="sc">-</span><span class="fu">ends_with</span>(<span class="st">"se"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">standardized_school_id =</span> <span class="fu">paste0</span>(<span class="st">"0"</span>, sedasch)) <span class="sc">%&gt;%</span> <span class="co"># adding 0 in front of school id to match the format of the school dataset</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(stanford_cov)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Joining, by = c("sedasch", "fips", "stateabb")</code></pre>
+</div>
+</div>
+<p>stanford_data AND stanford_cov identify eachother by sedasch</p>
+<p>stanford_data AND stanford_cov identified by standardized_school_id – 8512</p>
+</section>
+<section id="ca_school_details" class="level3">
+<h3 class="anchored" data-anchor-id="ca_school_details">ca_school_details</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ca_school_details <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"AllDatasets/ca_school_details.xlsx"</span>) <span class="co"># CA schools metadata</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>ca_school_details_clean <span class="ot">&lt;-</span> ca_school_details <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(StatusType <span class="sc">==</span> <span class="st">"Active"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(School <span class="sc">!=</span> <span class="st">"No Data"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">school_id =</span> <span class="fu">paste0</span>(NCESDist, NCESSchool))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>ca_school_details_clean identified by school_id – 10629</p>
+</section>
+<section id="growth_aggr" class="level3">
+<h3 class="anchored" data-anchor-id="growth_aggr">growth_aggr</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>growth_aggr <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"AllDatasets/growthaggr.xlsx"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>growth_aggr_clean <span class="ot">&lt;-</span> growth_aggr <span class="sc">%&gt;%</span> <span class="fu">filter</span>(rtype <span class="sc">==</span> <span class="st">"S"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(studentgroup <span class="sc">==</span> <span class="st">"ALL"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> subject, <span class="at">values_from =</span> <span class="fu">c</span>(n_growthscores, growthscore, decilerank))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="joining" class="level2">
+<h2 class="anchored" data-anchor-id="joining">Joining</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>wide_merged_data <span class="ot">&lt;-</span> ca_school_details_clean <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(school_data_clean, <span class="at">by=</span><span class="fu">c</span>(<span class="st">'school_id'</span><span class="ot">=</span><span class="st">'ncesid'</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(science_metrics_wide, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"CDSCode"</span><span class="ot">=</span><span class="st">"science_data_cds"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(ela_wide, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"CDSCode"</span><span class="ot">=</span><span class="st">"ela_data_cds_standardized"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(stanford_data_clean, <span class="at">by=</span><span class="fu">c</span>(<span class="st">'school_id'</span><span class="ot">=</span><span class="st">'standardized_school_id'</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ncesid =</span> <span class="fu">paste0</span>(NCESDist,NCESSchool)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(growth_aggr_clean, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">'CDSCode'</span> <span class="ot">=</span> <span class="st">'cds'</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(ela_mth_proficiency_ranges, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"ncesid"</span><span class="ot">=</span><span class="st">"NCESSCH"</span>))</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(wide_merged_data, <span class="at">file=</span><span class="st">"WideMergedData.RData"</span>)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(wide_merged_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] "CDSCode"                                                               
+  [2] "NCESDist"                                                              
+  [3] "NCESSchool"                                                            
+  [4] "StatusType"                                                            
+  [5] "County"                                                                
+  [6] "District"                                                              
+  [7] "School"                                                                
+  [8] "Street"                                                                
+  [9] "StreetAbr"                                                             
+ [10] "City"                                                                  
+ [11] "Zip"                                                                   
+ [12] "State"                                                                 
+ [13] "MailStreet"                                                            
+ [14] "MailStrAbr"                                                            
+ [15] "MailCity"                                                              
+ [16] "MailZip"                                                               
+ [17] "MailState"                                                             
+ [18] "Phone"                                                                 
+ [19] "Ext"                                                                   
+ [20] "FaxNumber"                                                             
+ [21] "Email"                                                                 
+ [22] "WebSite"                                                               
+ [23] "OpenDate"                                                              
+ [24] "ClosedDate"                                                            
+ [25] "Charter"                                                               
+ [26] "CharterNum"                                                            
+ [27] "FundingType"                                                           
+ [28] "DOC"                                                                   
+ [29] "DOCType"                                                               
+ [30] "SOC"                                                                   
+ [31] "SOCType"                                                               
+ [32] "EdOpsCode"                                                             
+ [33] "EdOpsName"                                                             
+ [34] "EILCode"                                                               
+ [35] "EILName"                                                               
+ [36] "GSoffered"                                                             
+ [37] "GSserved"                                                              
+ [38] "Virtual"                                                               
+ [39] "Magnet"                                                                
+ [40] "YearRoundYN"                                                           
+ [41] "FederalDFCDistrictID"                                                  
+ [42] "Latitude"                                                              
+ [43] "Longitude"                                                             
+ [44] "AdmFName"                                                              
+ [45] "AdmLName"                                                              
+ [46] "AdmEmail"                                                              
+ [47] "LastUpDate"                                                            
+ [48] "school_id"                                                             
+ [49] "schoolname.x"                                                          
+ [50] "ncesdistid_admin"                                                      
+ [51] "ncesdistid_geo"                                                        
+ [52] "census_id"                                                             
+ [53] "pp_stloc_raw"                                                          
+ [54] "pp_fed_raw"                                                            
+ [55] "pp_total_raw"                                                          
+ [56] "pp_total_norm_NERDS"                                                   
+ [57] "flag_nerds"                                                            
+ [58] "flag_f33"                                                              
+ [59] "schoolstloc_raw"                                                       
+ [60] "schoolfed_raw"                                                         
+ [61] "schooltot_raw"                                                         
+ [62] "distid_stateassigned"                                                  
+ [63] "schoolid_stateassigned"                                                
+ [64] "distname"                                                              
+ [65] "address"                                                               
+ [66] "city"                                                                  
+ [67] "state"                                                                 
+ [68] "zip_code"                                                              
+ [69] "ncesenroll"                                                            
+ [70] "enroll_raw"                                                            
+ [71] "enrollmetric_raw"                                                      
+ [72] "gradespan"                                                             
+ [73] "level.x"                                                               
+ [74] "science_data_Test.Year"                                                
+ [75] "science_data_Student.Group.ID"                                         
+ [76] "science_data_Test.Type"                                                
+ [77] "science_data_Test.ID"                                                  
+ [78] "science_data_Type.ID"                                                  
+ [79] "science_data_Students.Enrolled_8"                                      
+ [80] "science_data_Students.Enrolled_12"                                     
+ [81] "science_data_Students.Enrolled_13"                                     
+ [82] "science_data_Students.Enrolled_14"                                     
+ [83] "science_data_Students.Enrolled_99"                                     
+ [84] "science_data_Students.Enrolled_5"                                      
+ [85] "science_data_Students.Enrolled_10"                                     
+ [86] "science_data_Students.Enrolled_11"                                     
+ [87] "science_data_Students.Tested_8"                                        
+ [88] "science_data_Students.Tested_12"                                       
+ [89] "science_data_Students.Tested_13"                                       
+ [90] "science_data_Students.Tested_14"                                       
+ [91] "science_data_Students.Tested_99"                                       
+ [92] "science_data_Students.Tested_5"                                        
+ [93] "science_data_Students.Tested_10"                                       
+ [94] "science_data_Students.Tested_11"                                       
+ [95] "science_data_Mean.Scale.Score_8"                                       
+ [96] "science_data_Mean.Scale.Score_12"                                      
+ [97] "science_data_Mean.Scale.Score_13"                                      
+ [98] "science_data_Mean.Scale.Score_14"                                      
+ [99] "science_data_Mean.Scale.Score_99"                                      
+[100] "science_data_Mean.Scale.Score_5"                                       
+[101] "science_data_Mean.Scale.Score_10"                                      
+[102] "science_data_Mean.Scale.Score_11"                                      
+[103] "science_data_Percentage.Standard.Exceeded_8"                           
+[104] "science_data_Percentage.Standard.Exceeded_12"                          
+[105] "science_data_Percentage.Standard.Exceeded_13"                          
+[106] "science_data_Percentage.Standard.Exceeded_14"                          
+[107] "science_data_Percentage.Standard.Exceeded_99"                          
+[108] "science_data_Percentage.Standard.Exceeded_5"                           
+[109] "science_data_Percentage.Standard.Exceeded_10"                          
+[110] "science_data_Percentage.Standard.Exceeded_11"                          
+[111] "science_data_Percentage.Standard.Met_8"                                
+[112] "science_data_Percentage.Standard.Met_12"                               
+[113] "science_data_Percentage.Standard.Met_13"                               
+[114] "science_data_Percentage.Standard.Met_14"                               
+[115] "science_data_Percentage.Standard.Met_99"                               
+[116] "science_data_Percentage.Standard.Met_5"                                
+[117] "science_data_Percentage.Standard.Met_10"                               
+[118] "science_data_Percentage.Standard.Met_11"                               
+[119] "science_data_Percentage.Standard.Met.and.Above_8"                      
+[120] "science_data_Percentage.Standard.Met.and.Above_12"                     
+[121] "science_data_Percentage.Standard.Met.and.Above_13"                     
+[122] "science_data_Percentage.Standard.Met.and.Above_14"                     
+[123] "science_data_Percentage.Standard.Met.and.Above_99"                     
+[124] "science_data_Percentage.Standard.Met.and.Above_5"                      
+[125] "science_data_Percentage.Standard.Met.and.Above_10"                     
+[126] "science_data_Percentage.Standard.Met.and.Above_11"                     
+[127] "science_data_Percentage.Standard.Nearly.Met_8"                         
+[128] "science_data_Percentage.Standard.Nearly.Met_12"                        
+[129] "science_data_Percentage.Standard.Nearly.Met_13"                        
+[130] "science_data_Percentage.Standard.Nearly.Met_14"                        
+[131] "science_data_Percentage.Standard.Nearly.Met_99"                        
+[132] "science_data_Percentage.Standard.Nearly.Met_5"                         
+[133] "science_data_Percentage.Standard.Nearly.Met_10"                        
+[134] "science_data_Percentage.Standard.Nearly.Met_11"                        
+[135] "science_data_Percentage.Standard.Not.Met_8"                            
+[136] "science_data_Percentage.Standard.Not.Met_12"                           
+[137] "science_data_Percentage.Standard.Not.Met_13"                           
+[138] "science_data_Percentage.Standard.Not.Met_14"                           
+[139] "science_data_Percentage.Standard.Not.Met_99"                           
+[140] "science_data_Percentage.Standard.Not.Met_5"                            
+[141] "science_data_Percentage.Standard.Not.Met_10"                           
+[142] "science_data_Percentage.Standard.Not.Met_11"                           
+[143] "science_data_Students.with.Scores_8"                                   
+[144] "science_data_Students.with.Scores_12"                                  
+[145] "science_data_Students.with.Scores_13"                                  
+[146] "science_data_Students.with.Scores_14"                                  
+[147] "science_data_Students.with.Scores_99"                                  
+[148] "science_data_Students.with.Scores_5"                                   
+[149] "science_data_Students.with.Scores_10"                                  
+[150] "science_data_Students.with.Scores_11"                                  
+[151] "science_data_Life.Sciences.Domain.Percent.Below.Standard_8"            
+[152] "science_data_Life.Sciences.Domain.Percent.Below.Standard_12"           
+[153] "science_data_Life.Sciences.Domain.Percent.Below.Standard_13"           
+[154] "science_data_Life.Sciences.Domain.Percent.Below.Standard_14"           
+[155] "science_data_Life.Sciences.Domain.Percent.Below.Standard_99"           
+[156] "science_data_Life.Sciences.Domain.Percent.Below.Standard_5"            
+[157] "science_data_Life.Sciences.Domain.Percent.Below.Standard_10"           
+[158] "science_data_Life.Sciences.Domain.Percent.Below.Standard_11"           
+[159] "science_data_Life.Sciences.Domain.Percent.Near.Standard_8"             
+[160] "science_data_Life.Sciences.Domain.Percent.Near.Standard_12"            
+[161] "science_data_Life.Sciences.Domain.Percent.Near.Standard_13"            
+[162] "science_data_Life.Sciences.Domain.Percent.Near.Standard_14"            
+[163] "science_data_Life.Sciences.Domain.Percent.Near.Standard_99"            
+[164] "science_data_Life.Sciences.Domain.Percent.Near.Standard_5"             
+[165] "science_data_Life.Sciences.Domain.Percent.Near.Standard_10"            
+[166] "science_data_Life.Sciences.Domain.Percent.Near.Standard_11"            
+[167] "science_data_Life.Sciences.Domain.Percent.Above.Standard_8"            
+[168] "science_data_Life.Sciences.Domain.Percent.Above.Standard_12"           
+[169] "science_data_Life.Sciences.Domain.Percent.Above.Standard_13"           
+[170] "science_data_Life.Sciences.Domain.Percent.Above.Standard_14"           
+[171] "science_data_Life.Sciences.Domain.Percent.Above.Standard_99"           
+[172] "science_data_Life.Sciences.Domain.Percent.Above.Standard_5"            
+[173] "science_data_Life.Sciences.Domain.Percent.Above.Standard_10"           
+[174] "science_data_Life.Sciences.Domain.Percent.Above.Standard_11"           
+[175] "science_data_Physical.Sciences.Domain.Percent.Below.Standard_8"        
+[176] "science_data_Physical.Sciences.Domain.Percent.Below.Standard_12"       
+[177] "science_data_Physical.Sciences.Domain.Percent.Below.Standard_13"       
+[178] "science_data_Physical.Sciences.Domain.Percent.Below.Standard_14"       
+[179] "science_data_Physical.Sciences.Domain.Percent.Below.Standard_99"       
+[180] "science_data_Physical.Sciences.Domain.Percent.Below.Standard_5"        
+[181] "science_data_Physical.Sciences.Domain.Percent.Below.Standard_10"       
+[182] "science_data_Physical.Sciences.Domain.Percent.Below.Standard_11"       
+[183] "science_data_Physical.Sciences.Domain.Percent.Near.Standard_8"         
+[184] "science_data_Physical.Sciences.Domain.Percent.Near.Standard_12"        
+[185] "science_data_Physical.Sciences.Domain.Percent.Near.Standard_13"        
+[186] "science_data_Physical.Sciences.Domain.Percent.Near.Standard_14"        
+[187] "science_data_Physical.Sciences.Domain.Percent.Near.Standard_99"        
+[188] "science_data_Physical.Sciences.Domain.Percent.Near.Standard_5"         
+[189] "science_data_Physical.Sciences.Domain.Percent.Near.Standard_10"        
+[190] "science_data_Physical.Sciences.Domain.Percent.Near.Standard_11"        
+[191] "science_data_Physical.Sciences.Domain.Percent.Above.Standard_8"        
+[192] "science_data_Physical.Sciences.Domain.Percent.Above.Standard_12"       
+[193] "science_data_Physical.Sciences.Domain.Percent.Above.Standard_13"       
+[194] "science_data_Physical.Sciences.Domain.Percent.Above.Standard_14"       
+[195] "science_data_Physical.Sciences.Domain.Percent.Above.Standard_99"       
+[196] "science_data_Physical.Sciences.Domain.Percent.Above.Standard_5"        
+[197] "science_data_Physical.Sciences.Domain.Percent.Above.Standard_10"       
+[198] "science_data_Physical.Sciences.Domain.Percent.Above.Standard_11"       
+[199] "science_data_Earth.and.Space.Sciences.Domain.Percent.Below.Standard_8" 
+[200] "science_data_Earth.and.Space.Sciences.Domain.Percent.Below.Standard_12"
+[201] "science_data_Earth.and.Space.Sciences.Domain.Percent.Below.Standard_13"
+[202] "science_data_Earth.and.Space.Sciences.Domain.Percent.Below.Standard_14"
+[203] "science_data_Earth.and.Space.Sciences.Domain.Percent.Below.Standard_99"
+[204] "science_data_Earth.and.Space.Sciences.Domain.Percent.Below.Standard_5" 
+[205] "science_data_Earth.and.Space.Sciences.Domain.Percent.Below.Standard_10"
+[206] "science_data_Earth.and.Space.Sciences.Domain.Percent.Below.Standard_11"
+[207] "science_data_Earth.and.Space.Sciences.Domain.Percent.Near.Standard_8"  
+[208] "science_data_Earth.and.Space.Sciences.Domain.Percent.Near.Standard_12" 
+[209] "science_data_Earth.and.Space.Sciences.Domain.Percent.Near.Standard_13" 
+[210] "science_data_Earth.and.Space.Sciences.Domain.Percent.Near.Standard_14" 
+[211] "science_data_Earth.and.Space.Sciences.Domain.Percent.Near.Standard_99" 
+[212] "science_data_Earth.and.Space.Sciences.Domain.Percent.Near.Standard_5"  
+[213] "science_data_Earth.and.Space.Sciences.Domain.Percent.Near.Standard_10" 
+[214] "science_data_Earth.and.Space.Sciences.Domain.Percent.Near.Standard_11" 
+[215] "science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_8" 
+[216] "science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_12"
+[217] "science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_13"
+[218] "science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_14"
+[219] "science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99"
+[220] "science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_5" 
+[221] "science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_10"
+[222] "science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_11"
+[223] "science_data_Total.Tested.at.Reporting.Level_8"                        
+[224] "science_data_Total.Tested.at.Reporting.Level_12"                       
+[225] "science_data_Total.Tested.at.Reporting.Level_13"                       
+[226] "science_data_Total.Tested.at.Reporting.Level_14"                       
+[227] "science_data_Total.Tested.at.Reporting.Level_99"                       
+[228] "science_data_Total.Tested.at.Reporting.Level_5"                        
+[229] "science_data_Total.Tested.at.Reporting.Level_10"                       
+[230] "science_data_Total.Tested.at.Reporting.Level_11"                       
+[231] "science_data_Total.Tested.with.Scores.at.Reporting.Level_8"            
+[232] "science_data_Total.Tested.with.Scores.at.Reporting.Level_12"           
+[233] "science_data_Total.Tested.with.Scores.at.Reporting.Level_13"           
+[234] "science_data_Total.Tested.with.Scores.at.Reporting.Level_14"           
+[235] "science_data_Total.Tested.with.Scores.at.Reporting.Level_99"           
+[236] "science_data_Total.Tested.with.Scores.at.Reporting.Level_5"            
+[237] "science_data_Total.Tested.with.Scores.at.Reporting.Level_10"           
+[238] "science_data_Total.Tested.with.Scores.at.Reporting.Level_11"           
+[239] "ela_data_cds"                                                          
+[240] "ela_data_rtype"                                                        
+[241] "ela_data_schoolname"                                                   
+[242] "ela_data_districtname"                                                 
+[243] "ela_data_countyname"                                                   
+[244] "ela_data_charter_flag"                                                 
+[245] "ela_data_coe_flag"                                                     
+[246] "ela_data_dass_flag"                                                    
+[247] "ela_data_ReportingYear"                                                
+[248] "ela_data_currdenom_AA"                                                 
+[249] "ela_data_currdenom_AI"                                                 
+[250] "ela_data_currdenom_ALL"                                                
+[251] "ela_data_currdenom_AS"                                                 
+[252] "ela_data_currdenom_EL"                                                 
+[253] "ela_data_currdenom_ELO"                                                
+[254] "ela_data_currdenom_EO"                                                 
+[255] "ela_data_currdenom_HI"                                                 
+[256] "ela_data_currdenom_MR"                                                 
+[257] "ela_data_currdenom_PI"                                                 
+[258] "ela_data_currdenom_RFP"                                                
+[259] "ela_data_currdenom_SBA"                                                
+[260] "ela_data_currdenom_SED"                                                
+[261] "ela_data_currdenom_SWD"                                                
+[262] "ela_data_currdenom_WH"                                                 
+[263] "ela_data_currdenom_CAA"                                                
+[264] "ela_data_currdenom_FI"                                                 
+[265] "ela_data_currdenom_FOS"                                                
+[266] "ela_data_currdenom_HOM"                                                
+[267] "ela_data_currstatus_AA"                                                
+[268] "ela_data_currstatus_AI"                                                
+[269] "ela_data_currstatus_ALL"                                               
+[270] "ela_data_currstatus_AS"                                                
+[271] "ela_data_currstatus_EL"                                                
+[272] "ela_data_currstatus_ELO"                                               
+[273] "ela_data_currstatus_EO"                                                
+[274] "ela_data_currstatus_HI"                                                
+[275] "ela_data_currstatus_MR"                                                
+[276] "ela_data_currstatus_PI"                                                
+[277] "ela_data_currstatus_RFP"                                               
+[278] "ela_data_currstatus_SBA"                                               
+[279] "ela_data_currstatus_SED"                                               
+[280] "ela_data_currstatus_SWD"                                               
+[281] "ela_data_currstatus_WH"                                                
+[282] "ela_data_currstatus_CAA"                                               
+[283] "ela_data_currstatus_FI"                                                
+[284] "ela_data_currstatus_FOS"                                               
+[285] "ela_data_currstatus_HOM"                                               
+[286] "ela_data_priordenom_AA"                                                
+[287] "ela_data_priordenom_AI"                                                
+[288] "ela_data_priordenom_ALL"                                               
+[289] "ela_data_priordenom_AS"                                                
+[290] "ela_data_priordenom_EL"                                                
+[291] "ela_data_priordenom_ELO"                                               
+[292] "ela_data_priordenom_EO"                                                
+[293] "ela_data_priordenom_HI"                                                
+[294] "ela_data_priordenom_MR"                                                
+[295] "ela_data_priordenom_PI"                                                
+[296] "ela_data_priordenom_RFP"                                               
+[297] "ela_data_priordenom_SBA"                                               
+[298] "ela_data_priordenom_SED"                                               
+[299] "ela_data_priordenom_SWD"                                               
+[300] "ela_data_priordenom_WH"                                                
+[301] "ela_data_priordenom_CAA"                                               
+[302] "ela_data_priordenom_FI"                                                
+[303] "ela_data_priordenom_FOS"                                               
+[304] "ela_data_priordenom_HOM"                                               
+[305] "ela_data_priorstatus_AA"                                               
+[306] "ela_data_priorstatus_AI"                                               
+[307] "ela_data_priorstatus_ALL"                                              
+[308] "ela_data_priorstatus_AS"                                               
+[309] "ela_data_priorstatus_EL"                                               
+[310] "ela_data_priorstatus_ELO"                                              
+[311] "ela_data_priorstatus_EO"                                               
+[312] "ela_data_priorstatus_HI"                                               
+[313] "ela_data_priorstatus_MR"                                               
+[314] "ela_data_priorstatus_PI"                                               
+[315] "ela_data_priorstatus_RFP"                                              
+[316] "ela_data_priorstatus_SBA"                                              
+[317] "ela_data_priorstatus_SED"                                              
+[318] "ela_data_priorstatus_SWD"                                              
+[319] "ela_data_priorstatus_WH"                                               
+[320] "ela_data_priorstatus_CAA"                                              
+[321] "ela_data_priorstatus_FI"                                               
+[322] "ela_data_priorstatus_FOS"                                              
+[323] "ela_data_priorstatus_HOM"                                              
+[324] "ela_data_change_AA"                                                    
+[325] "ela_data_change_AI"                                                    
+[326] "ela_data_change_ALL"                                                   
+[327] "ela_data_change_AS"                                                    
+[328] "ela_data_change_EL"                                                    
+[329] "ela_data_change_ELO"                                                   
+[330] "ela_data_change_EO"                                                    
+[331] "ela_data_change_HI"                                                    
+[332] "ela_data_change_MR"                                                    
+[333] "ela_data_change_PI"                                                    
+[334] "ela_data_change_RFP"                                                   
+[335] "ela_data_change_SBA"                                                   
+[336] "ela_data_change_SED"                                                   
+[337] "ela_data_change_SWD"                                                   
+[338] "ela_data_change_WH"                                                    
+[339] "ela_data_change_CAA"                                                   
+[340] "ela_data_change_FI"                                                    
+[341] "ela_data_change_FOS"                                                   
+[342] "ela_data_change_HOM"                                                   
+[343] "ela_data_statuslevel_AA"                                               
+[344] "ela_data_statuslevel_AI"                                               
+[345] "ela_data_statuslevel_ALL"                                              
+[346] "ela_data_statuslevel_AS"                                               
+[347] "ela_data_statuslevel_EL"                                               
+[348] "ela_data_statuslevel_ELO"                                              
+[349] "ela_data_statuslevel_EO"                                               
+[350] "ela_data_statuslevel_HI"                                               
+[351] "ela_data_statuslevel_MR"                                               
+[352] "ela_data_statuslevel_PI"                                               
+[353] "ela_data_statuslevel_RFP"                                              
+[354] "ela_data_statuslevel_SBA"                                              
+[355] "ela_data_statuslevel_SED"                                              
+[356] "ela_data_statuslevel_SWD"                                              
+[357] "ela_data_statuslevel_WH"                                               
+[358] "ela_data_statuslevel_CAA"                                              
+[359] "ela_data_statuslevel_FI"                                               
+[360] "ela_data_statuslevel_FOS"                                              
+[361] "ela_data_statuslevel_HOM"                                              
+[362] "ela_data_changelevel_AA"                                               
+[363] "ela_data_changelevel_AI"                                               
+[364] "ela_data_changelevel_ALL"                                              
+[365] "ela_data_changelevel_AS"                                               
+[366] "ela_data_changelevel_EL"                                               
+[367] "ela_data_changelevel_ELO"                                              
+[368] "ela_data_changelevel_EO"                                               
+[369] "ela_data_changelevel_HI"                                               
+[370] "ela_data_changelevel_MR"                                               
+[371] "ela_data_changelevel_PI"                                               
+[372] "ela_data_changelevel_RFP"                                              
+[373] "ela_data_changelevel_SBA"                                              
+[374] "ela_data_changelevel_SED"                                              
+[375] "ela_data_changelevel_SWD"                                              
+[376] "ela_data_changelevel_WH"                                               
+[377] "ela_data_changelevel_CAA"                                              
+[378] "ela_data_changelevel_FI"                                               
+[379] "ela_data_changelevel_FOS"                                              
+[380] "ela_data_changelevel_HOM"                                              
+[381] "ela_data_hscutpoints_AA"                                               
+[382] "ela_data_hscutpoints_AI"                                               
+[383] "ela_data_hscutpoints_ALL"                                              
+[384] "ela_data_hscutpoints_AS"                                               
+[385] "ela_data_hscutpoints_EL"                                               
+[386] "ela_data_hscutpoints_ELO"                                              
+[387] "ela_data_hscutpoints_EO"                                               
+[388] "ela_data_hscutpoints_HI"                                               
+[389] "ela_data_hscutpoints_MR"                                               
+[390] "ela_data_hscutpoints_PI"                                               
+[391] "ela_data_hscutpoints_RFP"                                              
+[392] "ela_data_hscutpoints_SBA"                                              
+[393] "ela_data_hscutpoints_SED"                                              
+[394] "ela_data_hscutpoints_SWD"                                              
+[395] "ela_data_hscutpoints_WH"                                               
+[396] "ela_data_hscutpoints_CAA"                                              
+[397] "ela_data_hscutpoints_FI"                                               
+[398] "ela_data_hscutpoints_FOS"                                              
+[399] "ela_data_hscutpoints_HOM"                                              
+[400] "ela_data_curradjustment_AA"                                            
+[401] "ela_data_curradjustment_AI"                                            
+[402] "ela_data_curradjustment_ALL"                                           
+[403] "ela_data_curradjustment_AS"                                            
+[404] "ela_data_curradjustment_EL"                                            
+[405] "ela_data_curradjustment_ELO"                                           
+[406] "ela_data_curradjustment_EO"                                            
+[407] "ela_data_curradjustment_HI"                                            
+[408] "ela_data_curradjustment_MR"                                            
+[409] "ela_data_curradjustment_PI"                                            
+[410] "ela_data_curradjustment_RFP"                                           
+[411] "ela_data_curradjustment_SBA"                                           
+[412] "ela_data_curradjustment_SED"                                           
+[413] "ela_data_curradjustment_SWD"                                           
+[414] "ela_data_curradjustment_WH"                                            
+[415] "ela_data_curradjustment_CAA"                                           
+[416] "ela_data_curradjustment_FI"                                            
+[417] "ela_data_curradjustment_FOS"                                           
+[418] "ela_data_curradjustment_HOM"                                           
+[419] "ela_data_prioradjustment_AA"                                           
+[420] "ela_data_prioradjustment_AI"                                           
+[421] "ela_data_prioradjustment_ALL"                                          
+[422] "ela_data_prioradjustment_AS"                                           
+[423] "ela_data_prioradjustment_EL"                                           
+[424] "ela_data_prioradjustment_ELO"                                          
+[425] "ela_data_prioradjustment_EO"                                           
+[426] "ela_data_prioradjustment_HI"                                           
+[427] "ela_data_prioradjustment_MR"                                           
+[428] "ela_data_prioradjustment_PI"                                           
+[429] "ela_data_prioradjustment_RFP"                                          
+[430] "ela_data_prioradjustment_SBA"                                          
+[431] "ela_data_prioradjustment_SED"                                          
+[432] "ela_data_prioradjustment_SWD"                                          
+[433] "ela_data_prioradjustment_WH"                                           
+[434] "ela_data_prioradjustment_CAA"                                          
+[435] "ela_data_prioradjustment_FI"                                           
+[436] "ela_data_prioradjustment_FOS"                                          
+[437] "ela_data_prioradjustment_HOM"                                          
+[438] "ela_data_pairshare_method_AA"                                          
+[439] "ela_data_pairshare_method_AI"                                          
+[440] "ela_data_pairshare_method_ALL"                                         
+[441] "ela_data_pairshare_method_AS"                                          
+[442] "ela_data_pairshare_method_EL"                                          
+[443] "ela_data_pairshare_method_ELO"                                         
+[444] "ela_data_pairshare_method_EO"                                          
+[445] "ela_data_pairshare_method_HI"                                          
+[446] "ela_data_pairshare_method_MR"                                          
+[447] "ela_data_pairshare_method_PI"                                          
+[448] "ela_data_pairshare_method_RFP"                                         
+[449] "ela_data_pairshare_method_SBA"                                         
+[450] "ela_data_pairshare_method_SED"                                         
+[451] "ela_data_pairshare_method_SWD"                                         
+[452] "ela_data_pairshare_method_WH"                                          
+[453] "ela_data_pairshare_method_CAA"                                         
+[454] "ela_data_pairshare_method_FI"                                          
+[455] "ela_data_pairshare_method_FOS"                                         
+[456] "ela_data_pairshare_method_HOM"                                         
+[457] "ela_data_notestflag_AA"                                                
+[458] "ela_data_notestflag_AI"                                                
+[459] "ela_data_notestflag_ALL"                                               
+[460] "ela_data_notestflag_AS"                                                
+[461] "ela_data_notestflag_EL"                                                
+[462] "ela_data_notestflag_ELO"                                               
+[463] "ela_data_notestflag_EO"                                                
+[464] "ela_data_notestflag_HI"                                                
+[465] "ela_data_notestflag_MR"                                                
+[466] "ela_data_notestflag_PI"                                                
+[467] "ela_data_notestflag_RFP"                                               
+[468] "ela_data_notestflag_SBA"                                               
+[469] "ela_data_notestflag_SED"                                               
+[470] "ela_data_notestflag_SWD"                                               
+[471] "ela_data_notestflag_WH"                                                
+[472] "ela_data_notestflag_CAA"                                               
+[473] "ela_data_notestflag_FI"                                                
+[474] "ela_data_notestflag_FOS"                                               
+[475] "ela_data_notestflag_HOM"                                               
+[476] "sedasch"                                                               
+[477] "sedaschname"                                                           
+[478] "fips"                                                                  
+[479] "stateabb"                                                              
+[480] "subcat"                                                                
+[481] "subgroup"                                                              
+[482] "gradecenter"                                                           
+[483] "gap"                                                                   
+[484] "gcs_mn_avg_ol"                                                         
+[485] "gcs_mn_avg_eb"                                                         
+[486] "sedalea"                                                               
+[487] "schnam"                                                                
+[488] "schcity"                                                               
+[489] "type"                                                                  
+[490] "level.y"                                                               
+[491] "mingrd"                                                                
+[492] "maxgrd"                                                                
+[493] "charter"                                                               
+[494] "magnet"                                                                
+[495] "urbanicity"                                                            
+[496] "locale"                                                                
+[497] "sch_sped"                                                              
+[498] "totenrl"                                                               
+[499] "perwht"                                                                
+[500] "pernam"                                                                
+[501] "perasn"                                                                
+[502] "perhsp"                                                                
+[503] "perblk"                                                                
+[504] "perfl"                                                                 
+[505] "perrl"                                                                 
+[506] "perfrl"                                                                
+[507] "perecd"                                                                
+[508] "gifted_tot"                                                            
+[509] "disab_tot"                                                             
+[510] "disab_tot_idea"                                                        
+[511] "lep"                                                                   
+[512] "gifted_flag"                                                           
+[513] "lep_flag"                                                              
+[514] "sped_flag"                                                             
+[515] "spedidea_flag"                                                         
+[516] "avgrdall"                                                              
+[517] "ncesid"                                                                
+[518] "rtype"                                                                 
+[519] "schoolname.y"                                                          
+[520] "districtname"                                                          
+[521] "countyname"                                                            
+[522] "charter_flag"                                                          
+[523] "coe_flag"                                                              
+[524] "dass_flag"                                                             
+[525] "LowGrade"                                                              
+[526] "HighGrade"                                                             
+[527] "studentgroup"                                                          
+[528] "reported_which"                                                        
+[529] "reportingyear"                                                         
+[530] "n_growthscores_math"                                                   
+[531] "n_growthscores_ela"                                                    
+[532] "growthscore_math"                                                      
+[533] "growthscore_ela"                                                       
+[534] "decilerank_math"                                                       
+[535] "decilerank_ela"                                                        
+[536] "X"                                                                     
+[537] "SCHOOL_YEAR"                                                           
+[538] "STNAM"                                                                 
+[539] "FIPST"                                                                 
+[540] "LEAID"                                                                 
+[541] "ST_LEAID"                                                              
+[542] "LEANM"                                                                 
+[543] "ST_SCHID"                                                              
+[544] "SCHNAM"                                                                
+[545] "GRADE"                                                                 
+[546] "CATEGORY"                                                              
+[547] "DATE_CUR"                                                              
+[548] "ELA_NUMVALID"                                                          
+[549] "ELA_PCTPROF_min"                                                       
+[550] "ELA_PCTPROF_max"                                                       
+[551] "MTH_NUMVALID"                                                          
+[552] "MTH_PCTPROF_min"                                                       
+[553] "MTH_PCTPROF_max"                                                       </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode)) #10629 unique schools from the metadata</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$schoolname) == FALSE])) #4385 unique matched schools for Jeremy's california school data</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$sedasch) == FALSE])) #7390 unique matched schools for Stanford data</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$ela_data_cds) == FALSE])) #814 unique matched schools for ela data</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$science_data_cds) == FALSE])) #495 unique matched schools for science data</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$PE_data_cds) == FALSE])) #501 unique matched schools for pe data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># wide_merged_data %&gt;% filter(!is.na(urbanicity)) %&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(aes(x=as.numeric(pp_total_norm_NERDS), y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)), color=urbanicity)) +</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(alpha = .1) + </span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth(method = lm) + </span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   facet_wrap(~urbanicity) + </span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_x_continuous(limits = c(8000,18000)) + </span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_nr()+</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(y="Grade Cohort Score", x= "Per Student Spending") + guides(color=FALSE) +   geom_hline(yintercept = 0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># wide_merged_data %&gt;% ggplot(aes(x=as.numeric(science_data_Percentage.Standard.Met.and.Above_13), y=(as.numeric(MTH_PCTPROF_max)))) +</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(alpha = .3) + </span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth(color="grey",method=lm) + theme_nr() + labs(x = "Percent Proficient on State Science Test", y="Maximum* Percent Proficient on NAEP Math Test", caption = "*True value is hidden to protect student privacy at smaller schools")</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># wide_merged_data %&gt;%</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(aes(x=as.numeric(perhsp), y=(as.numeric(perfrl)))) +</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(alpha = .05) + </span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth(color="black") + theme_nr() + labs(x = "Percent Hispanic", y="Percent Eligible fro Free and Reduced Lunch")</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co"># wide_merged_data %&gt;% filter(!is.na(urbanicity)) %&gt;%</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(aes(x=as.numeric(perfrl),y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),color=State)) +</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(alpha = .05) +</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth(method=lm)+</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   guides(color=FALSE) + </span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_nr()+</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Percent Eligible for Free and Reduced Lunch", y="Grade Cohort Score")+</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_hline(yintercept = 0)</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="co"># wide_merged_data %&gt;% filter(!is.na(urbanicity)) %&gt;%</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(aes(x=as.numeric(perhsp),y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),color=State)) +</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(alpha = .05) +</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth()+</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="co">#   guides(color=FALSE) + </span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_nr()+</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Percent Hispanic", y="Grade Cohort Score")+</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_hline(yintercept = 0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># counties &lt;- st_as_sf(maps::map("county", plot = FALSE, fill = TRUE))</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># counties &lt;- subset(counties, grepl("california", counties$ID))</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># world &lt;- ne_countries(scale = "medium", returnclass = "sf")</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data = world) +</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = counties, fill='#f0f1f9') + </span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(data = (wide_merged_data%&gt;%filter(!is.na(gradecenter)&amp;!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_classic() +</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_color_met_c("Benedictus",direction = 1) +</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_size_area(max_size = 2) + theme_nr() +</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Longitude",y="Latitude",color="Grade Cohort Score",title = "California School Location and Academic\nPerformance")+guides(size=FALSE)+theme(legend.position = c(.8,.8))</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co"># # ----------------------------------------------------</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data = world) +</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = counties, fill='#f0f1f9') + </span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(data = (wide_merged_data%&gt;%filter(!is.na(gradecenter)&amp;!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_classic() +</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_color_met_c("Benedictus",direction = 1) +</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_size_area(max_size = 7) + theme_nr() +</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Longitude",y="Latitude",color="Grade Cohort Score",title = "Bay Area Academic Performance")+guides(size=FALSE)+theme(legend.position = c(.28,.3)) +</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="co">#   coord_sf(xlim=c(-121.25,-123.5), ylim= c(36.75,38.75))</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a><span class="co"># # -------------------------------------------------</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data = world) +</span></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = counties, fill='#f0f1f9') + </span></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(data = (wide_merged_data%&gt;%filter(!is.na(gradecenter)&amp;!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +</span></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_classic() +</span></span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_color_met_c("Benedictus",direction = 1) +</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_size_area(max_size = 2) + theme_nr() +</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Longitude",y="Latitude",color="Grade Cohort Score",title = "Los Angeles and San Diego Academic\nPerformance")+guides(size=FALSE)+theme(legend.position = c(.3,.3)) +</span></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="co">#   coord_sf(xlim=c(-117,-120), ylim= c(32,35))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data = world) +</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = counties, fill='#f0f1f9') + </span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(data =((wide_merged_data %&gt;% filter(!is.na(pp_total_norm_NERDS) &amp; as.numeric(pp_total_norm_NERDS) &gt; 7000 &amp; as.numeric(pp_total_norm_NERDS) &lt; 25000))), aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=as.numeric(pp_total_norm_NERDS),size=as.numeric(ncesenroll)), alpha =.25) +</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_classic() +</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_color_met_c("Benedictus",direction = 1) +</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_size_area(max_size = 2) + theme_nr() +</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Longitude",y="Latitude",color="Per Student Spending",title = "California School Location and Per Student\nSpending")+guides(size=FALSE)+theme(legend.position = c(.8,.8))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">© Thu Dang, Nathaniel Reimer, Jeremy Hubinger 2023<br> All content licensed under <i class="bi-badge-cc"></i> <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">(CC BY-NC-SA 4.0)</a></div>   
+    <div class="nav-footer-right">Site built with <a href="https://quarto.org/">Quarto</a></div>
+  </div>
+</footer>
+
+
+
+</body></html>

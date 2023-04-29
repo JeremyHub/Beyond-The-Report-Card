@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Thu Dang, Nathaniel Reimer, Jeremy Hubinger">
+<meta name="dcterms.date" content="2023-04-29">
+
+<title>Beyond the Report Card - Beyond the Report Card: Investigating the Factors that Define Educational Achievement</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Beyond the Report Card</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./motivation.html">
+ <span class="menu-text">Motivation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./county_insights.html">
+ <span class="menu-text">County-Level Insights</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./school_insights.html">
+ <span class="menu-text">School-Level Insights</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./model.html">
+ <span class="menu-text">Predictor Significance</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./result.html">
+ <span class="menu-text">Discussion</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#description-motivation-of-research-questions" id="toc-description-motivation-of-research-questions" class="nav-link active" data-scroll-target="#description-motivation-of-research-questions">Description &amp; motivation of research questions</a></li>
+  <li><a href="#dataset-description" id="toc-dataset-description" class="nav-link" data-scroll-target="#dataset-description">Dataset description</a></li>
+  <li><a href="#ethical-issues-who-may-be-harmed-and-who-may-benefit" id="toc-ethical-issues-who-may-be-harmed-and-who-may-benefit" class="nav-link" data-scroll-target="#ethical-issues-who-may-be-harmed-and-who-may-benefit">Ethical issues (who may be harmed and who may benefit)</a>
+  <ul class="collapse">
+  <li><a href="#analyses-with-a-short-description-of-results" id="toc-analyses-with-a-short-description-of-results" class="nav-link" data-scroll-target="#analyses-with-a-short-description-of-results">Analyses with a short description of results</a></li>
+  <li><a href="#project-plan" id="toc-project-plan" class="nav-link" data-scroll-target="#project-plan">Project plan</a></li>
+  <li><a href="#summary-of-contributions" id="toc-summary-of-contributions" class="nav-link" data-scroll-target="#summary-of-contributions">Summary of contributions</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Beyond the Report Card: Investigating the Factors that Define Educational Achievement</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Thu Dang, Nathaniel Reimer, Jeremy Hubinger </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 29, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<section id="description-motivation-of-research-questions" class="level1">
+<h1>Description &amp; motivation of research questions</h1>
+<p>Initially, our focus was on the correlation between affordable housing and educational achievement. However, during the process of selecting appropriate educational proxies, we found ourselves delving into the factors behind the measurements of these proxies. As a result, we decided to seek the guidance of Professor Lesley Lavery, who specializes in public policies in education. We hope to gain a better understanding of the educational proxies currently in use, and to investigate whether there are additional factors that impact educational outcomes and potentially render the current proxies interchangeable or distinct from other measures.</p>
+</section>
+<section id="dataset-description" class="level1">
+<h1>Dataset description</h1>
+<p>The data set we have includes a range of school-related variables such as location details, funding, and aggregated scores in various subjects. Specifically, the score variables cover the general grade-cohort-standardized achievement score, as well as scores in reading, science, and physical education.</p>
+<p>We aggregate our dataset from 5 different datasets. We use data from The California Department of Education, Georgetown University, and the Educational Opportunity Project at Stanford University.</p>
+<p><strong>Science Testing Data</strong> <a href="https://github.com/JeremyHub/STAT-456-Final/blob/8ef6fa6ce28785065f583f4c477c5deb11afd442/final_project_stuff/science_docs.pdf">Codebook</a></p>
+<p>Our science test data is from the California Department of Education, specifically, from the 2021-2022 school year. It is from the California Science Test, in which there are three different categories, namely Life sciences, Physical sciences, and Earth and Space sciences.</p>
+<p><strong>English Testing Data</strong> <a href="https://github.com/JeremyHub/STAT-456-Final/blob/8ef6fa6ce28785065f583f4c477c5deb11afd442/final_project_stuff/ela_docs.pdf">Codebook</a></p>
+<p>The data we have for English Language Arts / Literature is also from the California Department of Education, specifically from 2022. It tells us for each student group within each school their level of proficiency.</p>
+<p><strong>Physical Education Data</strong></p>
+<p>Our PE data comes from the California Department Education from the 2018-2019 school year. It has 7 different types of exercises and each school’s grade’s proficiency on each type of exercise.</p>
+<p><strong>School Funding Data</strong> <a href="https://github.com/JeremyHub/STAT-456-Final/blob/8ef6fa6ce28785065f583f4c477c5deb11afd442/final_project_stuff/school_info_docs.pdf">Codebook</a></p>
+<p>Our school funding data is aggregated 2019-2020 data from different federal and state sources. It is compiled into the dataset we are using by Georgetown University researchers. It has information about funding going to a school from the state, local, and federal governments, as well as metadata about the school such as enrollment, as well as data about the income levels of the students at the school.</p>
+<p><strong>Educational Opportunity Project at Stanford University (SEDA)</strong> <a href="https://github.com/JeremyHub/STAT-456-Final/blob/82e84dd90db010d96edba2d74dc574c15648a10c/final_project_stuff/stanford_codebook.xlsx">Codebook</a> <a href="https://github.com/JeremyHub/STAT-456-Final/blob/82e84dd90db010d96edba2d74dc574c15648a10c/final_project_stuff/stanford_cov_codebook.xlsx">Covariate Codebook</a></p>
+<p>The SEDA we’re using contains school-level standardized academic achievement data across all Californian schools. These achievement scores are graded and cohort standardized against the NAEP standard, indicating whether the students in a particular school and grade level are meeting the national standard for their grade. For instance, if a school’s 4th-grade students score 3.5, it indicates that they are lagging behind the national standard by 0.5 points. The achievement estimates are calculated using Ordinary Least Square (OLS) and Empirical Bayesian (EB) techniques.</p>
+<p><strong>School Details</strong></p>
+<p>This contains metadata on 10629 California Schools. Including both the nationally used NCES id and the California CDS code. We use this to join our data from our different sources. This dataset also contains the longitude and latitude of the schools which has been very useful for EDA so far.</p>
+</section>
+<section id="ethical-issues-who-may-be-harmed-and-who-may-benefit" class="level1">
+<h1>Ethical issues (who may be harmed and who may benefit)</h1>
+<p>To ensure privacy concerns are addressed, we take measures to aggregate the data at the school level. However, we recognize that there may be potential issues with bias in the data collection process and data accuracy as a result.</p>
+<p>Regarding potential bias, the data is taken from various sources, and it is possible that each school may have different processes for collecting the data. With the exception of the Educational Opportunity Project at Stanford University, we do not have information on the number of students for whom the data is collected, nor the demographic makeup of those students. As a result, we acknowledge that there may be inherent biases in the data that we cannot control due to a lack of information.</p>
+<p>Regarding data accuracy, as we do not have detailed documentation for all of the datasets, it is challenging to ascertain their accuracy. However, we have confidence in the reliability of the government and highly-credited sources from which the data originates. Given this, we consider these datasets to be our most reliable option at present.</p>
+<p>Taken out of context, our analyses and graphics have the potential to negatively impact educational policy. Particularly since we will be looking at demographics and funding data. We need to be careful and deliberate in our analysis in order to minimize harm.</p>
+<section id="analyses-with-a-short-description-of-results" class="level2">
+<h2 class="anchored" data-anchor-id="analyses-with-a-short-description-of-results">Analyses with a short description of results</h2>
+<p><em>Thu’s results</em></p>
+<p>This map shows the deviation in SEDA scores from the national standard for each county, providing a broad overview of academic achievement levels in Californian counties. Overall, areas in cities or richer suburbs (Silicon Valley, Los Angeles, San Diego) have higher academic performance than national average, shown through brigher colors (yellow and green). On the other hand, areas with fewer schools (e.g.&nbsp;Inyo – a national forest area) have lower academic performance than national average, denoted by darker (blue and purple) colors.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="IntermediateNarrative_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><em>Jeremy’s results</em></p>
+<p>We examined solely the schools for which we have complete data available, i.e., the schools in the intersection of our datasets. Among these schools, across all metrics, an increase in per-pupil government spending (both state and federal) showed a negative correlation with performance. At first glance, the outcomes appear to be linked to the increase in per-pupil spending when there is a significant percentage of students who are English learners, in the foster care system, or eligible for free/reduced lunch.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="IntermediateNarrative_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><em>Nathaniel’s results</em></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="IntermediateNarrative_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Spending per student varies significantly across the state. We thought that this might explain some of the funding-achievement issue we had come across. After seeing that the same negative relationship existed to some degree in each locale we decided that location, or at least type of area, was not the factor we were looking for. It is also worth noting that the ‘Rural’ and ‘Town’ areas seem to be under performing for some reason.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="IntermediateNarrative_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="IntermediateNarrative_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="768"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="IntermediateNarrative_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>We understand that funding for schools in California is based in part on the percent of students eligible for free and reduced lunch, the percent in the foster care system, and the percent that have limited English. So we decided to fit some simple models of funding and these variables. We then adjusted per student spending based on the simplest model: <code>funding ~ free and reduced lunch</code>. This flattened the relationship between funding and achievement and flipped the relationship between percent Hispanic and spending.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="IntermediateNarrative_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The flattened relationship persists in each area.</p>
+<p>The percent of students eligible for free and reduced lunch directly influences spending in the state of California. However, in wealthy localities with strong property tax bases, funding often exceeds the amount allotted by the state of California. These areas also have a lower percent of students eligible for free and reduced lunch. So our model is not looking directly at the supplemental grant received for the percent of students eligible for free and reduced lunch. Nevertheless we think it provides a more accurate picture than the raw spending metric.</p>
+<p>The adjustment is very very rudimentary and would benefit from more investigation. We could probably use school location in conjunction with census data to get some picture of property taxes and local funding, but variation in local tax and funding structures could make this difficult.</p>
+</section>
+<section id="project-plan" class="level2">
+<h2 class="anchored" data-anchor-id="project-plan">Project plan</h2>
+<p>Moving forward, we would love to:</p>
+<ul>
+<li><p>Expand further on funding metrics and explore ways to adjust them in a way that they don’t give a false picture when taken out of context (Nathaniel has put in some work in this regard and we have a plan to accomplish this)</p></li>
+<li><p>Identify more potential metrics through bivariate visualizations and adjust them so that we can put all of them together into a model that explains different education proxies</p></li>
+<li><p>Tell a better story with missing data (for example, why certain data is missing, where is it from, where does the data in our different datasets overlap and where does it not, are there trends here or not)</p></li>
+</ul>
+</section>
+<section id="summary-of-contributions" class="level2">
+<h2 class="anchored" data-anchor-id="summary-of-contributions">Summary of contributions</h2>
+<p>Thu, Nathaniel, and Jeremy all contribute equally to this checkpoint. Specifically:</p>
+<ul>
+<li><p>Thu was responsible for cleaning and standardizing school identifiers to merge all datasets together in long format. She also cleaned the data for and visualized the general map displaying the deviation in SEDA scores from the national standard for each county, which provides a broad overview of academic achievement levels in Californian counties. Lastly, she consolidated the narration for the results and also this write-up using all of Jeremy and Nathaniel’s inputs, and organized the slides for the intermediate presentation.</p></li>
+<li><p>Nathaniel was responsible for cleaning and merging the dataset into a wide format, as well as creating several visualizations that aided us in developing a narrative about the funding for this intermediate visualization. Additionally, he proposed a new concept for modeling an adjusted funding metric, which will provide us with a more comprehensive understanding of the correlation between funding and academic achievement at the school level.</p></li>
+<li><p>Jeremy was responsible for gathering and aggregating some of the initial datasets that Thu then later merged with other datasets. He also conducted various analyses to compare the trend of different educational proxies as school funding increases. Due to his extensive knowledge about California, he is the primary result interpreter of the team. This enables us to contextualize the outcomes and generate ideas for future steps. Furthermore, he played a role in exploring different potential variables by cleaning the data for and visualizing various bivariate graphs.</p></li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">© Thu Dang, Nathaniel Reimer, Jeremy Hubinger 2023<br> All content licensed under <i class="bi-badge-cc"></i> <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">(CC BY-NC-SA 4.0)</a></div>   
+    <div class="nav-footer-right">Site built with <a href="https://quarto.org/">Quarto</a></div>
+  </div>
+</footer>
+
+
+
+</body></html>

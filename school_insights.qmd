@@ -30,17 +30,17 @@ defaultcolor = met.brewer(palname,10)[9]
 ```
 
 ```{r load datasets}
-load("../CombinedDataLongFormat.RData")
-load("../WideMergedData.RData")
+load("CombinedDataLongFormat.RData")
+load("WideMergedData.RData")
 ```
 
 ```{r load cleaned dataset for county achievement metrics}
-math_ca_gcs_df <- read_csv("../AllDatasets/math_ca_gcs_df.csv")
-rla_ca_gcs_df <- read_csv("../AllDatasets/rla_ca_gcs_df.csv")
+math_ca_gcs_df <- read_csv("AllDatasets/math_ca_gcs_df.csv")
+rla_ca_gcs_df <- read_csv("AllDatasets/rla_ca_gcs_df.csv")
 ```
 
 ```{r maps load shapefile}
-ca_counties <- read_sf('../CA_Counties')
+ca_counties <- read_sf('CA_Counties')
 ca_counties <- ca_counties %>%
   st_transform(crs = "NAD83")
 ```
