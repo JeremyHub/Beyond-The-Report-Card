@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.2.269">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -229,22 +229,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.0     ✔ readr     2.1.4
-✔ forcats   1.0.0     ✔ stringr   1.5.0
-✔ ggplot2   3.4.1     ✔ tibble    3.1.8
-✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-✔ purrr     1.0.1     
+<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+✔ ggplot2 3.4.2     ✔ purrr   1.0.1
+✔ tibble  3.2.1     ✔ dplyr   1.1.2
+✔ tidyr   1.3.0     ✔ stringr 1.5.0
+✔ readr   2.1.3     ✔ forcats 0.5.2
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the ]8;;http://conflicted.r-lib.org/conflicted package]8;; to force all conflicts to become errors</code></pre>
+✖ dplyr::lag()    masks stats::lag()</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MetBrewer)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Linking to GEOS 3.10.2, GDAL 3.4.1, PROJ 8.2.1; sf_use_s2() is TRUE</code></pre>
+<pre><code>Linking to GEOS 3.10.2, GDAL 3.4.2, PROJ 8.2.1; sf_use_s2() is TRUE</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -373,105 +371,101 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(stanford_data_clean, <span class="at">by=</span><span class="fu">c</span>(<span class="st">'school_id'</span><span class="ot">=</span><span class="st">'standardized_school_id'</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ncesid =</span> <span class="fu">paste0</span>(NCESDist,NCESSchool)) <span class="sc">%&gt;%</span></span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(growth_aggr_clean, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">'CDSCode'</span> <span class="ot">=</span> <span class="st">'cds'</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(ela_mth_proficiency_ranges, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"ncesid"</span><span class="ot">=</span><span class="st">"NCESSCH"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in left_join(., growth_aggr_clean, by = c(CDSCode = "cds")): Each row in `x` is expected to match at most 1 row in `y`.
-ℹ Row 1402 of `x` matches multiple rows.
-ℹ If multiple matches are expected, set `multiple = "all"` to silence this
-  warning.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save(wide_merged_data, file="WideMergedData.RData")</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># names(wide_merged_data)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(ela_mth_proficiency_ranges, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"ncesid"</span><span class="ot">=</span><span class="st">"NCESSCH"</span>))</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># save(wide_merged_data, file="WideMergedData.RData")</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># names(wide_merged_data)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode)) #10629 unique schools from the metadata</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$schoolname) == FALSE])) #4385 unique matched schools for Jeremy's california school data</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$sedasch) == FALSE])) #7390 unique matched schools for Stanford data</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$ela_data_cds) == FALSE])) #814 unique matched schools for ela data</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$science_data_cds) == FALSE])) #495 unique matched schools for science data</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$PE_data_cds) == FALSE])) #501 unique matched schools for pe data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode)) #10629 unique schools from the metadata</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$schoolname) == FALSE])) #4385 unique matched schools for Jeremy's california school data</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$sedasch) == FALSE])) #7390 unique matched schools for Stanford data</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$ela_data_cds) == FALSE])) #814 unique matched schools for ela data</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$science_data_cds) == FALSE])) #495 unique matched schools for science data</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># length(unique(wide_merged_data$CDSCode[is.na(wide_merged_data$PE_data_cds) == FALSE])) #501 unique matched schools for pe data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># wide_merged_data %&gt;% filter(!is.na(urbanicity)) %&gt;%</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(aes(x=as.numeric(pp_total_norm_NERDS), y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)), color=urbanicity)) +</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(alpha = .1) + </span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth(method = lm) + </span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   facet_wrap(~urbanicity) + </span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_x_continuous(limits = c(8000,18000)) + </span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_nr()+</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(y="Grade Cohort Score", x= "Per Student Spending") + guides(color=FALSE) +   geom_hline(yintercept = 0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># wide_merged_data %&gt;% filter(!is.na(urbanicity)) %&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(aes(x=as.numeric(pp_total_norm_NERDS), y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)), color=urbanicity)) +</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(alpha = .1) + </span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth(method = lm) + </span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   facet_wrap(~urbanicity) + </span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_x_continuous(limits = c(8000,18000)) + </span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_nr()+</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(y="Grade Cohort Score", x= "Per Student Spending") + guides(color=FALSE) +   geom_hline(yintercept = 0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># wide_merged_data %&gt;% ggplot(aes(x=as.numeric(science_data_Percentage.Standard.Met.and.Above_13), y=(as.numeric(MTH_PCTPROF_max)))) +</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(alpha = .3) + </span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth(color="grey",method=lm) + theme_nr() + labs(x = "Percent Proficient on State Science Test", y="Maximum* Percent Proficient on NAEP Math Test", caption = "*True value is hidden to protect student privacy at smaller schools")</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># wide_merged_data %&gt;%</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(aes(x=as.numeric(perhsp), y=(as.numeric(perfrl)))) +</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(alpha = .05) + </span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth(color="black") + theme_nr() + labs(x = "Percent Hispanic", y="Percent Eligible fro Free and Reduced Lunch")</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co"># wide_merged_data %&gt;% filter(!is.na(urbanicity)) %&gt;%</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(aes(x=as.numeric(perfrl),y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),color=State)) +</span></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(alpha = .05) +</span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth(method=lm)+</span></span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   guides(color=FALSE) + </span></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_nr()+</span></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Percent Eligible for Free and Reduced Lunch", y="Grade Cohort Score")+</span></span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_hline(yintercept = 0)</span></span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="co"># wide_merged_data %&gt;% filter(!is.na(urbanicity)) %&gt;%</span></span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(aes(x=as.numeric(perhsp),y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),color=State)) +</span></span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(alpha = .05) +</span></span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth()+</span></span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="co">#   guides(color=FALSE) + </span></span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_nr()+</span></span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Percent Hispanic", y="Grade Cohort Score")+</span></span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_hline(yintercept = 0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># wide_merged_data %&gt;% ggplot(aes(x=as.numeric(science_data_Percentage.Standard.Met.and.Above_13), y=(as.numeric(MTH_PCTPROF_max)))) +</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(alpha = .3) + </span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth(color="grey",method=lm) + theme_nr() + labs(x = "Percent Proficient on State Science Test", y="Maximum* Percent Proficient on NAEP Math Test", caption = "*True value is hidden to protect student privacy at smaller schools")</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># wide_merged_data %&gt;%</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(aes(x=as.numeric(perhsp), y=(as.numeric(perfrl)))) +</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(alpha = .05) + </span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth(color="black") + theme_nr() + labs(x = "Percent Hispanic", y="Percent Eligible fro Free and Reduced Lunch")</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co"># wide_merged_data %&gt;% filter(!is.na(urbanicity)) %&gt;%</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(aes(x=as.numeric(perfrl),y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),color=State)) +</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(alpha = .05) +</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth(method=lm)+</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   guides(color=FALSE) + </span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_nr()+</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Percent Eligible for Free and Reduced Lunch", y="Grade Cohort Score")+</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_hline(yintercept = 0)</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="co"># wide_merged_data %&gt;% filter(!is.na(urbanicity)) %&gt;%</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(aes(x=as.numeric(perhsp),y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),color=State)) +</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(alpha = .05) +</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth()+</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="co">#   guides(color=FALSE) + </span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_nr()+</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Percent Hispanic", y="Grade Cohort Score")+</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_hline(yintercept = 0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># counties &lt;- st_as_sf(maps::map("county", plot = FALSE, fill = TRUE))</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># counties &lt;- subset(counties, grepl("california", counties$ID))</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># world &lt;- ne_countries(scale = "medium", returnclass = "sf")</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data = world) +</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = counties, fill='#f0f1f9') + </span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(data = (wide_merged_data%&gt;%filter(!is.na(gradecenter)&amp;!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_classic() +</span></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_color_met_c("Benedictus",direction = 1) +</span></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_size_area(max_size = 2) + theme_nr() +</span></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Longitude",y="Latitude",color="Grade Cohort Score",title = "California School Location and Academic\nPerformance")+guides(size=FALSE)+theme(legend.position = c(.8,.8))</span></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co"># # ----------------------------------------------------</span></span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data = world) +</span></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = counties, fill='#f0f1f9') + </span></span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(data = (wide_merged_data%&gt;%filter(!is.na(gradecenter)&amp;!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +</span></span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_classic() +</span></span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_color_met_c("Benedictus",direction = 1) +</span></span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_size_area(max_size = 7) + theme_nr() +</span></span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Longitude",y="Latitude",color="Grade Cohort Score",title = "Bay Area Academic Performance")+guides(size=FALSE)+theme(legend.position = c(.28,.3)) +</span></span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="co">#   coord_sf(xlim=c(-121.25,-123.5), ylim= c(36.75,38.75))</span></span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="co"># # -------------------------------------------------</span></span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data = world) +</span></span>
-<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = counties, fill='#f0f1f9') + </span></span>
-<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(data = (wide_merged_data%&gt;%filter(!is.na(gradecenter)&amp;!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +</span></span>
-<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_classic() +</span></span>
-<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_color_met_c("Benedictus",direction = 1) +</span></span>
-<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_size_area(max_size = 2) + theme_nr() +</span></span>
-<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Longitude",y="Latitude",color="Grade Cohort Score",title = "Los Angeles and San Diego Academic\nPerformance")+guides(size=FALSE)+theme(legend.position = c(.3,.3)) +</span></span>
-<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a><span class="co">#   coord_sf(xlim=c(-117,-120), ylim= c(32,35))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># counties &lt;- st_as_sf(maps::map("county", plot = FALSE, fill = TRUE))</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># counties &lt;- subset(counties, grepl("california", counties$ID))</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># world &lt;- ne_countries(scale = "medium", returnclass = "sf")</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data = world) +</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = counties, fill='#f0f1f9') + </span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(data = (wide_merged_data%&gt;%filter(!is.na(gradecenter)&amp;!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_classic() +</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_color_met_c("Benedictus",direction = 1) +</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_size_area(max_size = 2) + theme_nr() +</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Longitude",y="Latitude",color="Grade Cohort Score",title = "California School Location and Academic\nPerformance")+guides(size=FALSE)+theme(legend.position = c(.8,.8))</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co"># # ----------------------------------------------------</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data = world) +</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = counties, fill='#f0f1f9') + </span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(data = (wide_merged_data%&gt;%filter(!is.na(gradecenter)&amp;!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_classic() +</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_color_met_c("Benedictus",direction = 1) +</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_size_area(max_size = 7) + theme_nr() +</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Longitude",y="Latitude",color="Grade Cohort Score",title = "Bay Area Academic Performance")+guides(size=FALSE)+theme(legend.position = c(.28,.3)) +</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="co">#   coord_sf(xlim=c(-121.25,-123.5), ylim= c(36.75,38.75))</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="co"># # -------------------------------------------------</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data = world) +</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = counties, fill='#f0f1f9') + </span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(data = (wide_merged_data%&gt;%filter(!is.na(gradecenter)&amp;!is.na(gcs_mn_avg_ol))) , aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)),size=as.numeric(ncesenroll)), alpha =.5) +</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_classic() +</span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_color_met_c("Benedictus",direction = 1) +</span></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_size_area(max_size = 2) + theme_nr() +</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Longitude",y="Latitude",color="Grade Cohort Score",title = "Los Angeles and San Diego Academic\nPerformance")+guides(size=FALSE)+theme(legend.position = c(.3,.3)) +</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="co">#   coord_sf(xlim=c(-117,-120), ylim= c(32,35))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data = world) +</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = counties, fill='#f0f1f9') + </span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(data =((wide_merged_data %&gt;% filter(!is.na(pp_total_norm_NERDS) &amp; as.numeric(pp_total_norm_NERDS) &gt; 7000 &amp; as.numeric(pp_total_norm_NERDS) &lt; 25000))), aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=as.numeric(pp_total_norm_NERDS),size=as.numeric(ncesenroll)), alpha =.25) +</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_classic() +</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_color_met_c("Benedictus",direction = 1) +</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_size_area(max_size = 2) + theme_nr() +</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Longitude",y="Latitude",color="Per Student Spending",title = "California School Location and Per Student\nSpending")+guides(size=FALSE)+theme(legend.position = c(.8,.8))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data = world) +</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_sf(data = counties, fill='#f0f1f9') + </span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(data =((wide_merged_data %&gt;% filter(!is.na(pp_total_norm_NERDS) &amp; as.numeric(pp_total_norm_NERDS) &gt; 7000 &amp; as.numeric(pp_total_norm_NERDS) &lt; 25000))), aes(x=as.numeric(Longitude),y=as.numeric(Latitude),color=as.numeric(pp_total_norm_NERDS),size=as.numeric(ncesenroll)), alpha =.25) +</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_classic() +</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_color_met_c("Benedictus",direction = 1) +</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   scale_size_area(max_size = 2) + theme_nr() +</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x="Longitude",y="Latitude",color="Per Student Spending",title = "California School Location and Per Student\nSpending")+guides(size=FALSE)+theme(legend.position = c(.8,.8))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
