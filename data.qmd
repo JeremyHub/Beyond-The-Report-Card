@@ -18,7 +18,7 @@ Our science test data is from the California Department of Education, specifical
 
 The data we have for English Language Arts / Literature is also from the California Department of Education, specifically from 2022. It tells us for each student group within each school their level of proficiency.
 
-**Physical Education Data**
+**Physical Education Data** [Codebook](https://github.com/JeremyHub/STAT-456-Final/blob/main/DataDocumentation/pe_data_docs.pdf)
 
 Our PE data comes from the California Department Education from the 2018-2019 school year. It has 7 different types of exercises and each school's grade's proficiency on each type of exercise.
 
@@ -30,13 +30,12 @@ Our school funding data is aggregated 2019-2020 data from different federal and 
 
 The SEDA dataset contains school-level standardized academic achievement data across all Californian schools. These achievement scores are graded and cohort standardized against the NAEP standard, indicating whether the students in a particular school and grade level are meeting the national standard for their grade. For instance, if a school's 4th-grade students score 3.5, it indicates that they are lagging behind the national standard by 0.5 points. The achievement estimates are calculated using Ordinary Least Square (OLS) and Empirical Bayesian (EB) techniques.
 
-**School Details**
+**School Details** [Codebook](https://www.cde.ca.gov/ds/si/ds/fspubschls.asp)
 
-This contains metadata on 10629 California Schools. Including both the nationally used NCES id and the California CDS code. We use this to join our data from our different sources. This dataset also contains the longitude and latitude of the schools which has been very useful for EDA so far.
+This contains metadata on 10629 California Schools, including both the nationally used school identifier, or NCES ID, and the California CDS code. We use this to join our data from our different sources. This dataset also contains the longitude and latitude of the schools which has been very useful for EDA so far.
 
-**Aggregated Growth**  
-[Codebook](https://www.cde.ca.gov/ta/ac/growthreclayout.asp)  
-This contains data on Mathematics and English Language Arts growth by school and student group for California Schools. California developed the growth model to show how much student's scores were growing from year to year. 
+**Aggregated Growth** [Codebook](https://www.cde.ca.gov/ta/ac/growthreclayout.asp)\
+This contains data on Mathematics and English Language Arts growth by school and student group for California Schools. California developed the growth model to show how much student's scores were growing from year to year.
 
 # Going into details regarding the metrics considered in this analysis
 
