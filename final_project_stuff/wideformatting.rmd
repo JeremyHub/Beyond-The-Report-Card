@@ -18,7 +18,7 @@ library(rnaturalearth)
 [Codebook](https://github.com/JeremyHub/STAT-456-Final/blob/8ef6fa6ce28785065f583f4c477c5deb11afd442/final_project_stuff/school_info_docs.pdf)
 
 ```{r school_data}
-school_data <- read.csv('AllDatasets/ca_education.csv') # dataset of public K-12 spending by school
+school_data <- read.csv('../AllDatasets/ca_education.csv') # dataset of public K-12 spending by school
 
 school_data_clean <- school_data %>%
   filter(flag_nerds == 'false') %>%
@@ -33,7 +33,7 @@ school_data identified by ncesid at school level -- 10404
 [Codebook](https://github.com/JeremyHub/STAT-456-Final/blob/8ef6fa6ce28785065f583f4c477c5deb11afd442/final_project_stuff/ela_docs.pdf)
 
 ```{r ela_metric_data}
-ela_metric_data <- read.csv('AllDatasets/ca_edu_metrics.csv') # 2022 Academic Indicator (English Language Arts/Literacy) Data File
+ela_metric_data <- read.csv('../AllDatasets/ca_edu_metrics.csv') # 2022 Academic Indicator (English Language Arts/Literacy) Data File
 
 ela_metric_data_clean <- ela_metric_data %>%
   filter(cds > 0, rtype == 'S') %>% # school record
@@ -57,7 +57,7 @@ ela_metric_data identified by cds at school level -- 9845 AND student group -- 1
 ### ela and math metrics
 
 ```{r}
-ela_mth_proficiency_ranges<-read.csv("AllDatasets/nathanieldata.csv") %>% filter(GRADE == "00" & CATEGORY == "ALL") %>% mutate(NCESSCH = as.character(NCESSCH), NCESSCH = paste0("0",NCESSCH))
+ela_mth_proficiency_ranges<-read.csv("../AllDatasets/nathanieldata.csv") %>% filter(GRADE == "00" & CATEGORY == "ALL") %>% mutate(NCESSCH = as.character(NCESSCH), NCESSCH = paste0("0",NCESSCH))
 ```
 
 
@@ -68,7 +68,7 @@ ela_mth_proficiency_ranges<-read.csv("AllDatasets/nathanieldata.csv") %>% filter
 [Codebook](https://github.com/JeremyHub/STAT-456-Final/blob/8ef6fa6ce28785065f583f4c477c5deb11afd442/final_project_stuff/science_docs.pdf)
 
 ```{r science_metric_data}
-science_metric_data <- read.csv('AllDatasets/science_ca_assesment.csv', sep = "^")
+science_metric_data <- read.csv('../AllDatasets/science_ca_assesment.csv', sep = "^")
 
 science_metrics_clean <- science_metric_data %>%
   mutate(cds = as.character(paste0(0, paste0(paste0(County.Code,District.Code),paste0(0,School.Code))))) %>% # add cds identifier
@@ -100,8 +100,8 @@ science_metrics_clean identified by cds_standardized at school level -- 8819 AND
 [Covariate Codebook](https://github.com/JeremyHub/STAT-456-Final/blob/82e84dd90db010d96edba2d74dc574c15648a10c/final_project_stuff/stanford_cov_codebook.xlsx)
 
 ```{r}
-stanford_data <- read.csv('AllDatasets/seda_school_pool_gcs_4.1.csv')
-stanford_cov <- read.csv("AllDatasets/seda_cov_school_pool_4.1.csv")
+stanford_data <- read.csv('../AllDatasets/seda_school_pool_gcs_4.1.csv')
+stanford_cov <- read.csv("../AllDatasets/seda_cov_school_pool_4.1.csv")
 
 stanford_cov <- stanford_cov %>% filter(stateabb == "CA")
 
@@ -124,7 +124,7 @@ stanford_data AND stanford_cov identified by standardized_school_id -- 8512
 ### ca_school_details
 
 ```{r}
-ca_school_details <- read_excel("AllDatasets/ca_school_details.xlsx") # CA schools metadata
+ca_school_details <- read_excel("../AllDatasets/ca_school_details.xlsx") # CA schools metadata
 
 ca_school_details_clean <- ca_school_details %>%
   filter(StatusType == "Active") %>%
@@ -141,7 +141,7 @@ ca_school_details_clean identified by school_id -- 10629
 ### growth_aggr
 
 ```{r}
-growth_aggr <- read_excel("AllDatasets/growthaggr.xlsx")
+growth_aggr <- read_excel("../AllDatasets/growthaggr.xlsx")
 
 growth_aggr_clean <- growth_aggr %>% filter(rtype == "S") %>% 
   filter(studentgroup == "ALL") %>%
@@ -162,9 +162,9 @@ wide_merged_data <- ca_school_details_clean %>%
   left_join(ela_mth_proficiency_ranges, by=c("ncesid"="NCESSCH"))
 
 
-save(wide_merged_data, file="WideMergedData.RData")
+# save(wide_merged_data, file="../WideMergedData.RData")
 
-names(wide_merged_data)
+# names(wide_merged_data)
 ```
 
 ```{r}
