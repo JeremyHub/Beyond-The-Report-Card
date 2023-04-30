@@ -45,10 +45,11 @@ ca_counties <- ca_counties %>%
   st_transform(crs = "NAD83")
 ```
 
+# An overall look at Academic Achievement in Californian counties using Grade Cohort Standardize Scores difference from NAEP standard
 
-# An overall look at the difference in grade cohort score
+In this analysis, we define academic achievement as the difference between the Grade Cohort Standardize (GCS) Scores and NAEP standard. As a reminder of the interpretation for GCS scores, we can look at this example again: If 4th-grade students at the school of interest have a GCS value of 5.03, these students' scores indicate a level equivalent to 5th-grade, which is about one grade level higher than the national average (the reference group) in math.
 
-
+To create this map, we calculated the difference in GCS scores from the grade levels for each grade-school cohort, then aggregated them by the Californian counties. We divided the score differences into 3 categories: *1-2 years behind*, *Less than 1 year behind*, and *Less than 1 year ahead*. 
 
 
 ```{r gcs map data cleaning}
@@ -102,6 +103,10 @@ leaflet(grade_diff_by_county_with_breaks_geo) %>%
 
 ```
 
+Looking at this map, it is clear that there is a significant difference in academic performance across various regions in California. The Bay Area and Orange County appear to outperform other counties, along with affluent tourist counties like Placer and El Dorado. However, for the remaining counties, while approximately half of them exhibit students with academic performance on par with the national average, a significant proportion of counties have students lagging behind by 1-2 years. 
+
+We recognize that there is a huge wealth disparity (find research on this) We decided to 
+...
 ## Aggregated county-level math and reasoning language arts (RLA) achievement of students of different socioeconomic status groups
 
 ```{r math data cleaning for ecd and nec leaflet}
