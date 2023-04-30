@@ -11,7 +11,7 @@
     "href": "school_insights.html#does-funding-impact-school-level-academic-achievement",
     "title": "Beyond the Report Card: What are the insights at the school level that we can observe?",
     "section": "Does funding impact school-level academic achievement?",
-    "text": "Does funding impact school-level academic achievement?"
+    "text": "Does funding impact school-level academic achievement?\n\n\n\n\n\nOverall, regardless of area, higher per pupil funding is associated with lower growth scores. In California schools receive a base per-pupil grant dependent on the grades taught in the school. Schools receive supplemental funding based on the percent of students eligible for free and reduced lunch, the percent in the foster care system, and the percent that have limited English. We use a linear model of funding based solely on the percent of students eligible for free and reduced lunch to adjust funding. The negative relationship dissapears:\n\n\n\n\n\n\n\n\nSocioeconomic status, measured as the percent of students eligible for free and reduced lunch, significantly effects achievement. Additional funding received by schools with a high proportion of disadvantaged students does not affect achievement enough to offset the impact of socioeconomic status."
   },
   {
     "objectID": "result.html",
@@ -96,5 +96,12 @@
     "title": "Beyond the Report Card: What are the significant predictors?",
     "section": "",
     "text": "LASSO code"
+  },
+  {
+    "objectID": "county_insights.html#aggregated-county-level-math-and-reasoning-language-arts-rla-achievement-of-students-of-different-socioeconomic-status-groups",
+    "href": "county_insights.html#aggregated-county-level-math-and-reasoning-language-arts-rla-achievement-of-students-of-different-socioeconomic-status-groups",
+    "title": "Beyond the Report Card: What are the insights at the county level that we can observe?",
+    "section": "Aggregated county-level math and reasoning language arts (RLA) achievement of students of different socioeconomic status groups",
+    "text": "Aggregated county-level math and reasoning language arts (RLA) achievement of students of different socioeconomic status groups"
   }
 ]

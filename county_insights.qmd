@@ -107,6 +107,7 @@ Looking at this map, it is clear that there is a significant difference in acade
 
 We recognize that there is a huge wealth disparity (find research on this) We decided to 
 ...
+  
 ## Aggregated county-level math and reasoning language arts (RLA) achievement of students of different socioeconomic status groups
 
 ```{r math data cleaning for ecd and nec leaflet}

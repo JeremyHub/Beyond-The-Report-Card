@@ -29,15 +29,13 @@ load("CombinedDataLongFormat.RData")
 load("WideMergedData.RData")
 ```
 
-
 # Description & motivation of research questions
 
 Initially, our focus was on the correlation between affordable housing and educational achievement. However, during the process of selecting appropriate educational proxies, we found ourselves delving into the factors behind the measurements of these proxies. As a result, we decided to seek the guidance of Professor Lesley Lavery, who specializes in public policies in education. We hope to gain a better understanding of the educational proxies currently in use, and to investigate whether there are additional factors that impact educational outcomes and potentially render the current proxies interchangeable or distinct from other measures.
 
-
 # Dataset description
 
-The data set we have includes a range of school-related variables such as location details, funding, and aggregated scores in various subjects. Specifically, the score variables cover the general grade-cohort-standardized achievement score, as well as scores in reading, science, and physical education. 
+The data set we have includes a range of school-related variables such as location details, funding, and aggregated scores in various subjects. Specifically, the score variables cover the general grade-cohort-standardized achievement score, as well as scores in reading, science, and physical education.
 
 We aggregate our dataset from 5 different datasets. We use data from The California Department of Education, Georgetown University, and the Educational Opportunity Project at Stanford University.
 
@@ -49,7 +47,7 @@ Our science test data is from the California Department of Education, specifical
 
 The data we have for English Language Arts / Literature is also from the California Department of Education, specifically from 2022. It tells us for each student group within each school their level of proficiency.
 
-**Physical Education Data** 
+**Physical Education Data**
 
 Our PE data comes from the California Department Education from the 2018-2019 school year. It has 7 different types of exercises and each school's grade's proficiency on each type of exercise.
 
@@ -57,15 +55,13 @@ Our PE data comes from the California Department Education from the 2018-2019 sc
 
 Our school funding data is aggregated 2019-2020 data from different federal and state sources. It is compiled into the dataset we are using by Georgetown University researchers. It has information about funding going to a school from the state, local, and federal governments, as well as metadata about the school such as enrollment, as well as data about the income levels of the students at the school.
 
-**Educational Opportunity Project at Stanford University (SEDA)** [Codebook](https://github.com/JeremyHub/STAT-456-Final/blob/82e84dd90db010d96edba2d74dc574c15648a10c/final_project_stuff/stanford_codebook.xlsx) 
-[Covariate Codebook](https://github.com/JeremyHub/STAT-456-Final/blob/82e84dd90db010d96edba2d74dc574c15648a10c/final_project_stuff/stanford_cov_codebook.xlsx)
+**Educational Opportunity Project at Stanford University (SEDA)** [Codebook](https://github.com/JeremyHub/STAT-456-Final/blob/82e84dd90db010d96edba2d74dc574c15648a10c/final_project_stuff/stanford_codebook.xlsx) [Covariate Codebook](https://github.com/JeremyHub/STAT-456-Final/blob/82e84dd90db010d96edba2d74dc574c15648a10c/final_project_stuff/stanford_cov_codebook.xlsx)
 
 The SEDA we're using contains school-level standardized academic achievement data across all Californian schools. These achievement scores are graded and cohort standardized against the NAEP standard, indicating whether the students in a particular school and grade level are meeting the national standard for their grade. For instance, if a school's 4th-grade students score 3.5, it indicates that they are lagging behind the national standard by 0.5 points. The achievement estimates are calculated using Ordinary Least Square (OLS) and Empirical Bayesian (EB) techniques.
 
 **School Details**
 
-This contains metadata on 10629 California Schools. Including both the nationally used NCES id and the California CDS code. We use this to join our data from our different sources. This dataset also contains the longitude and latitude of the schools which has been very useful for EDA so far.   
-
+This contains metadata on 10629 California Schools. Including both the nationally used NCES id and the California CDS code. We use this to join our data from our different sources. This dataset also contains the longitude and latitude of the schools which has been very useful for EDA so far.
 
 # Ethical issues (who may be harmed and who may benefit)
 
@@ -81,8 +77,7 @@ Taken out of context, our analyses and graphics have the potential to negatively
 
 *Thu's results*
 
-This map shows the deviation in SEDA scores from the national standard for each county, providing a broad overview of academic achievement levels in Californian counties. Overall, areas in cities or richer suburbs (Silicon Valley, Los Angeles, San Diego) have higher academic performance than national average, shown through brigher colors (yellow and green). On the other hand, areas with fewer schools (e.g. Inyo – a national forest area) have lower academic performance than national average, denoted by darker (blue and purple) colors.
-
+This map shows the deviation in SEDA scores from the national standard for each county, providing a broad overview of academic achievement levels in Californian counties. Overall, areas in cities or richer suburbs (Silicon Valley, Los Angeles, San Diego) have higher academic performance than national average, shown through brigher colors (yellow and green). On the other hand, areas with fewer schools (e.g. Inyo -- a national forest area) have lower academic performance than national average, denoted by darker (blue and purple) colors.
 
 ```{r}
 # Read CA counties shapefile
@@ -195,9 +190,7 @@ graph_ready %>%
   scale_color_met_d(name = colortheme)
 ```
 
-
 *Nathaniel's results*
-
 
 ```{r message=FALSE, warning=FALSE}
 
@@ -275,7 +268,6 @@ wide_merged_data %>% filter(!is.na(urbanicity)) %>%
   labs(y="Grade Cohort Score", x= "Per Student Spending") + guides(color=FALSE) +   geom_hline(yintercept = 0)
 ```
 
-
 ```{r funding models, warning=FALSE, results='hide'}
 fundingmod<-wide_merged_data %>% 
   filter(!is.na(pp_total_raw)&!is.na(perfrl)) %>% 
@@ -339,32 +331,28 @@ wide_merged_data %>% filter(!is.na(urbanicity)) %>% mutate(pp_total_raw_frl_adju
   labs(y="Grade Cohort Score", x= "Adjusted Per Student Spending") + guides(color=FALSE) +   geom_hline(yintercept = 0)
 ```
 
-The flattened relationship persists in each area.  
+The flattened relationship persists in each area.
 
-The percent of students eligible for free and reduced lunch directly influences spending in the state of California. However, in wealthy localities with strong property tax bases, funding often exceeds the amount allotted by the state of California. These areas also have a lower percent of students eligible for free and reduced lunch. So our model is not looking directly at the supplemental grant received for the percent of students eligible for free and reduced lunch. Nevertheless we think it provides a more accurate picture than the raw spending metric. 
+The percent of students eligible for free and reduced lunch directly influences spending in the state of California. However, in wealthy localities with strong property tax bases, funding often exceeds the amount allotted by the state of California. These areas also have a lower percent of students eligible for free and reduced lunch. So our model is not looking directly at the supplemental grant received for the percent of students eligible for free and reduced lunch. Nevertheless we think it provides a more accurate picture than the raw spending metric.
 
-The adjustment is very very rudimentary and would benefit from more investigation. We could probably use school location in conjunction with census data to get some picture of property taxes and local funding, but variation in local tax and funding structures could make this difficult. 
-
+The adjustment is very very rudimentary and would benefit from more investigation. We could probably use school location in conjunction with census data to get some picture of property taxes and local funding, but variation in local tax and funding structures could make this difficult.
 
 ## Project plan
 
-Moving forward, we would love to: 
+Moving forward, we would love to:
 
-- Expand further on funding metrics and explore ways to adjust them in a way that they don't give a false picture when taken out of context (Nathaniel has put in some work in this regard and we have a plan to accomplish this)
+-   Expand further on funding metrics and explore ways to adjust them in a way that they don't give a false picture when taken out of context (Nathaniel has put in some work in this regard and we have a plan to accomplish this)
 
-- Identify more potential metrics through bivariate visualizations and adjust them so that we can put all of them together into a model that explains different education proxies
+-   Identify more potential metrics through bivariate visualizations and adjust them so that we can put all of them together into a model that explains different education proxies
 
-- Tell a better story with missing data (for example, why certain data is missing, where is it from, where does the data in our different datasets overlap and where does it not, are there trends here or not)
-
+-   Tell a better story with missing data (for example, why certain data is missing, where is it from, where does the data in our different datasets overlap and where does it not, are there trends here or not)
 
 ## Summary of contributions
 
 Thu, Nathaniel, and Jeremy all contribute equally to this checkpoint. Specifically:
 
-- Thu was responsible for cleaning and standardizing school identifiers to merge all datasets together in long format. She also cleaned the data for and visualized the general map displaying the deviation in SEDA scores from the national standard for each county, which provides a broad overview of academic achievement levels in Californian counties. Lastly, she consolidated the narration for the results and also this write-up using all of Jeremy and Nathaniel's inputs, and organized the slides for the intermediate presentation.
+-   Thu was responsible for cleaning and standardizing school identifiers to merge all datasets together in long format. She also cleaned the data for and visualized the general map displaying the deviation in SEDA scores from the national standard for each county, which provides a broad overview of academic achievement levels in Californian counties. Lastly, she consolidated the narration for the results and also this write-up using all of Jeremy and Nathaniel's inputs, and organized the slides for the intermediate presentation.
 
-- Nathaniel was responsible for cleaning and merging the dataset into a wide format, as well as creating several visualizations that aided us in developing a narrative about the funding for this intermediate visualization. Additionally, he proposed a new concept for modeling an adjusted funding metric, which will provide us with a more comprehensive understanding of the correlation between funding and academic achievement at the school level.
+-   Nathaniel was responsible for cleaning and merging the dataset into a wide format, as well as creating several visualizations that aided us in developing a narrative about the funding for this intermediate visualization. Additionally, he proposed a new concept for modeling an adjusted funding metric, which will provide us with a more comprehensive understanding of the correlation between funding and academic achievement at the school level.
 
-- Jeremy was responsible for gathering and aggregating some of the initial datasets that Thu then later merged with other datasets. He also conducted various analyses to compare the trend of different educational proxies as school funding increases. Due to his extensive knowledge about California, he is the primary result interpreter of the team. This enables us to contextualize the outcomes and generate ideas for future steps. Furthermore, he played a role in exploring different potential variables by cleaning the data for and visualizing various bivariate graphs.
-
-
+-   Jeremy was responsible for gathering and aggregating some of the initial datasets that Thu then later merged with other datasets. He also conducted various analyses to compare the trend of different educational proxies as school funding increases. Due to his extensive knowledge about California, he is the primary result interpreter of the team. This enables us to contextualize the outcomes and generate ideas for future steps. Furthermore, he played a role in exploring different potential variables by cleaning the data for and visualizing various bivariate graphs.

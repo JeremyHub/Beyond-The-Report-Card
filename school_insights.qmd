@@ -107,6 +107,8 @@ wide_merged_data %>% filter(!is.na(urbanicity)) %>%
   labs(y="Grade Cohort Score", x= "Unadjusted Per Student Spending") + guides(color="none") +   geom_hline(yintercept = 0)
 ```
 
+Overall, regardless of area, higher per pupil funding is associated with lower growth scores. In California schools receive a base per-pupil grant dependent on the grades taught in the school. Schools receive supplemental funding based on the percent of students eligible for free and reduced lunch, the percent in the foster care system, and the percent that have limited English. We use a linear model of funding based solely on the percent of students eligible for free and reduced lunch to adjust funding. The negative relationship dissapears:
+
 ```{r funding model, results='hide'}
 #| message: true
 fundingmod<-wide_merged_data %>% 
@@ -125,7 +127,6 @@ lunchfundingmod<-wide_merged_data %>%
 lunchfundingmod$coefficients
 ```
 
-
 ```{r area adjusted graph}
 wide_merged_data %>% filter(!is.na(urbanicity)) %>% mutate(pp_total_raw_frl_adjusted = as.numeric(pp_total_raw) - as.numeric(perfrl)*lunchfundingmod$coefficients[2],
   pp_total_raw = as.numeric(pp_total_raw)) %>%
@@ -138,4 +139,5 @@ wide_merged_data %>% filter(!is.na(urbanicity)) %>% mutate(pp_total_raw_frl_adju
   labs(y="Grade Cohort Score", x= "Adjusted Per Student Spending") + guides(color="none") +   geom_hline(yintercept = 0)
 ```
 
+Socioeconomic status, measured as the percent of students eligible for free and reduced lunch, significantly effects achievement. Additional funding received by schools with a high proportion of disadvantaged students does not affect achievement enough to offset the impact of socioeconomic status.
 
