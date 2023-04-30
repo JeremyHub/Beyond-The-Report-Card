@@ -137,7 +137,40 @@ wide_merged_data %>% filter(!is.na(urbanicity)) %>% mutate(pp_total_raw_frl_adju
   scale_x_continuous(limits = c(8000,18000)) + 
   theme_minimal()+
   labs(y="Grade Cohort Score", x= "Adjusted Per Student Spending") + guides(color="none") +   geom_hline(yintercept = 0)
+
 ```
 
 Socioeconomic status, measured as the percent of students eligible for free and reduced lunch, significantly effects achievement. Additional funding received by schools with a high proportion of disadvantaged students does not affect achievement enough to offset the impact of socioeconomic status.
 
+```{r adjusted graphs}
+#| eval: false
+fl<-c("Adjusted Spending","Raw Spending")
+wide_merged_data %>%
+  mutate(pp_total_raw_frl_adjusted = as.numeric(pp_total_raw) - as.numeric(perfrl)*lunchfundingmod$coefficients[2],
+  pp_total_raw = as.numeric(pp_total_raw)) %>%
+  pivot_longer(cols = c(pp_total_raw_frl_adjusted,pp_total_raw)) %>%
+  ggplot(aes(x=value, y=gcs_mn_avg_ol-gradecenter, color = name)) + 
+    geom_point(alpha = .1)+
+    geom_smooth() +
+    geom_hline(yintercept = 0, alpha=.5) + 
+    scale_x_continuous(limits = c(8000,18000)) +
+    scale_y_continuous(limits = c(-4, 4)) +
+    scale_color_discrete(type = met.brewer(palname, 3)[2:3], labels = c("Raw Spending", "Adjusted Spending")) + 
+    labs(x = "Per Student Funding", y = "Grade Cohort Score", color="") + 
+    theme_minimal() + 
+    theme(legend.position = c(.8,.81))
+
+
+wide_merged_data %>%
+  mutate(pp_total_raw_frl_adjusted = as.numeric(pp_total_raw) - as.numeric(perfrl)*lunchfundingmod$coefficients[2],
+  pp_total_raw = as.numeric(pp_total_raw)) %>%
+  pivot_longer(cols = c(pp_total_raw_frl_adjusted,pp_total_raw)) %>%
+ ggplot(aes(x=as.numeric(perhsp),value,color=name)) +
+      geom_point(alpha = .05) +
+      geom_smooth() + 
+      theme_minimal()+
+      theme(legend.position = c(.2,.9) ) + 
+      labs(x="Percent Hispanic", y="Per student funding", color="")+
+      scale_y_continuous(limits = c(5000,20000)) +
+      scale_color_discrete(type = met.brewer(palname, 3)[2:3], labels = c("Raw Spending", "Adjusted Spending"))
+```

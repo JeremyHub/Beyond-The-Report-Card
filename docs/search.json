@@ -70,11 +70,53 @@
     "text": "Summary of contributions\nThu, Nathaniel, and Jeremy all contribute equally to this checkpoint. Specifically:\n\nThu was responsible for cleaning and standardizing school identifiers to merge all datasets together in long format. She also cleaned the data for and visualized the general map displaying the deviation in SEDA scores from the national standard for each county, which provides a broad overview of academic achievement levels in Californian counties. Lastly, she consolidated the narration for the results and also this write-up using all of Jeremy and Nathaniel’s inputs, and organized the slides for the intermediate presentation.\nNathaniel was responsible for cleaning and merging the dataset into a wide format, as well as creating several visualizations that aided us in developing a narrative about the funding for this intermediate visualization. Additionally, he proposed a new concept for modeling an adjusted funding metric, which will provide us with a more comprehensive understanding of the correlation between funding and academic achievement at the school level.\nJeremy was responsible for gathering and aggregating some of the initial datasets that Thu then later merged with other datasets. He also conducted various analyses to compare the trend of different educational proxies as school funding increases. Due to his extensive knowledge about California, he is the primary result interpreter of the team. This enables us to contextualize the outcomes and generate ideas for future steps. Furthermore, he played a role in exploring different potential variables by cleaning the data for and visualizing various bivariate graphs."
   },
   {
-    "objectID": "county_insights.html",
-    "href": "county_insights.html",
+    "objectID": "thing.html#comparing-performance-metrics",
+    "href": "thing.html#comparing-performance-metrics",
+    "title": "Beyond the Report Card: Investigating the Factors that Define Educational Achievement",
+    "section": "Comparing Performance Metrics",
+    "text": "Comparing Performance Metrics"
+  },
+  {
+    "objectID": "thing.html#at-the-county-level",
+    "href": "thing.html#at-the-county-level",
+    "title": "Beyond the Report Card: Investigating the Factors that Define Educational Achievement",
+    "section": "At The County Level",
+    "text": "At The County Level"
+  },
+  {
+    "objectID": "thing.html#at-the-school-level",
+    "href": "thing.html#at-the-school-level",
+    "title": "Beyond the Report Card: Investigating the Factors that Define Educational Achievement",
+    "section": "At The School Level",
+    "text": "At The School Level"
+  },
+  {
+    "objectID": "thing.html#funding-and-achievement-correlation",
+    "href": "thing.html#funding-and-achievement-correlation",
+    "title": "Beyond the Report Card: Investigating the Factors that Define Educational Achievement",
+    "section": "Funding and Achievement Correlation",
+    "text": "Funding and Achievement Correlation\n\n\n\n\n\n                    Estimate Std. Error  t value     Pr(>|t|)\n(Intercept)        11365.441   184.1742 61.71027 0.000000e+00\nas.numeric(perfrl)  3170.302   283.2011 11.19452 1.334886e-28"
+  },
+  {
+    "objectID": "thing.html#something-something-gcs-map",
+    "href": "thing.html#something-something-gcs-map",
+    "title": "Beyond the Report Card: Investigating the Factors that Define Educational Achievement",
+    "section": "Something Something GCS Map",
+    "text": "Something Something GCS Map"
+  },
+  {
+    "objectID": "thing.html#choosing-variables",
+    "href": "thing.html#choosing-variables",
+    "title": "Beyond the Report Card: Investigating the Factors that Define Educational Achievement",
+    "section": "Choosing Variables",
+    "text": "Choosing Variables"
+  },
+  {
+    "objectID": "county_insights.html#aggregated-county-level-math-and-reasoning-language-arts-rla-achievement-of-students-of-different-socioeconomic-status-groups",
+    "href": "county_insights.html#aggregated-county-level-math-and-reasoning-language-arts-rla-achievement-of-students-of-different-socioeconomic-status-groups",
     "title": "Beyond the Report Card: What are the insights at the county level that we can observe?",
-    "section": "",
-    "text": "An overall look at Academic Achievement in Californian counties using Grade Cohort Standardize Scores difference from NAEP standard\nIn this analysis, we define academic achievement as the difference between the Grade Cohort Standardize (GCS) Scores and NAEP standard. As a reminder of the interpretation for GCS scores, we can look at this example again: If 4th-grade students at the school of interest have a GCS value of 5.03, these students’ scores indicate a level equivalent to 5th-grade, which is about one grade level higher than the national average (the reference group) in math.\nTo create this map, we calculated the difference in GCS scores from the grade levels for each grade-school cohort, then aggregated them by the Californian counties. We divided the score differences into 3 categories: 1-2 years behind, Less than 1 year behind, and Less than 1 year ahead.\n\n\n\n\n\n\n\n\n\nLooking at this map, it is clear that there is a significant difference in academic performance across various regions in California. The Bay Area and Orange County appear to outperform other counties, along with affluent tourist counties like Placer and El Dorado. However, for the remaining counties, while approximately half of them exhibit students with academic performance on par with the national average, a significant proportion of counties have students lagging behind by 1-2 years.\nWe recognize that there is a huge wealth disparity (find research on this) We decided to … ## Aggregated county-level math and reasoning language arts (RLA) achievement of students of different socioeconomic status groups"
+    "section": "Aggregated county-level math and reasoning language arts (RLA) achievement of students of different socioeconomic status groups",
+    "text": "Aggregated county-level math and reasoning language arts (RLA) achievement of students of different socioeconomic status groups"
   },
   {
     "objectID": "data.html",
@@ -96,12 +138,5 @@
     "title": "Beyond the Report Card: What are the significant predictors?",
     "section": "",
     "text": "LASSO code"
-  },
-  {
-    "objectID": "county_insights.html#aggregated-county-level-math-and-reasoning-language-arts-rla-achievement-of-students-of-different-socioeconomic-status-groups",
-    "href": "county_insights.html#aggregated-county-level-math-and-reasoning-language-arts-rla-achievement-of-students-of-different-socioeconomic-status-groups",
-    "title": "Beyond the Report Card: What are the insights at the county level that we can observe?",
-    "section": "Aggregated county-level math and reasoning language arts (RLA) achievement of students of different socioeconomic status groups",
-    "text": "Aggregated county-level math and reasoning language arts (RLA) achievement of students of different socioeconomic status groups"
   }
 ]
