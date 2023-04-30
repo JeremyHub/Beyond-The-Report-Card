@@ -8,6 +8,8 @@ website:
     left:
       - href: index.qmd
         text: Home
+      - href: data.qmd
+        text: Data
       - href: motivation.qmd
         text: Motivation
       - href: county_insights.qmd
@@ -31,6 +33,5 @@ format:
     theme: zephyr
     css: styles.css
     toc: true
-    
-editor: visual
 
+editor: visual

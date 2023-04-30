@@ -45,7 +45,11 @@ ca_counties <- ca_counties %>%
   st_transform(crs = "NAD83")
 ```
 
-## Map of County-level academic achievement categories in California
+
+# An overall look at the difference in grade cohort score
+
+
+
 
 ```{r gcs map data cleaning}
 school_map <- merged_table %>%
