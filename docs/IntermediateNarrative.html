@@ -208,45 +208,30 @@ ul.task-list li input[type="checkbox"] {
 
 </div>
 <div class="cell">
-<div class="cell-output-display">
-<p><img src="IntermediateNarrative_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
-</div>
+
 </div>
 <p><em>Jeremy’s results</em></p>
 <p>We examined solely the schools for which we have complete data available, i.e., the schools in the intersection of our datasets. Among these schools, across all metrics, an increase in per-pupil government spending (both state and federal) showed a negative correlation with performance. At first glance, the outcomes appear to be linked to the increase in per-pupil spending when there is a significant percentage of students who are English learners, in the foster care system, or eligible for free/reduced lunch.</p>
 <div class="cell">
-<div class="cell-output-display">
-<p><img src="IntermediateNarrative_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
-</div>
+
 </div>
 <p><em>Nathaniel’s results</em></p>
 <div class="cell">
-<div class="cell-output-display">
-<p><img src="IntermediateNarrative_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
-</div>
+
 </div>
 <p>Spending per student varies significantly across the state. We thought that this might explain some of the funding-achievement issue we had come across. After seeing that the same negative relationship existed to some degree in each locale we decided that location, or at least type of area, was not the factor we were looking for. It is also worth noting that the ‘Rural’ and ‘Town’ areas seem to be under performing for some reason.</p>
 <div class="cell">
-<div class="cell-output-display">
-<p><img src="IntermediateNarrative_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
-</div>
+
 </div>
 <div class="cell">
 
 </div>
 <div class="cell">
-<div class="cell-output-display">
-<p><img src="IntermediateNarrative_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="768"></p>
-</div>
-<div class="cell-output-display">
-<p><img src="IntermediateNarrative_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid" width="768"></p>
-</div>
+
 </div>
 <p>We understand that funding for schools in California is based in part on the percent of students eligible for free and reduced lunch, the percent in the foster care system, and the percent that have limited English. So we decided to fit some simple models of funding and these variables. We then adjusted per student spending based on the simplest model: <code>funding ~ free and reduced lunch</code>. This flattened the relationship between funding and achievement and flipped the relationship between percent Hispanic and spending.</p>
 <div class="cell">
-<div class="cell-output-display">
-<p><img src="IntermediateNarrative_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
-</div>
+
 </div>
 <p>The flattened relationship persists in each area.</p>
 <p>The percent of students eligible for free and reduced lunch directly influences spending in the state of California. However, in wealthy localities with strong property tax bases, funding often exceeds the amount allotted by the state of California. These areas also have a lower percent of students eligible for free and reduced lunch. So our model is not looking directly at the supplemental grant received for the percent of students eligible for free and reduced lunch. Nevertheless we think it provides a more accurate picture than the raw spending metric.</p>
