@@ -87,7 +87,9 @@ Schools closer to urban areas appear to have higher achievement than schools in 
 
 ## Does funding impact school-level academic achievement?
 
-Advocacy groups have long debated the influence of funding on academic achievement. [@money_heritage]
+Advocacy groups have long debated the influence of funding on academic achievement.
+
+[@money_heritage]
 
 [@money_outcomes] 
 
