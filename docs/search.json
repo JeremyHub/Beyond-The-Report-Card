@@ -1,17 +1,17 @@
 [
   {
-    "objectID": "school_insights.html#map-of-school-level-academic-achievement-categories-across-california-counties",
-    "href": "school_insights.html#map-of-school-level-academic-achievement-categories-across-california-counties",
+    "objectID": "school_insights.html#school-level-academic-achievement-across-california",
+    "href": "school_insights.html#school-level-academic-achievement-across-california",
     "title": "Beyond the Report Card: What are the insights at the school level that we can observe?",
-    "section": "Map of School-level academic achievement categories across California counties",
-    "text": "Map of School-level academic achievement categories across California counties"
+    "section": "School-level academic achievement across California",
+    "text": "School-level academic achievement across California\nLet’s now take a closer look at the statistics on the individual school level. To create this map, we find the GCS score for each school and divide the schools into 5 categories, then we place a marker at the approximate location based on available latitude and longitude data. Note that the range of GCS scores is much wider now since we are looking at individual schools rather than the county average.\n\n\n\n\n\n\nSchools closer to urban areas appear to have higher achievement than schools in rural areas. Zooming in on just the San Francisco Bay we see that there is a tremendous amount of variation in achievement: schools in San Jose are years behind while a swath of schools in Palo Alto, Mountain View, and Cupertino boast testing achievement more than three years ahead. On the east side of the bay in Oakland, schools just blocks apart are separated by multiple years in achievement. Further afield, Los Angeles and Sacramento have areas of very low achievement then areas of higher achievement further out."
   },
   {
     "objectID": "school_insights.html#does-funding-impact-school-level-academic-achievement",
     "href": "school_insights.html#does-funding-impact-school-level-academic-achievement",
     "title": "Beyond the Report Card: What are the insights at the school level that we can observe?",
     "section": "Does funding impact school-level academic achievement?",
-    "text": "Does funding impact school-level academic achievement?\n\n\n\n\n\nOverall, regardless of area, higher per pupil funding is associated with lower growth scores. In California schools receive a base per-pupil grant dependent on the grades taught in the school. Schools receive supplemental funding based on the percent of students eligible for free and reduced lunch, the percent in the foster care system, and the percent that have limited English. We use a linear model of funding based solely on the percent of students eligible for free and reduced lunch to adjust funding. The negative relationship dissapears:\n\n\n\n\n\n\n\n\nSocioeconomic status, measured as the percent of students eligible for free and reduced lunch, significantly effects achievement. Additional funding received by schools with a high proportion of disadvantaged students does not affect achievement enough to offset the impact of socioeconomic status."
+    "text": "Does funding impact school-level academic achievement?\nAdvocacy groups have long debated the influence of funding on academic achievement. (Lips, Watkins, and Fleming 2008)\n(Burnette 2019)\n(Morgan and Amerikaner 2018)\n\n\n\n\n\n\n\n\n\n\n\nOverall, regardless of area, higher per pupil funding is associated with lower growth scores. In California schools receive a base per-pupil grant dependent on the grades taught in the school. Schools receive supplemental funding based on the percent of students eligible for free and reduced lunch, the percent in the foster care system, and the percent that have limited English. We use a linear model of funding based solely on the percent of students eligible for free and reduced lunch to adjust funding. The negative relationship dissapears:\n\n\n\n\n\n\n\n\nSocioeconomic status, measured as the percent of students eligible for free and reduced lunch, significantly effects achievement. Additional funding received by schools with a high proportion of disadvantaged students does not affect achievement enough to offset the impact of socioeconomic status."
   },
   {
     "objectID": "result.html",
