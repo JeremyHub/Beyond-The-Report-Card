@@ -87,7 +87,7 @@ Schools closer to urban areas appear to have higher achievement than schools in 
 
 ## Does funding impact school-level academic achievement?
 
-Advocacy groups have long debated the influence of funding on academic achievement. Conservative groups like The Heritage Foundation note that funding, in real terms, has increased significantly since the 70s but achievement has stayed flat. They argue that more funding will do little to improve outcomes [@money_heritage]. Progressive groups, on the other hand, see unmet needs and discrimination in current funding schemes. 
+Advocacy groups have long debated the influence of funding on academic achievement. Conservative groups like The Heritage Foundation note that funding, in real terms, has increased significantly since the 70s but achievement has stayed flat. They argue that more funding will do little to improve outcomes [@money_heritage]. On the other hand, an assortment of studies find that funding does have a measurable impact on achievement, but how the money is spent important [@money_edweek].
 
 We map California school per-pupil funding data in four spending categories. There are schools with funding well in excess of $20,000 per student, but most are accurately represented by these categories.
 
@@ -130,20 +130,13 @@ addLegend("bottomright", colors = met.brewer(palname, 4)[1:4], title = "Per Stud
 <br>
 There are a striking number of schools with no funding data. Nevertheless, the types of areas that are excluded don't appear to follow a clear trend.
 
-Among schools with available funding data, correlations with achievement are confusing. The high-achieving schools we saw earlier in the Palo Alto area receive very high funding but, in Oakland, the schools with the highest funding have some of the lowest levels of achievement.
-
-
-
-
-[@money_edweek] 
-
-[@money_edtrust]
+Among schools with available funding data, correlations with achievement are confusing. The high-achieving schools we saw earlier in the Palo Alto area receive very high funding but, in Oakland, the schools with the highest funding have some of the lowest levels of achievement. South of Los Angeles, the high achieveing schools in Huntington Beach are funded at levels close to and below $10,000 per student. 
 
 ```{r funding and performance by area}
 wide_merged_data %>% filter(!is.na(urbanicity)) %>%
   ggplot(aes(x=as.numeric(pp_total_raw), y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)))) +
   geom_point(alpha = .1, color=defaultcolor) + 
-  geom_smooth(method = lm, color=defaultcolor) + 
+  geom_smooth(color=defaultcolor) + 
   facet_wrap(~urbanicity) + 
   scale_x_continuous(limits = c(8000,18000)) + 
   theme_minimal()+
@@ -175,7 +168,7 @@ wide_merged_data %>% filter(!is.na(urbanicity)) %>% mutate(pp_total_raw_frl_adju
   pp_total_raw = as.numeric(pp_total_raw)) %>%
   ggplot(aes(x=as.numeric(pp_total_raw_frl_adjusted), y=(as.numeric(gcs_mn_avg_ol)-as.numeric(gradecenter)))) +
   geom_point(alpha = .1, color=defaultcolor) + 
-  geom_smooth(method = lm, color=defaultcolor) + 
+  geom_smooth( color=defaultcolor) + 
   facet_wrap(~urbanicity) + 
   scale_x_continuous(limits = c(8000,18000)) + 
   theme_minimal()+
@@ -183,7 +176,11 @@ wide_merged_data %>% filter(!is.na(urbanicity)) %>% mutate(pp_total_raw_frl_adju
 
 ```
 
-Socioeconomic status, measured as the percent of students eligible for free and reduced lunch, significantly effects achievement. Additional funding received by schools with a high proportion of disadvantaged students does not affect achievement enough to offset the impact of socioeconomic status.
+In the suburbs and city there appears to be a slight positive relationship between funding and achievement but our data and analysis really is not suited to pinpoint that effect. 
+
+There are still things we can take away from this analysis. Socioeconomic status, measured as the percent of students eligible for free and reduced lunch, significantly effects achievement. Additional funding received by schools with a high proportion of disadvantaged students does not affect achievement enough to offset the impact of socioeconomic status. The Education Trust finds that California's school funding scheme is relatively progressive when comparing high and low-poverty school districts [@money_edtrust]. When adjusting for the additional needs of low income students, however, they say that California is merely 'neutral.' 
+
+
 
 ```{r adjusted graphs}
 #| eval: false
@@ -217,3 +214,9 @@ wide_merged_data %>%
       scale_y_continuous(limits = c(5000,20000)) +
       scale_color_discrete(type = met.brewer(palname, 3)[2:3], labels = c("Raw Spending", "Adjusted Spending"))
 ```
+
+
+
+
+
+
