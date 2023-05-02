@@ -101,7 +101,10 @@ leaflet(grade_diff_by_county_with_breaks_geo) %>%
     position = "topright"
 
   ) %>%
-  addLegend(colors = met.brewer(palname,3)[1:3], values = ~grade_diff_cat, title = NULL, labels = c('1-2 years behind', 'Less than 1 year behind', 'Less than 1 year ahead'), className = "info legend County")
+  addLegend(colors = met.brewer(palname,3)[1:3], values = ~grade_diff_cat, title = NULL, labels = c('1-2 years behind', 'Less than 1 year behind', 'Less than 1 year ahead'), className = "info legend County") %>%
+  addEasyButton(easyButton(
+    icon = "fa-home", title = "Zoom to California",
+    onClick = JS("function(btn, map){map.setView([36.7783, -119.4179], 5);}")))
 
 ```
 
@@ -216,7 +219,10 @@ leaflet() %>%
   )  %>% 
   addLayersControl(baseGroups = c("Math: Economically Disadvantaged", "Math: Non-Economically Disadvantaged", "RLA: Economically Disadvantaged", "RLA: Non-Economically Disadvantaged"),
                    position = "bottomleft", options = layersControlOptions(collapsed = FALSE)) %>% 
-  addLegend(colors = met.brewer(palname,6)[1:6], values = ~mean_gcs_diff_cat, title = NULL, labels = c('2+ years behind','1-2 years behind', 'Less than 1 year behind', 'Less than 1 year ahead', '1-2 years ahead', '2+ years ahead'), group = "Economically Disadvantaged")
+  addLegend(colors = met.brewer(palname,6)[1:6], values = ~mean_gcs_diff_cat, title = NULL, labels = c('2+ years behind','1-2 years behind', 'Less than 1 year behind', 'Less than 1 year ahead', '1-2 years ahead', '2+ years ahead'), group = "Economically Disadvantaged") %>% 
+  addEasyButton(easyButton(
+    icon = "fa-home", title = "Zoom to California",
+    onClick = JS("function(btn, map){map.setView([36.7783, -119.4179], 5);}")))
 ```
 
 <br>
