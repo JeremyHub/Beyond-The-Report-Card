@@ -78,23 +78,21 @@ leaflet(mapdata) %>% addProviderTiles(providers$CartoDB.Positron) %>%
                     "<br>Per Pupil Funding: ", pp_total_raw,
                     "<br>Enrollment: ", ncesenroll
     ),
-    group = "Performance"
+    group = "Achievement"
   ) %>% 
-  addLegend(position = "bottomright", colors = met.brewer(palname, 5)[1:5], title = "Performance", labels = c("3+ years behind", "1-3 years behind",  "Within 1 year of national average",  "1-3 years ahead", "3+ years ahead"))
+  addLegend(position = "bottomright", colors = met.brewer(palname, 5)[1:5], title = "Achievement", labels = c("3+ years behind", "1-3 years behind",  "Within 1 year of national average",  "1-3 years ahead", "3+ years ahead"))
 ```
-
-Schools closer to urban areas appear to have higher achievement than schools in rural areas. Zooming in on just the San Francisco Bay we see that there is a tremendous amount of variation in achievement: schools in San Jose are years behind while a swath of schools in Palo Alto, Mountain View, and Cupertino boast testing achievement more than three years ahead. On the east side of the bay in Oakland, schools just blocks apart are separated by multiple years in achievement. Further afield, Los Angeles and Sacramento have areas of very low achievement then areas of higher achievement further out.
+<br>
+Schools closer to urban areas appear to have higher achievement than schools in rural areas. Zooming in on just the San Francisco Bay we see that there is a tremendous amount of variation in achievement: schools in San Jose are years behind while a swath of schools in Palo Alto, Mountain View, and Cupertino boast testing achievement more than three years ahead. On the east side of the bay in Oakland, schools just blocks apart are separated by multiple years in achievement. Further afield, Los Angeles and Sacramento have areas of very low achievement then areas of higher achievement further out, almost resembling a bullseye. How do we account for this variation?
 
 ## Does funding impact school-level academic achievement?
 
-Advocacy groups have long debated the influence of funding on academic achievement.
+Advocacy groups have long debated the influence of funding on academic achievement. Conservative groups like The Heritage Foundation note that funding, in real terms, has increased significantly since the 70s but achievement has stayed flat. They argue that more funding will do little to improve outcomes [@money_heritage]. Progressive groups, on the other hand, see unmet needs and discrimination in current funding schemes. 
 
-[@money_heritage]
+We map California school per-pupil funding data in four spending categories. There are schools with funding well in excess of $20,000 per student, but most are accurately represented by these categories.
 
-[@money_outcomes] 
-
-[@money_edtrust]
 ```{r}
+
 leaflet(mapdata) %>% addProviderTiles(providers$CartoDB.Positron) %>% 
   addCircleMarkers(
     color = ~pal(pp_total_raw_cat),
@@ -105,12 +103,41 @@ leaflet(mapdata) %>% addProviderTiles(providers$CartoDB.Positron) %>%
                     "<br>Enrollment: ", ncesenroll
     ),
     stroke = ~ifelse(!is.na(pp_total_raw_cat), TRUE, FALSE),
-    group = "Funding"
+    group = "Funding",
+    fillOpacity = 0
   ) %>%
-addLegend("bottomright", colors = met.brewer(palname, 4)[1:4], title = "Per Student Funding", labels = c("$10,000 or less", "$10,000 to $15,000", "15,000 to 20,000", "Greater than 20,000")) 
+addLegend("bottomright", colors = met.brewer(palname, 4)[1:4], title = "Per Student Funding", labels = c("$10,000 or less", "$10,000 to $15,000", "15,000 to 20,000", "Greater than 20,000")) %>%
+  addCircleMarkers(
+    color = "grey",
+    radius = ~(as.numeric(ncesenroll)/400),
+    popup = ~paste0(School, 
+                    "<br>Grade Distance from National Average: ", round(diff_from_gradecenter, digits = 3),
+                    "<br>Per Pupil Funding: ", pp_total_raw,
+                    "<br>Enrollment: ", ncesenroll
+    ),
+    fillOpacity = 0,
+    stroke = ~ifelse(is.na(pp_total_raw_cat), TRUE, FALSE),
+    group = "Show Schools with Unknown Funding",
+    options = list(visible = FALSE)
+  ) %>% 
+  addLayersControl(overlayGroups = "Show Schools with Unknown Funding",
+                   position = "bottomleft", options = layersControlOptions(collapsed = FALSE)) %>%
+  addEasyButton(easyButton(
+    icon = htmltools::HTML("<span style='font-size: 16px; padding: 0px;'>Zoom to Boston</span>"), title = "Zoom to Level 1",
+    onClick = JS("function(btn, map){map.setView([42.3601, -71.0589], 16);}")))
+  
 ```
+<br>
+There are a striking number of schools with no funding data. Nevertheless, the types of areas that are excluded don't appear to follow a clear trend.
+
+Among schools with available funding data, correlations with achievement are confusing. The high-achieving schools we saw earlier in the Palo Alto area receive very high funding but, in Oakland, the schools with the highest funding have some of the lowest levels of achievement.
 
 
+
+
+[@money_edweek] 
+
+[@money_edtrust]
 
 ```{r funding and performance by area}
 wide_merged_data %>% filter(!is.na(urbanicity)) %>%
