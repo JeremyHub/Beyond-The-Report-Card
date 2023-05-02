@@ -123,7 +123,18 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#lasso-code" id="toc-lasso-code" class="nav-link active" data-scroll-target="#lasso-code">LASSO code</a></li>
+  <li><a href="#the-goal" id="toc-the-goal" class="nav-link active" data-scroll-target="#the-goal">The Goal</a></li>
+  <li><a href="#lasso" id="toc-lasso" class="nav-link" data-scroll-target="#lasso">LASSO</a>
+  <ul class="collapse">
+  <li><a href="#why-use-lasso" id="toc-why-use-lasso" class="nav-link" data-scroll-target="#why-use-lasso">Why use LASSO</a></li>
+  <li><a href="#how-to-inrepret-a-lasso-graph" id="toc-how-to-inrepret-a-lasso-graph" class="nav-link" data-scroll-target="#how-to-inrepret-a-lasso-graph">How to inrepret a LASSO graph</a></li>
+  <li><a href="#note-on-predictors" id="toc-note-on-predictors" class="nav-link" data-scroll-target="#note-on-predictors">Note on predictors</a></li>
+  </ul></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
+  <ul class="collapse">
+  <li><a href="#ela-gcs-scores" id="toc-ela-gcs-scores" class="nav-link" data-scroll-target="#ela-gcs-scores">ELA &amp; GCS Scores</a></li>
+  <li><a href="#ela-math-growth-scores" id="toc-ela-math-growth-scores" class="nav-link" data-scroll-target="#ela-math-growth-scores">ELA &amp; Math Growth Scores</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -168,8 +179,6 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell">
 
 </div>
-<section id="lasso-code" class="level1">
-<h1>LASSO code</h1>
 <div class="cell">
 
 </div>
@@ -179,22 +188,56 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell">
 
 </div>
+<section id="the-goal" class="level1">
+<h1>The Goal</h1>
+<p>To answer the research question of what defines the differences between metrics we look at the predictors for each metric. That means that we look at what factors have a significant effect (either positive or negative) on different metrics of school / individual educational outcome.</p>
+<p>We will compare some of the different metrics and scores that we have looked at previously such as ELA Test Score, GCS Score, and both ELA and Math growth scores.</p>
+<p>We will be looking at a school level for this analysis. That means that all of our predictors are aggregated at a school level. For example the predictor of free/reduced lunch is the percentage of students at that school that have free/reduced lunch.</p>
+</section>
+<section id="lasso" class="level1">
+<h1>LASSO</h1>
+<section id="why-use-lasso" class="level2">
+<h2 class="anchored" data-anchor-id="why-use-lasso">Why use LASSO</h2>
+<p>In order to interrogate the question of predictor significance we use a method called LASSO. LASSO (least absolute shrinkage and selection operator) is a way of narrowing down which predictors out of many options accounts for the most variation in the outcome variable. For our purposes, the outcome is the particular educational outcome metric that we are looking at and the predictors are aspects about the school.</p>
+</section>
+<section id="how-to-inrepret-a-lasso-graph" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-inrepret-a-lasso-graph">How to inrepret a LASSO graph</h2>
+<p>LASSO gives us a way of seeing visually which predictors account for the most variation in the metric. When looking at the LASSO graphs below there are a few things to keep in mind. Every line on the graph represents an individual predictor such as “percent of the student body that is white” or “grade span of the school” etc. The predictors that are labeled are some of the most significant ones.</p>
+<p>A predictor is significant if its Y value stays either above or below zero for high penalty values. In practice this means that if a line for a predictor on the graph reaches zero at higher X values, it is more significant (ie. accounts for more variability in the outcome) compared to a predictor that reaches zero at low X values.</p>
+</section>
+<section id="note-on-predictors" class="level2">
+<h2 class="anchored" data-anchor-id="note-on-predictors">Note on predictors</h2>
+<p>Some predictors are numerical and some are categorical. Numerical predictors are fairly straightforward. If the line for a numerical predictor is above zero then the higher that predictor is for any given school, the higher the outcome metric will be. And vise versa if the predictor is below. Numerical predictors are predictors such as demographics. There are also categorical predictors. If a line for a categorical predictor (such as whether the school serves kids from K-12 or not) is above zero then if that category is true for a school the associated metric will be higher and vise versa if it is below.</p>
+</section>
+</section>
+<section id="results" class="level1">
+<h1>Results</h1>
+<section id="ela-gcs-scores" class="level2">
+<h2 class="anchored" data-anchor-id="ela-gcs-scores">ELA &amp; GCS Scores</h2>
+<p>First we look at the significant predictors for average ELA Test score and GSC Score of each school. From these graphs we can see that the percentage of the student body that is Asian and the percent that is Black are both fairly significant predictors but the most significant is the percent on free/reduced lunch and the percent that are considered economically disadvantaged.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="model_files/figure-html/perform lasso-1.png" class="img-fluid" width="672"></p>
+<p><img src="model_files/figure-html/perform lasso pt1-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<p><img src="model_files/figure-html/perform lasso-2.png" class="img-fluid" width="672"></p>
+<p><img src="model_files/figure-html/perform lasso pt1-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="ela-math-growth-scores" class="level2">
+<h2 class="anchored" data-anchor-id="ela-math-growth-scores">ELA &amp; Math Growth Scores</h2>
+<p>Next we look at the growth scores for ELA and Math. The first thing to notice about these graphs is that all the predictors converge to zero much faster than the previous two graphs. We can tell this by looking at the absolute numbers on the X axis. On the first two graphs it took until around 0.1 - 0.15 penalty for all predictors to reach zero. In these graphs it takes a much smaller penalty (roughly 0.01 - 0.03) for all predictors to reach zero significance. This tells us that none of the predictors are as significant as the previous graphs. However, there are some marginally significant predictors. Namely the ones seen previously as well as two new categories for grades served by the school.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="model_files/figure-html/perform lasso pt2-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<p><img src="model_files/figure-html/perform lasso-3.png" class="img-fluid" width="672"></p>
-</div>
-<div class="cell-output-display">
-<p><img src="model_files/figure-html/perform lasso-4.png" class="img-fluid" width="672"></p>
+<p><img src="model_files/figure-html/perform lasso pt2-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

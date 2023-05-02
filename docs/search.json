@@ -95,6 +95,41 @@
     "href": "model.html",
     "title": "Beyond the Report Card: What are the significant predictors?",
     "section": "",
-    "text": "LASSO code"
+    "text": "To answer the research question of what defines the differences between metrics we look at the predictors for each metric. That means that we look at what factors have a significant effect (either positive or negative) on different metrics of school / individual educational outcome.\nWe will compare some of the different metrics and scores that we have looked at previously such as ELA Test Score, GCS Score, and both ELA and Math growth scores.\nWe will be looking at a school level for this analysis. That means that all of our predictors are aggregated at a school level. For example the predictor of free/reduced lunch is the percentage of students at that school that have free/reduced lunch.\n\nHow\nIn order to interrogate the question of predictor significance we use a method called LASSO. LASSO (least absolute shrinkage and selection operator) is a way of narrowing down which predictors out of many options accounts for the most variation in the outcome variable. For our purposes, the outcome is the particular educational outcome metric that we are looking at and the predictors are aspects about the school.\nLASSO gives us a way of seeing visually which predictors account for the most variation in the metric. When looking at the LASSO graphs below there are a few things to keep in mind. Every line on the graph represents an individual predictor such as “percent of the student body that is white” or “grade span of the school” etc. The predictors that are labeled are some of the most significant ones.\nA predictor is significant if its Y value stays either above or below zero for high penalty values. In practice this means that if a line for a predictor on the graph reaches zero at higher X values, it is more significant (ie. accounts for more variability in the outcome) compared to a predictor that reaches zero at low X values.\nSome predictors are numerical and some are categorical. Numerical predictors are fairly straightforward. If the line for a numerical predictor is above zero then the higher that predictor is for any given school, the higher the outcome metric will be. And vise versa if the predictor is below. Numerical predictors are predictors such as demographics. There are also categorical predictors. If a line for a categorical predictor (such as whether the school serves kids from K-12 or not) is above zero then if that category is true for a school the associated metric will be higher and vise versa if it is below.\n\n\nResults"
+  },
+  {
+    "objectID": "model.html#why-use-lasso",
+    "href": "model.html#why-use-lasso",
+    "title": "Beyond the Report Card: What are the significant predictors?",
+    "section": "Why use LASSO",
+    "text": "Why use LASSO\nIn order to interrogate the question of predictor significance we use a method called LASSO. LASSO (least absolute shrinkage and selection operator) is a way of narrowing down which predictors out of many options accounts for the most variation in the outcome variable. For our purposes, the outcome is the particular educational outcome metric that we are looking at and the predictors are aspects about the school."
+  },
+  {
+    "objectID": "model.html#how-to-inrepret-a-lasso-graph",
+    "href": "model.html#how-to-inrepret-a-lasso-graph",
+    "title": "Beyond the Report Card: What are the significant predictors?",
+    "section": "How to inrepret a LASSO graph",
+    "text": "How to inrepret a LASSO graph\nLASSO gives us a way of seeing visually which predictors account for the most variation in the metric. When looking at the LASSO graphs below there are a few things to keep in mind. Every line on the graph represents an individual predictor such as “percent of the student body that is white” or “grade span of the school” etc. The predictors that are labeled are some of the most significant ones.\nA predictor is significant if its Y value stays either above or below zero for high penalty values. In practice this means that if a line for a predictor on the graph reaches zero at higher X values, it is more significant (ie. accounts for more variability in the outcome) compared to a predictor that reaches zero at low X values."
+  },
+  {
+    "objectID": "model.html#note-on-predictors",
+    "href": "model.html#note-on-predictors",
+    "title": "Beyond the Report Card: What are the significant predictors?",
+    "section": "Note on predictors",
+    "text": "Note on predictors\nSome predictors are numerical and some are categorical. Numerical predictors are fairly straightforward. If the line for a numerical predictor is above zero then the higher that predictor is for any given school, the higher the outcome metric will be. And vise versa if the predictor is below. Numerical predictors are predictors such as demographics. There are also categorical predictors. If a line for a categorical predictor (such as whether the school serves kids from K-12 or not) is above zero then if that category is true for a school the associated metric will be higher and vise versa if it is below."
+  },
+  {
+    "objectID": "model.html#ela-gcs-scores",
+    "href": "model.html#ela-gcs-scores",
+    "title": "Beyond the Report Card: What are the significant predictors?",
+    "section": "ELA & GCS Scores",
+    "text": "ELA & GCS Scores\nFirst we look at the significant predictors for average ELA Test score and GSC Score of each school. From these graphs we can see that the percentage of the student body that is Asian and the percent that is Black are both fairly significant predictors but the most significant is the percent on free/reduced lunch and the percent that are considered economically disadvantaged."
+  },
+  {
+    "objectID": "model.html#ela-math-growth-scores",
+    "href": "model.html#ela-math-growth-scores",
+    "title": "Beyond the Report Card: What are the significant predictors?",
+    "section": "ELA & Math Growth Scores",
+    "text": "ELA & Math Growth Scores\nNext we look at the growth scores for ELA and Math. The first thing to notice about these graphs is that all the predictors converge to zero much faster than the previous two graphs. We can tell this by looking at the absolute numbers on the X axis. On the first two graphs it took until around 0.1 - 0.15 penalty for all predictors to reach zero. In these graphs it takes a much smaller penalty (roughly 0.01 - 0.03) for all predictors to reach zero significance. This tells us that none of the predictors are as significant as the previous graphs. However, there are some marginally significant predictors. Namely the ones seen previously as well as two new categories for grades served by the school."
   }
 ]
