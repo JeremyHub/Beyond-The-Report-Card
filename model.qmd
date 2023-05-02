@@ -46,8 +46,6 @@ ca_counties <- ca_counties %>%
   st_transform(crs = "NAD83")
 ```
 
-# LASSO code
-
 ```{r lasso data setup}
 
 min_max_norm <- function(x) {
@@ -94,7 +92,7 @@ predictors <- ((data %>% select(-starts_with("science_data"), -starts_with("ela_
 ```{r lasso function}
 #| fig-width: 50
 #| fig-height: 10
-do_lasso<-function(variable, data) {
+do_lasso<-function(variable, data, labels, y_nudge, x_nudge) {
     
     processeddata <- cbind(variable, data) %>%
       filter(complete.cases(.))
@@ -124,6 +122,7 @@ do_lasso<-function(variable, data) {
       as.data.frame() %>% 
       mutate(lambda = lambdas ) %>% 
       select(lambda, everything(), -`(Intercept)`) %>% 
+      rename(`% Asian` = perasn, `% Black` = perblk, `% Economically Disadvantaged` = perecd, `% Free/Reducded Lunch` = perfl, `Serves Grades 6-9` = GSserved_X6.9, `Serves Grades K-12` = gradespan_KG.12) %>%
       pivot_longer(cols = -lambda, 
                    names_to = "term", 
                    values_to = "coef") %>%
@@ -134,20 +133,58 @@ do_lasso<-function(variable, data) {
       
       middle <- coefs_lambdas$lambda[[floor(length(coefs_lambdas$lambda)*0.2)]]
       
-      coefs_lambdas %>% 
+      coefs_lambdas %>%
         ggplot(aes(x = lambda, y = coef, group = term, color = var)) +
-          labs(subtitle = paste0(name,": ",number)) +
+          labs(subtitle = paste0("based on ",number, " schools' data")) +
           geom_line() +
           theme_classic() + 
           theme(legend.position = "none", legend.text=element_text(size=8)) +
-          geom_label_repel(data = coefs_lambdas %>% filter(lambda == middle, (coef > 0.001) | (coef < -0.001)), aes(x = lambda, y = coef, label = var))
-        #coord_cartesian(xlim=c(0,max(coefs_lambdas$lambda)*0.5), ylim=c(min(coefs_lambdas$coef)*0.8,max(coefs_lambdas$coef)*0.8))
+          geom_label_repel(data = coefs_lambdas %>% filter(lambda == middle, (coef > 0.01) | (coef < -0.01)), aes(x = lambda, y = coef, label = var), max.overlaps = 100, nudge_y = y_nudge, nudge_x = x_nudge) +
+          labs(x="Penalty", y="Significance") +
+          labels
 }
 ```
 
-```{r perform lasso}
-do_lasso(outcome$ela_data_currstatus_ALL, predictors)
-do_lasso(outcome$gcs, predictors)
-do_lasso(outcome$growthscore_ela, predictors)
-do_lasso(outcome$growthscore_math, predictors)
+# The Goal
+
+To answer the research question of what defines the differences between metrics we look at the predictors for each metric. That means that we look at what factors have a significant effect (either positive or negative) on different metrics of school / individual educational outcome.
+
+We will compare some of the different metrics and scores that we have looked at previously such as ELA Test Score, GCS Score, and both ELA and Math growth scores.
+
+We will be looking at a school level for this analysis. That means that all of our predictors are aggregated at a school level. For example the predictor of free/reduced lunch is the percentage of students at that school that have free/reduced lunch.
+
+# LASSO
+
+## Why use LASSO
+
+In order to interrogate the question of predictor significance we use a method called LASSO. LASSO (least absolute shrinkage and selection operator) is a way of narrowing down which predictors out of many options accounts for the most variation in the outcome variable. For our purposes, the outcome is the particular educational outcome metric that we are looking at and the predictors are aspects about the school.
+
+## How to inrepret a LASSO graph
+
+LASSO gives us a way of seeing visually which predictors account for the most variation in the metric. When looking at the LASSO graphs below there are a few things to keep in mind. Every line on the graph represents an individual predictor such as "percent of the student body that is white" or "grade span of the school" etc. The predictors that are labeled are some of the most significant ones.
+
+A predictor is significant if its Y value stays either above or below zero for high penalty values. In practice this means that if a line for a predictor on the graph reaches zero at higher X values, it is more significant (ie. accounts for more variability in the outcome) compared to a predictor that reaches zero at low X values.
+
+## Note on predictors
+
+Some predictors are numerical and some are categorical. Numerical predictors are fairly straightforward. If the line for a numerical predictor is above zero then the higher that predictor is for any given school, the higher the outcome metric will be. And vise versa if the predictor is below. Numerical predictors are predictors such as demographics. There are also categorical predictors. If a line for a categorical predictor (such as whether the school serves kids from K-12 or not) is above zero then if that category is true for a school the associated metric will be higher and vise versa if it is below.
+
+# Results
+
+## ELA & GCS Scores
+
+First we look at the significant predictors for average ELA Test score and GSC Score of each school. From these graphs we can see that the percentage of the student body that is Asian and the percent that is Black are both fairly significant predictors but the most significant is the percent on free/reduced lunch and the percent that are considered economically disadvantaged.
+
+```{r perform lasso pt1}
+do_lasso(outcome$ela_data_currstatus_ALL, predictors, labs(title="Significant Predictors of ELA Test Score"), c(0.1, -0.1, -0.1, -0.1), 0.03)
+do_lasso(outcome$gcs, predictors, labs(title="Significant Predictors of GCS Score"), c(0.1, -0.1, -0.1), 0.03)
+```
+
+## ELA & Math Growth Scores
+
+Next we look at the growth scores for ELA and Math. The first thing to notice about these graphs is that all the predictors converge to zero much faster than the previous two graphs. We can tell this by looking at the absolute numbers on the X axis. On the first two graphs it took until around 0.1 - 0.15 penalty for all predictors to reach zero. In these graphs it takes a much smaller penalty (roughly 0.01 - 0.03) for all predictors to reach zero significance. This tells us that none of the predictors are as significant as the previous graphs. However, there are some marginally significant predictors. Namely the ones seen previously as well as two new categories for grades served by the school.
+
+```{r perform lasso pt2}
+do_lasso(outcome$growthscore_ela, predictors, labs(title="Significant Predictors of ELA Test Score Growth"), -0.1, 0.005)
+do_lasso(outcome$growthscore_math, predictors, labs(title="Significant Predictors of Math Test Score Growth"), c(0.15, -0.1, -0.1), 0.01)
 ```
