@@ -48,7 +48,7 @@ ca_counties <- ca_counties %>%
 ```
 
 
-## School-level academic achievement across California
+# School-level academic achievement across California
 
 Let's now take a closer look at the statistics on the individual school level. To create this map, we find the GCS score for each school and divide the schools into 5 categories, then we place a marker at the approximate location based on available latitude and longitude data. Note that the range of GCS scores is much wider now since we are looking at individual schools rather than the county average.
 
@@ -95,7 +95,7 @@ leaflet(mapdata) %>% addProviderTiles(providers$CartoDB.Positron) %>%
 <br>
 Schools closer to urban areas appear to have higher achievement than schools in rural areas. Zooming in on just the San Francisco Bay we see that there is a tremendous amount of variation in achievement: schools in San Jose are years behind while a swath of schools in Palo Alto, Mountain View, and Cupertino boast testing achievement more than three years ahead. On the east side of the bay in Oakland, schools just blocks apart are separated by multiple years in achievement. Further afield, Los Angeles and Sacramento have areas of very low achievement then areas of higher achievement further out, almost resembling a bullseye. How do we account for this variation?
 
-## Does funding impact school-level academic achievement?
+# Does funding impact school-level academic achievement?
 
 Advocacy groups have long debated the influence of funding on academic achievement. Conservative groups like The Heritage Foundation note that funding, in real terms, has increased significantly since the 70s but achievement has stayed flat. They argue that more funding will do little to improve outcomes [@money_heritage]. On the other hand, an assortment of studies find that funding does have a measurable impact on achievement, but how the money is spent important [@money_edweek].
 
