@@ -201,7 +201,7 @@ Some predictors are numerical and some are categorical. Numerical predictors are
 First, we examine the significant predictors for the GCS Score at school level. This LASSO graph shows that the percentage of students who are Asian is a relatively strong positive predictor of GCS Score. However, the most significant predictors are the percentage of students receiving free/reduced lunch and the percentage of students considered economically disadvantaged (both with a negative correlation with the GCS Score).
 
 ```{r perform lasso pt1}
-do_lasso(outcome$gcs, predictors, labs(title="Significant Predictors of GCS Score"), c(0.1, -0.1, -0.1), 0.03)
+do_lasso(outcome$gcs, predictors, labs(title="Significant Predictors of GCS Score"), c(0.8, -1, -1), 0.2)
 ```
 
 ## ELA & Math Growth Scores
