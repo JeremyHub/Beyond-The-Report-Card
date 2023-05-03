@@ -168,7 +168,7 @@ A predictor is considered significant if its Y-value remains consistently above 
 
 ## Note on predictors
 
-Some predictors are numerical and some are categorical. Numerical predictors are fairly straightforward. If the line for a numerical predictor is above zero then the higher that predictor is for any given school, the higher the outcome metric will be. And vise versa if the predictor is below. Numerical predictors are predictors such as demographics. There are also categorical predictors. If a line for a categorical predictor (such as whether the school serves kids from K-12 or not) is above zero then if that category is true for a school the associated metric will be higher and vise versa if it is below.
+Some predictors are numerical and some are categorical. Numerical predictors are fairly straightforward. If the line for a numerical predictor is above zero then the higher that predictor is for any given school, the higher the outcome metric will be. And vice versa if the predictor is below. Numerical predictors are predictors such as demographics. There are also categorical predictors. If a line for a categorical predictor (such as whether the school serves kids from K-12 or not) is above zero then if that category is true for a school the associated metric will be higher and vice versa if it is below.
 
 # Results
 
