@@ -2,7 +2,7 @@
 title: "Beyond the Report Card: Investigating the Factors that Define Educational Achievement using California as a Case Study"
 description: ""
 author: "Thu Dang, Nathaniel Reimer, Jeremy Hubinger"
-date: "2023-05-08"
+date: "2023-05-03"
 date-modified: last-modified
 format: html
 editor: visual
@@ -14,6 +14,6 @@ execute:
 
 Hi everyone, we are Thu, Nathaniel, and Jeremy, and welcome to our Capstone Project for STAT 456: Projects in Data Science. As you can tell from the title, we are interested in exploring the factors that impacting academic achievement, using California as a case study. Meet the team...
 
-<insert our picture here>
+![Team picture. From left to right: Nathaniel Reimer, Thu Dang, Jeremy Hubinger](group_picture.jpg)
 
 You can explore the diverse aspects of our project by navigating through various tabs on this website. Starting from our project's inspiration, you can delve into the analysis of academic achievement insights at the county and school levels in California, learn about our model's construction process, and discover some of the outcomes. Are you excited? Let's get started!
