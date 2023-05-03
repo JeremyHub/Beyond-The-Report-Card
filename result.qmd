@@ -45,6 +45,23 @@ ca_counties <- ca_counties %>%
   st_transform(crs = "NAD83")
 ```
 
-# Add result here
+# What did we find, and what do they mean?
 
--   Growth score is pretty robust since there are no variables that actually predict it.
+- A paragraph summarizing county- and school-level insights
+
+- A paragraph on adjusting funding and how important it is to be mindful of that or else they'll be misinformation
+
+- A paragraph on LASSO results and talk about the big picture of the results
+
+- Growth score is pretty robust since there are no variables that actually predict it.
+
+
+# Moving forward
+
+- What are some of the next steps? 
+
+- What should we have done differently? 
+
+
+
+

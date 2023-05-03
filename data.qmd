@@ -88,7 +88,7 @@ In this analysis, we focused on using Grade Cohort Standardized scores, which is
 
 **Growth score**: Aggregate growth scores are available for English and Mathematics broken down by school and student group. They measure how close the students growth is to their expected growth. A growth score of 100 indicates students are meeting expected growth; below 100 indicates growth below expectations; and above 100 indicates growth above expectations. Since the scores measure growth they are based on multiple years of testing data: the 2016-17, 2017-18, and 2018-19 school years. Pandemic disruption means that the current growth scores are not actionable. Growth scores will be released again in 2024. Nevertheless, the scores are still useful for our analysis.
 
-**Subject-specific test scores**: We obtained data on test scores for various subjects, including English, Science, and PE. During our initial investigation, after joining these test score datasets with the SEDA and funding data, we saw that the test scores only matched up with a very small percentage of schools in our dataset. Further investigation shows that the test scores are only collected in the East Bay area and various northern CA counties. Since it is desirable to have a full coverage of state scores for the subsequent analysis and modeling process, we would only use these datasets in a small part of the analysis and will be mindful when discussing our results.
+**Subject-specific test scores**: We obtained data on test scores for various subjects, including English, Science, and PE. During our initial investigation, after joining these test score datasets with the SEDA and funding data, we saw that the test scores only matched up with a very small percentage of schools in our dataset. Further investigation shows that the test scores are only collected in the East Bay area and various northern CA counties. Since it is desirable to have a full coverage of state scores for the subsequent analysis and modeling process, we decided not to use the subject-specific test score datasets and focused mainly on GCS and growth scores as the main achievement proxies.
 
 ## A comparison of different performance metrics
 
@@ -134,6 +134,5 @@ multi_metric_data %>%
       legend.position = "none") +
     scale_x_continuous(limits = c(8000,20000))
 ```
-
 
 Overall, GCS and growth scores seem to be pretty robust in the presence of funding compared to other metrics. Such robustness reinforces our choice of these two metrics as the primary indicators of academic accomplishment. You might notice that there's a counter-intuitive trend between ELA, Science, and PE scores and funding, which we'll explore and handle further in the subsequent analyses. 

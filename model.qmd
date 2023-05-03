@@ -172,12 +172,11 @@ Some predictors are numerical and some are categorical. Numerical predictors are
 
 # Results
 
-## ELA and GCS Scores
+## Grade Cohort Standardized (GCS) Scores
 
-First, we examine the significant predictors for the average ELA Test score and GCS Score for each school. Based on these graphs, we observe that the percentage of students who are Asian and Black are relatively strong predictors. However, the most significant predictors are the percentage of students receiving free/reduced lunch and the percentage of students considered economically disadvantaged.
+First, we examine the significant predictors for the GCS Score at school level. The LASSO graph shows that the percentage of students who are Asian is a relatively strong predictor. However, the most significant predictors are the percentage of students receiving free/reduced lunch and the percentage of students considered economically disadvantaged.
 
 ```{r perform lasso pt1}
-do_lasso(outcome$ela_data_currstatus_ALL, predictors, labs(title="Significant Predictors of ELA Test Score"), c(0.1, -0.1, -0.1, -0.1), 0.03)
 do_lasso(outcome$gcs, predictors, labs(title="Significant Predictors of GCS Score"), c(0.1, -0.1, -0.1), 0.03)
 ```
 
@@ -186,6 +185,6 @@ do_lasso(outcome$gcs, predictors, labs(title="Significant Predictors of GCS Scor
 Moving on to the growth scores for ELA and Math, we observe that all the predictors converge to zero much faster than in the previous two graphs. This is evident from the absolute numbers on the X-axis, which are much smaller (around 0.01 - 0.03 penalty) compared to the previous graphs (around 0.1 - 0.15 penalty). This indicates that none of the predictors are as significant as those in the previous graphs. Nevertheless, there are some predictors that are marginally significant, including the ones identified earlier, as well as two additional categories related to the grades served by the school.
 
 ```{r perform lasso pt2}
-do_lasso(outcome$growthscore_ela, predictors, labs(title="Significant Predictors of ELA Test Score Growth"), -0.1, 0.005)
-do_lasso(outcome$growthscore_math, predictors, labs(title="Significant Predictors of Math Test Score Growth"), c(0.15, -0.1, -0.1), 0.01)
+do_lasso(outcome$growthscore_ela, predictors, labs(title="Significant Predictors of ELA Growth Score"), -0.1, 0.005)
+do_lasso(outcome$growthscore_math, predictors, labs(title="Significant Predictors of Math Growth Score"), c(0.15, -0.1, -0.1), 0.01)
 ```
