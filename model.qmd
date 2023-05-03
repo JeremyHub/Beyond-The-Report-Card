@@ -134,15 +134,22 @@ do_lasso<-function(variable, data, labels, y_nudge, x_nudge) {
       
       middle <- coefs_lambdas$lambda[[floor(length(coefs_lambdas$lambda)*0.2)]]
       
-      coefs_lambdas %>%
+      graph <- coefs_lambdas %>%
         ggplot(aes(x = lambda, y = coef, group = term, color = var)) +
           labs(subtitle = paste0("based on ",number, " schools' data")) +
           geom_line() +
           theme_classic() + 
           theme(legend.position = "none", legend.text=element_text(size=8)) +
-          geom_label_repel(data = coefs_lambdas %>% filter(lambda == middle, (coef > 0.01) | (coef < -0.01)), aes(x = lambda, y = coef, label = var), max.overlaps = 100, nudge_y = y_nudge, nudge_x = x_nudge) +
           labs(x="Penalty", y="Significance") +
-          labels
+          labels +
+          xlim(0,0.1)
+      
+      if (y_nudge == 0 && x_nudge == 0) {
+        graph
+      } else {
+        graph +
+          geom_label_repel(data = coefs_lambdas %>% filter(lambda == middle, (coef > 0.01) | (coef < -0.01)), aes(x = lambda, y = coef, label = var), max.overlaps = 100, nudge_y = y_nudge, nudge_x = x_nudge)
+      }
 }
 ```
 
@@ -185,6 +192,6 @@ do_lasso(outcome$gcs, predictors, labs(title="Significant Predictors of GCS Scor
 Moving on to the growth scores for ELA and Math, we observe that all the predictors converge to zero much faster than in the previous two graphs. This is evident from the absolute numbers on the X-axis, which are much smaller (around 0.01 - 0.03 penalty) compared to the previous graphs (around 0.1 - 0.15 penalty). This indicates that none of the predictors are as significant as those in the previous graphs. Nevertheless, there are some predictors that are marginally significant, including the ones identified earlier, as well as two additional categories related to the grades served by the school.
 
 ```{r perform lasso pt2}
-do_lasso(outcome$growthscore_ela, predictors, labs(title="Significant Predictors of ELA Growth Score"), -0.1, 0.005)
-do_lasso(outcome$growthscore_math, predictors, labs(title="Significant Predictors of Math Growth Score"), c(0.15, -0.1, -0.1), 0.01)
+do_lasso(outcome$growthscore_ela, predictors, labs(title="Significant Predictors of ELA Growth Score"), 0, 0)
+do_lasso(outcome$growthscore_math, predictors, labs(title="Significant Predictors of Math Growth Score"), 0, 0)
 ```
