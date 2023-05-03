@@ -18,7 +18,7 @@
     "href": "result.html",
     "title": "Beyond the Report Card: Let’s discuss some results!",
     "section": "",
-    "text": "Add result here\n\nGrowth score is pretty robust since there are no variables that actually predict it."
+    "text": "What did we find, and what do they mean?\n\nA paragraph summarizing county- and school-level insights\nA paragraph on adjusting funding and how important it is to be mindful of that or else they’ll be misinformation\nA paragraph on LASSO results and talk about the big picture of the results\nGrowth score is pretty robust since there are no variables that actually predict it.\n\n\n\nMoving forward\n\nWhat are some of the next steps?\nWhat should we have done differently?"
   },
   {
     "objectID": "index.html",
@@ -166,5 +166,12 @@
     "title": "Beyond the Report Card: What are the significant predictors?",
     "section": "ELA and GCS Scores",
     "text": "ELA and GCS Scores\nFirst, we examine the significant predictors for the average ELA Test score and GCS Score for each school. Based on these graphs, we observe that the percentage of students who are Asian and Black are relatively strong predictors. However, the most significant predictors are the percentage of students receiving free/reduced lunch and the percentage of students considered economically disadvantaged."
+  },
+  {
+    "objectID": "model.html#grade-cohort-standardized-gcs-scores",
+    "href": "model.html#grade-cohort-standardized-gcs-scores",
+    "title": "Beyond the Report Card: What are the significant predictors?",
+    "section": "Grade Cohort Standardized (GCS) Scores",
+    "text": "Grade Cohort Standardized (GCS) Scores\nFirst, we examine the significant predictors for the GCS Score at school level. The LASSO graph shows that the percentage of students who are Asian is a relatively strong predictor. However, the most significant predictors are the percentage of students receiving free/reduced lunch and the percentage of students considered economically disadvantaged."
   }
 ]
