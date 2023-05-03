@@ -198,7 +198,7 @@ ul.task-list li input[type="checkbox"] {
 <h1>LASSO</h1>
 <section id="why-lasso" class="level2">
 <h2 class="anchored" data-anchor-id="why-lasso">Why LASSO</h2>
-<p>To investigate the significance of predictors, we will utilize a technique known as LASSO (Least Absolute Shrinkage and Selection Operator). This approach involves identifying the most influential predictors out of numerous possibilities that explain the majority of the variation in the outcome variable. In our case, the outcome variable is the specific educational outcome metric we are analyzing, while the predictors are various characteristics of the school.</p>
+<p>To investigate the significance of predictors, we will utilize a technique known as LASSO (Least Absolute Shrinkage and Selection Operator). This approach involves identifying the most influential predictors out of numerous possibilities that explain the most variation in the outcome variable. In our case, the outcome variable is the specific educational outcome metric we are analyzing, while the predictors are various characteristics of the school.</p>
 </section>
 <section id="how-to-interpret-a-lasso-graph" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-interpret-a-lasso-graph">How to interpret a LASSO graph</h2>
@@ -214,7 +214,7 @@ ul.task-list li input[type="checkbox"] {
 <h1>Results</h1>
 <section id="grade-cohort-standardized-gcs-scores" class="level2">
 <h2 class="anchored" data-anchor-id="grade-cohort-standardized-gcs-scores">Grade Cohort Standardized (GCS) Scores</h2>
-<p>First, we examine the significant predictors for the GCS Score at school level. The LASSO graph shows that the percentage of students who are Asian is a relatively strong predictor. However, the most significant predictors are the percentage of students receiving free/reduced lunch and the percentage of students considered economically disadvantaged.</p>
+<p>First, we examine the significant predictors for the GCS Score at school level. This LASSO graph shows that the percentage of students who are Asian is a relatively strong positive predictor of GCS Score. However, the most significant predictors are the percentage of students receiving free/reduced lunch and the percentage of students considered economically disadvantaged (both with a negative correlation with the GCS Score).</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="model_files/figure-html/perform lasso pt1-1.png" class="img-fluid" width="672"></p>
@@ -223,7 +223,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="ela-math-growth-scores" class="level2">
 <h2 class="anchored" data-anchor-id="ela-math-growth-scores">ELA &amp; Math Growth Scores</h2>
-<p>Moving on to the growth scores for ELA and Math, we observe that all the predictors converge to zero much faster than in the previous two graphs. This is evident from the absolute numbers on the X-axis, which are much smaller (around 0.01 - 0.03 penalty) compared to the previous graphs (around 0.1 - 0.15 penalty). This indicates that none of the predictors are as significant as those in the previous graphs. Nevertheless, there are some predictors that are marginally significant, including the ones identified earlier, as well as two additional categories related to the grades served by the school.</p>
+<p>Moving on to the growth scores for ELA and Math, we observe that all the predictors converge to zero much faster than in the previous two graphs. This indicates that none of the predictors are as significant as those in the previous graphs. As well as converging to zero faster, the r-squared value (in the subtitle of the graphs) is much lower in the models for growth scores. This is further evidence that the predictors we have in our data account for less variability in the growth scores compared to the GCS score.</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="model_files/figure-html/perform lasso pt2-1.png" class="img-fluid" width="672"></p>

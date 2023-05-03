@@ -81,7 +81,8 @@ lm_lasso_spec <-
 ```
 
 ```{r lasso data split}
-outcome <- data %>% select(ela_data_currstatus_ALL, gcs, science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99, science_data_Life.Sciences.Domain.Percent.Above.Standard_99, science_data_Physical.Sciences.Domain.Percent.Above.Standard_99, growthscore_ela, growthscore_math)
+outcome <- data %>% select(ela_data_currstatus_ALL, gcs, science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99, science_data_Life.Sciences.Domain.Percent.Above.Standard_99, science_data_Physical.Sciences.Domain.Percent.Above.Standard_99, growthscore_ela, growthscore_math) %>%
+  mutate(gcs = gcs)
 
 predictors <- ((data %>% select(-starts_with("science_data"), -starts_with("ela_data")))[27:151]) %>% select(-census_id,-DATE_CUR,-CATEGORY,-ST_LEAID,-LEANM,-ST_SCHID,-SCHNAM,-GRADE,STNAM,-FIPST,-LEAID,-reported_which,-reportingyear,-studentgroup,-schoolname.y,       -districtname,-countyname,-EILCode,-EILName,-SOC,-DOC,-YearRoundYN,-FederalDFCDistrictID,-Latitude,-Longitude,-AdmFName,-AdmLName,-AdmEmail,-LastUpDate,-school_id,-         schoolname.x,-ncesdistid_admin,-ncesdistid_geo,-distid_stateassigned,-schoolid_stateassigned,-distname,-address,-city,-state,-zip_code,-level.x,-sedasch,-sedaschname         ,-fips,-stateabb,-subcat,-subgroup,-sedalea,-schnam,-schcity,-type,-level.y,-ncesid,-rtype,-SCHOOL_YEAR,-STNAM,-X, -GSoffered) %>%
   select(-contains("growthscore"), -contains("decilerank"), -starts_with("ELA"), -starts_with("MTH"), -charter_flag, -coe_flag, -dass_flag, -enrollmetric_raw, -gcs_mn_avg_ol, -gcs_mn_avg_eb) %>%
@@ -94,16 +95,32 @@ predictors <- ((data %>% select(-starts_with("science_data"), -starts_with("ela_
 #| fig-width: 50
 #| fig-height: 10
 do_lasso<-function(variable, data, labels, y_nudge, x_nudge) {
-    
+
     processeddata <- cbind(variable, data) %>%
       filter(complete.cases(.))
-
   
     data_rec <- recipe(variable ~ ., data = processeddata) %>%
       step_nzv(all_predictors()) %>%
       step_novel(all_nominal_predictors()) %>%
       step_normalize(all_numeric_predictors()) %>%
-      step_dummy(all_nominal_predictors())
+      step_dummy(all_nominal_predictors()) %>%
+      step_normalize(all_outcomes())
+
+    lm_spec <- 
+      linear_reg() %>%
+      set_engine('lm') %>% 
+      set_mode('regression')
+    
+    lm_wf <- workflow() %>% 
+      add_recipe(data_rec) %>% 
+      add_model(lm_spec)
+
+    lm_fit <- lm_wf %>%
+      fit(data = processeddata) # Fit to data
+
+    lm_output <- lm_fit %>% extract_fit_parsnip() %>% pluck('fit')
+
+    rsquared <- lm_output %>% summary() %>% pluck('r.squared') %>% round(2) %>% paste0('R^2 (with 0 penalty) = ', .)
     
     lasso_wf <- workflow() %>%
       add_recipe(data_rec) %>%
@@ -136,15 +153,15 @@ do_lasso<-function(variable, data, labels, y_nudge, x_nudge) {
       
       graph <- coefs_lambdas %>%
         ggplot(aes(x = lambda, y = coef, group = term, color = var)) +
-          labs(subtitle = paste0("based on ",number, " schools' data")) +
+          labs(subtitle = rsquared) +
           geom_line() +
           theme_classic() + 
           theme(legend.position = "none", legend.text=element_text(size=8)) +
           labs(x="Penalty", y="Significance") +
           labels +
-          xlim(0,0.1)
+          xlim(0,0.85)
       
-      if (y_nudge == 0 && x_nudge == 0) {
+      if (x_nudge == 0) {
         graph
       } else {
         graph +
@@ -165,7 +182,7 @@ It is important to note that this analysis will be conducted at the school level
 
 ## Why LASSO
 
-To investigate the significance of predictors, we will utilize a technique known as LASSO (Least Absolute Shrinkage and Selection Operator). This approach involves identifying the most influential predictors out of numerous possibilities that explain the majority of the variation in the outcome variable. In our case, the outcome variable is the specific educational outcome metric we are analyzing, while the predictors are various characteristics of the school.
+To investigate the significance of predictors, we will utilize a technique known as LASSO (Least Absolute Shrinkage and Selection Operator). This approach involves identifying the most influential predictors out of numerous possibilities that explain the most variation in the outcome variable. In our case, the outcome variable is the specific educational outcome metric we are analyzing, while the predictors are various characteristics of the school.
 
 ## How to interpret a LASSO graph
 
@@ -181,7 +198,7 @@ Some predictors are numerical and some are categorical. Numerical predictors are
 
 ## Grade Cohort Standardized (GCS) Scores
 
-First, we examine the significant predictors for the GCS Score at school level. The LASSO graph shows that the percentage of students who are Asian is a relatively strong predictor. However, the most significant predictors are the percentage of students receiving free/reduced lunch and the percentage of students considered economically disadvantaged.
+First, we examine the significant predictors for the GCS Score at school level. This LASSO graph shows that the percentage of students who are Asian is a relatively strong positive predictor of GCS Score. However, the most significant predictors are the percentage of students receiving free/reduced lunch and the percentage of students considered economically disadvantaged (both with a negative correlation with the GCS Score).
 
 ```{r perform lasso pt1}
 do_lasso(outcome$gcs, predictors, labs(title="Significant Predictors of GCS Score"), c(0.1, -0.1, -0.1), 0.03)
@@ -189,7 +206,7 @@ do_lasso(outcome$gcs, predictors, labs(title="Significant Predictors of GCS Scor
 
 ## ELA & Math Growth Scores
 
-Moving on to the growth scores for ELA and Math, we observe that all the predictors converge to zero much faster than in the previous two graphs. This is evident from the absolute numbers on the X-axis, which are much smaller (around 0.01 - 0.03 penalty) compared to the previous graphs (around 0.1 - 0.15 penalty). This indicates that none of the predictors are as significant as those in the previous graphs. Nevertheless, there are some predictors that are marginally significant, including the ones identified earlier, as well as two additional categories related to the grades served by the school.
+Moving on to the growth scores for ELA and Math, we observe that all the predictors converge to zero much faster than in the previous two graphs. This indicates that none of the predictors are as significant as those in the previous graphs. As well as converging to zero faster, the r-squared value (in the subtitle of the graphs) is much lower in the models for growth scores. This is further evidence that the predictors we have in our data account for less variability in the growth scores compared to the GCS score.
 
 ```{r perform lasso pt2}
 do_lasso(outcome$growthscore_ela, predictors, labs(title="Significant Predictors of ELA Growth Score"), 0, 0)

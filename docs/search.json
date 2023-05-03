@@ -123,7 +123,7 @@
     "href": "model.html#ela-math-growth-scores",
     "title": "Beyond the Report Card: What are the significant predictors?",
     "section": "ELA & Math Growth Scores",
-    "text": "ELA & Math Growth Scores\nMoving on to the growth scores for ELA and Math, we observe that all the predictors converge to zero much faster than in the previous two graphs. This is evident from the absolute numbers on the X-axis, which are much smaller (around 0.01 - 0.03 penalty) compared to the previous graphs (around 0.1 - 0.15 penalty). This indicates that none of the predictors are as significant as those in the previous graphs. Nevertheless, there are some predictors that are marginally significant, including the ones identified earlier, as well as two additional categories related to the grades served by the school."
+    "text": "ELA & Math Growth Scores\nMoving on to the growth scores for ELA and Math, we observe that all the predictors converge to zero much faster than in the previous two graphs. This indicates that none of the predictors are as significant as those in the previous graphs. As well as converging to zero faster, the r-squared value (in the subtitle of the graphs) is much lower in the models for growth scores. This is further evidence that the predictors we have in our data account for less variability in the growth scores compared to the GCS score."
   },
   {
     "objectID": "school_insights.html",
@@ -137,7 +137,7 @@
     "href": "model.html#why-lasso",
     "title": "Beyond the Report Card: What are the significant predictors?",
     "section": "Why LASSO",
-    "text": "Why LASSO\nTo investigate the significance of predictors, we will utilize a technique known as LASSO (Least Absolute Shrinkage and Selection Operator). This approach involves identifying the most influential predictors out of numerous possibilities that explain the majority of the variation in the outcome variable. In our case, the outcome variable is the specific educational outcome metric we are analyzing, while the predictors are various characteristics of the school."
+    "text": "Why LASSO\nTo investigate the significance of predictors, we will utilize a technique known as LASSO (Least Absolute Shrinkage and Selection Operator). This approach involves identifying the most influential predictors out of numerous possibilities that explain the most variation in the outcome variable. In our case, the outcome variable is the specific educational outcome metric we are analyzing, while the predictors are various characteristics of the school."
   },
   {
     "objectID": "model.html#how-to-interpret-a-lasso-graph",
@@ -172,6 +172,6 @@
     "href": "model.html#grade-cohort-standardized-gcs-scores",
     "title": "Beyond the Report Card: What are the significant predictors?",
     "section": "Grade Cohort Standardized (GCS) Scores",
-    "text": "Grade Cohort Standardized (GCS) Scores\nFirst, we examine the significant predictors for the GCS Score at school level. The LASSO graph shows that the percentage of students who are Asian is a relatively strong predictor. However, the most significant predictors are the percentage of students receiving free/reduced lunch and the percentage of students considered economically disadvantaged."
+    "text": "Grade Cohort Standardized (GCS) Scores\nFirst, we examine the significant predictors for the GCS Score at school level. This LASSO graph shows that the percentage of students who are Asian is a relatively strong positive predictor of GCS Score. However, the most significant predictors are the percentage of students receiving free/reduced lunch and the percentage of students considered economically disadvantaged (both with a negative correlation with the GCS Score)."
   }
 ]
