@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.2.269">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Thu Dang, Nathaniel Reimer, Jeremy Hubinger">
 
-<title>Beyond the Report Card - Beyond the Report Card: Our Motivation</title>
+<title>Beyond the Report Card - Beyond the Report Card: Our Data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -104,12 +104,12 @@ div.csl-indent {
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./data.html" aria-current="page">
- <span class="menu-text">Data</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./motivation.html">
  <span class="menu-text">Motivation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./data.html" aria-current="page">
+ <span class="menu-text">Data</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./county_insights.html">
@@ -143,7 +143,10 @@ div.csl-indent {
    
   <ul>
   <li><a href="#a-sneak-peek-into-the-data" id="toc-a-sneak-peek-into-the-data" class="nav-link active" data-scroll-target="#a-sneak-peek-into-the-data">A sneak peek into the data</a></li>
-  <li><a href="#going-into-details-regarding-the-metrics-considered-in-this-analysis" id="toc-going-into-details-regarding-the-metrics-considered-in-this-analysis" class="nav-link" data-scroll-target="#going-into-details-regarding-the-metrics-considered-in-this-analysis">Going into details regarding the metrics considered in this analysis</a></li>
+  <li><a href="#going-into-details-regarding-the-metrics-considered-in-this-analysis" id="toc-going-into-details-regarding-the-metrics-considered-in-this-analysis" class="nav-link" data-scroll-target="#going-into-details-regarding-the-metrics-considered-in-this-analysis">Going into details regarding the metrics considered in this analysis</a>
+  <ul class="collapse">
+  <li><a href="#a-comparison-of-different-performance-metrics" id="toc-a-comparison-of-different-performance-metrics" class="nav-link" data-scroll-target="#a-comparison-of-different-performance-metrics">A comparison of different performance metrics</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -152,7 +155,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Beyond the Report Card: Our Motivation</h1>
+<h1 class="title">Beyond the Report Card: Our Data</h1>
 </div>
 
 
@@ -173,6 +176,21 @@ div.csl-indent {
 
 </header>
 
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
 <section id="a-sneak-peek-into-the-data" class="level1">
 <h1>A sneak peek into the data</h1>
 <p>The data set we have includes a range of school-related variables such as location details, funding, and aggregated scores in various subjects. Specifically, the score variables cover the general grade-cohort-standardized achievement score, as well as scores in reading, science, and physical education.</p>
@@ -197,11 +215,22 @@ This contains data on Mathematics and English Language Arts growth by school and
 <p>In this analysis, we focused on using Grade Cohort Standardized scores, which is a metric created by the SEDA project, and growth score (?), both at county- and school-level. Additionally, we also considered school-level test scores in various subjects, including English, Science, and Physical Education (PE).</p>
 <p><strong>Grade Cohort Standardized (GCS) scores</strong>: According to the Stanford Codebook, “[t]he GCS scale standardizes the unit means relative to the average difference in NAEP scores between students one grade level apart” <span class="citation" data-cites="seda_methods">(<a href="#ref-seda_methods" role="doc-biblioref"><span>“Methods: How SEDA Produced Estimates of Student Performance That Are Comparable Across Places, Grades, and Years.”</span> 2022</a>)</span>. NAEP stands for National Assessment of Educational Progress, which is an assessment program in the United States that aiming to assess and measure the academic performance of students across different subjects and grades, generally referred to as the Nation’s Report Card <span class="citation" data-cites="naep_definition">(<a href="#ref-naep_definition" role="doc-biblioref"><span>“About NAEP”</span> 2023</a>)</span>. The GCS scale allows users to understand one unit as being equivalent to one grade level. In Grade 3, the national average performance is 3 units, while in Grade 4, it is 4 units, and so on. Here are two brief examples to interpreting GCS values: If 4th-grade students at the school of interest have a GCS value of 5.03, these students’ scores indicate a level equivalent to 5th-grade, which is about one grade level higher than the national average (the reference group) in math. Vice versa, if 3rd-grade students at the school of interest have a GCS value of 2.39, these students’ reading scores indicate a level about half a grade level lower than the national average for 3rd-grade students <span class="citation" data-cites="seda_methods">(<a href="#ref-seda_methods" role="doc-biblioref"><span>“Methods: How SEDA Produced Estimates of Student Performance That Are Comparable Across Places, Grades, and Years.”</span> 2022</a>)</span>. GCS values are aggregated over the years of 2009, 2011, 2013, and 2015, and and are collected at school- and county-level.</p>
 <p><strong>Growth score</strong>: Aggregate growth scores are available for English and Mathematics broken down by school and student group. They measure how close the students growth is to their expected growth. A growth score of 100 indicates students are meeting expected growth; below 100 indicates growth below expectations; and above 100 indicates growth above expectations. Since the scores measure growth they are based on multiple years of testing data: the 2016-17, 2017-18, and 2018-19 school years. Pandemic disruption means that the current growth scores are not actionable. Growth scores will be released again in 2024. Nevertheless, the scores are still useful for our analysis.</p>
-<p><strong>Subject-specific test scores</strong>: We obtained data on test scores for various subjects, including English, Science, and PE. During our initial investigation, after joining these test score datasets with the SEDA and funding data, we saw that the test scores only matched up with a very small percentage of schools in our dataset. Further investigation shows that the test scores are only collected in the East Bay area and various northern CA counties. Since it is desirable to have a full coverage of state scores for the subsequent analysis and modeling process, we decided not to use the subject-specific test score datasets.</p>
-<p>We can add that interesting viz here – what interesting viz?</p>
+<p><strong>Subject-specific test scores</strong>: We obtained data on test scores for various subjects, including English, Science, and PE. During our initial investigation, after joining these test score datasets with the SEDA and funding data, we saw that the test scores only matched up with a very small percentage of schools in our dataset. Further investigation shows that the test scores are only collected in the East Bay area and various northern CA counties. Since it is desirable to have a full coverage of state scores for the subsequent analysis and modeling process, we would only use these datasets in a small part of the analysis and will be mindful when discussing our results.</p>
+<section id="a-comparison-of-different-performance-metrics" class="level2">
+<h2 class="anchored" data-anchor-id="a-comparison-of-different-performance-metrics">A comparison of different performance metrics</h2>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="data_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Overall, GCS and growth scores seem to be pretty robust in the presence of funding compared to other metrics. Such robustness reinforces our choice of these two metrics as the primary indicators of academic accomplishment. You might notice that there’s a counter-intuitive trend between ELA, Science, and PE scores and funding, which we’ll explore and handle further in the subsequent analyses.</p>
 
 
 
+</section>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">

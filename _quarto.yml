@@ -8,10 +8,10 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - href: data.qmd
-        text: Data
       - href: motivation.qmd
         text: Motivation
+      - href: data.qmd
+        text: Data
       - href: county_insights.qmd
         text: County-Level Insights
       - href: school_insights.qmd

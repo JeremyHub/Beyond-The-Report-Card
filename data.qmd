@@ -1,8 +1,51 @@
 ---
-title: "Beyond the Report Card: Our Motivation"
+title: "Beyond the Report Card: Our Data"
 author: "Thu Dang, Nathaniel Reimer, Jeremy Hubinger"
+execute: 
+  echo: false
+  warning: false
+  message: false
+  freeze: auto
 bibliography: Library.bib
 ---
+
+```{r packages}
+library(tidyverse)
+library(MetBrewer)
+library(sf)
+library(rnaturalearth)
+library(classInt) #install.packages('classInt')
+library(ggspatial) #install.packages('ggspatial')
+library(ggthemes) #install.packages('ggthemes')
+library(RColorBrewer)
+library(patchwork)
+library(leaflet)
+library(probably) #install.packages('probably')
+library(glmnet)
+library(tidymodels)
+tidymodels_prefer()
+```
+
+```{r color}
+palname = "Homer2"
+defaultcolor = met.brewer(palname,10)[9]
+```
+
+```{r load datasets}
+load("CombinedDataLongFormat.RData")
+load("WideMergedData.RData")
+```
+
+```{r load cleaned dataset for county achievement metrics}
+math_ca_gcs_df <- read_csv("AllDatasets/math_ca_gcs_df.csv")
+rla_ca_gcs_df <- read_csv("AllDatasets/rla_ca_gcs_df.csv")
+```
+
+```{r maps load shapefile}
+ca_counties <- read_sf('CA_Counties')
+ca_counties <- ca_counties %>%
+  st_transform(crs = "NAD83")
+```
 
 # A sneak peek into the data
 
@@ -45,6 +88,52 @@ In this analysis, we focused on using Grade Cohort Standardized scores, which is
 
 **Growth score**: Aggregate growth scores are available for English and Mathematics broken down by school and student group. They measure how close the students growth is to their expected growth. A growth score of 100 indicates students are meeting expected growth; below 100 indicates growth below expectations; and above 100 indicates growth above expectations. Since the scores measure growth they are based on multiple years of testing data: the 2016-17, 2017-18, and 2018-19 school years. Pandemic disruption means that the current growth scores are not actionable. Growth scores will be released again in 2024. Nevertheless, the scores are still useful for our analysis.
 
-**Subject-specific test scores**: We obtained data on test scores for various subjects, including English, Science, and PE. During our initial investigation, after joining these test score datasets with the SEDA and funding data, we saw that the test scores only matched up with a very small percentage of schools in our dataset. Further investigation shows that the test scores are only collected in the East Bay area and various northern CA counties. Since it is desirable to have a full coverage of state scores for the subsequent analysis and modeling process, we decided not to use the subject-specific test score datasets.
+**Subject-specific test scores**: We obtained data on test scores for various subjects, including English, Science, and PE. During our initial investigation, after joining these test score datasets with the SEDA and funding data, we saw that the test scores only matched up with a very small percentage of schools in our dataset. Further investigation shows that the test scores are only collected in the East Bay area and various northern CA counties. Since it is desirable to have a full coverage of state scores for the subsequent analysis and modeling process, we would only use these datasets in a small part of the analysis and will be mindful when discussing our results.
 
-We can add that interesting viz here -- what interesting viz?
+## A comparison of different performance metrics
+
+```{r metric performance and funding}
+#| warning: false
+#| message: false
+min_max_norm <- function(x) {
+    (x - min(x, na.rm=TRUE)) / (max(x, na.rm=TRUE) - min(x, na.rm=TRUE))
+}
+```
+
+```{r}
+fl <- c("English Language Arts", "Grade Cohort Standardized", "Earth + Space", "Life Sciences", "Physical Sciences", "Math Growth Score", "English Language Arts Growth Score")
+names(fl) <- c("ela_data_currstatus_ALL", "gcs", "science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99", "science_data_Life.Sciences.Domain.Percent.Above.Standard_99", "science_data_Physical.Sciences.Domain.Percent.Above.Standard_99", "growthscore_ela", "growthscore_math")
+multi_metric_data<-wide_merged_data %>% 
+  mutate(pp_total_raw = as.numeric(pp_total_raw)) %>%
+  mutate(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99 = as.numeric(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99),
+        science_data_Physical.Sciences.Domain.Percent.Above.Standard_99 = as.numeric(science_data_Physical.Sciences.Domain.Percent.Above.Standard_99),
+        science_data_Life.Sciences.Domain.Percent.Above.Standard_99 = as.numeric(science_data_Life.Sciences.Domain.Percent.Above.Standard_99),
+        ela_data_currstatus_ALL = as.numeric(ela_data_currstatus_ALL),
+        gcs_mn_avg_ol = as.numeric(gcs_mn_avg_ol),
+        growthscore_ela = as.numeric(growthscore_ela),
+        growthscore_math = as.numeric(growthscore_math)
+    ) %>% mutate(
+        science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99 = min_max_norm(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99),
+        science_data_Physical.Sciences.Domain.Percent.Above.Standard_99 = min_max_norm(science_data_Physical.Sciences.Domain.Percent.Above.Standard_99),
+        science_data_Life.Sciences.Domain.Percent.Above.Standard_99 = min_max_norm(science_data_Life.Sciences.Domain.Percent.Above.Standard_99),
+        ela_data_currstatus_ALL = min_max_norm(ela_data_currstatus_ALL),
+        gcs = min_max_norm(gcs_mn_avg_ol - gradecenter),
+        growthscore_ela = min_max_norm(growthscore_ela),
+        growthscore_math = min_max_norm(growthscore_math)
+    ) %>% pivot_longer(cols = c(science_data_Earth.and.Space.Sciences.Domain.Percent.Above.Standard_99, science_data_Physical.Sciences.Domain.Percent.Above.Standard_99, science_data_Life.Sciences.Domain.Percent.Above.Standard_99, ela_data_currstatus_ALL, gcs, growthscore_ela, growthscore_math))
+multi_metric_data %>%
+  ggplot(aes(x = pp_total_raw, y = value)) +
+    geom_point(alpha=0.3,color = defaultcolor)+
+    facet_wrap(~name, labeller=labeller(name=fl))+
+    geom_smooth(color = defaultcolor)+
+    labs(x = "Per Pupil Funding", y = "Normalized Metric", title = "Metric Performance by Total Per-Pupil Funding") +
+    theme_minimal() +
+    theme(
+      legend.title = element_blank(),
+      legend.text = element_text(size = 8),
+      legend.position = "none") +
+    scale_x_continuous(limits = c(8000,20000))
+```
+
+
+Overall, GCS and growth scores seem to be pretty robust in the presence of funding compared to other metrics. Such robustness reinforces our choice of these two metrics as the primary indicators of academic accomplishment. You might notice that there's a counter-intuitive trend between ELA, Science, and PE scores and funding, which we'll explore and handle further in the subsequent analyses. 
