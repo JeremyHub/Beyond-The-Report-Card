@@ -150,7 +150,7 @@ do_lasso<-function(variable, data, labels, y_nudge, x_nudge) {
 
 In order to explore the factors that contribute to variations between metrics, we will examine the predictors for each metric. This entails analyzing the factors that have a significant positive or negative influence on distinct metrics of educational outcomes for schools/individuals.
 
-To facilitate this analysis, we will compare various metrics and scores that we have previously studied, including ELA Test Score, GCS Score, and both ELA and Math growth scores.
+To facilitate this analysis, we will compare various metrics and scores that we have previously studied, including the Grade Cohort Standardized (GCS) Score and both ELA and Math growth scores.
 
 It is important to note that this analysis will be conducted at the school level, whereby all the predictors will be aggregated for each school. For instance, the predictor for free/reduced lunch will be the percentage of students at a given school who receive free or reduced lunch.
 
