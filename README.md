@@ -1,6 +1,6 @@
-# STAT-456-Final
+# Beyond the Report Card: Investigating the Factors that Define Educational Achievement using California as a Case Study
 
-This site was created by Thu Dang, Nathaniel Reimer, and Jeremy Hubinger. It contains our analysis of school acheivement measures in the state of California. All data is included in this repository. The entire site and analysis can be reconstructed by running quarto_render() in the main directory.
+This project was created by Thu Dang, Nathaniel Reimer, and Jeremy Hubinger. It contains our analysis of school achievement measures in the state of California. All data is included in this repository. The entire site and analysis can be reconstructed by running quarto_render() in the main directory.
 
 Our analysis used the following packages:
 library(tidyverse)
