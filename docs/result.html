@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.2.269">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -20,6 +20,25 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
+}
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
 }
 </style>
 
@@ -154,41 +173,42 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<div class="cell">
-
-</div>
-<div class="cell">
-
-</div>
-<div class="cell">
-
-</div>
-<div class="cell">
-
-</div>
-<div class="cell">
-
-</div>
 <section id="what-did-we-find-and-what-do-they-mean" class="level1">
 <h1>What did we find, and what do they mean?</h1>
-<p>There is a high degree of variation in both the county and school-level achievement data. Wealthier counties and counties with large urban areas see higher average student achievement. When we separate economically disadvantaged and non-economically disadvantaged students the economically disadvantaged students have lower average achievement in both math and english. At the school level there is more significant variability. High-achieving and low-achieving schools can be found close to each other but there are many groups of high and low-achieving schools. Diving deeper into school funding, we find that schools with a higher proportion of disadvantaged students often have higher funding than schools with fewer disadvantaged students which may be misleading at first glance. When we account for the greater need of these economically disadvantaged students, there still appears to be a funding gap. Funding schools equally is not an equitable or effective solution to bridge the gap in socioeconomic status, leaving gaps in academic achievement unbridged.</p>
+<p>There is a high degree of variation in both the county and school-level achievement data. Wealthier counties and counties with large urban areas see higher average student achievement. When we separate economically disadvantaged and non-economically disadvantaged students the economically disadvantaged students have lower average achievement in both math and english. At the school level there is more significant variability. High-achieving and low-achieving schools can be found close to each other but there are many groups of high and low-achieving schools.</p>
+<p>Diving deeper into school funding, we find that schools with a higher proportion of disadvantaged students often have higher funding than schools with fewer disadvantaged students which may be misleading at first glance. When we account for the greater need of these economically disadvantaged students, disadvantaged schools appear to be underfunded. One of the explanations for this result is that it requires more funding to serve schools where poverty is concentrated. California is a relatively diverse state, and with a history of redlining, school segregation is inevitable. Therefore, underprivileged students tend to concentrate in certain areas. Although schools with a high proportion of economically disadvantaged students receive more funding, the majority of the funding goes to supporting students’ welfare, i.e.&nbsp;special education, free/reduced lunch programs, as well as human capital costs, i.e.&nbsp;teachers’ salaries and health services. Therefore, little is left to support students academically <span class="citation" data-cites="school_segregation teacher_inflation expert_interview">(<a href="#ref-school_segregation" role="doc-biblioref">Carrillo and Salhotra 2022</a>; <a href="#ref-teacher_inflation" role="doc-biblioref">Will 2022</a>; <a href="#ref-expert_interview" role="doc-biblioref">Lavery 2023</a>)</span>. This shows that funding schools equally is not an equitable or effective solution to bridge the gap in socioeconomic status; there are still gaps in academic achievement left unbridged.</p>
 <ul>
 <li>A paragraph on LASSO results and talk about the big picture of the results &lt;——— <strong>JEREMY YOU DO THIS ONE</strong> - Growth score is pretty robust since there are no variables that actually predict it. &lt;—— <strong>AND THIS ONE LMAO</strong></li>
 </ul>
 </section>
 <section id="limitations-and-moving-forward" class="level1">
 <h1>Limitations and moving forward</h1>
-<p>The main limitation in our analysis is that we drop observations with missing data. We also only had the time to look at LASSO for modeling.</p>
-<p>Moving forward, in further analysis, we should use spatial models to impute</p>
+<p>There are some limitations in our project. Firstly, we have excluded observations with incomplete data. Secondly, due to time constraints, we could only focus on employing LASSO for modeling purposes. Furthermore, we have to exclude a few datasets due to coverage problem, meaning that the data is only collected in certain counties north of CA and could potentially induce bias had we used them.</p>
+<p>Moving forward, there are some improvements that we would love to make in our project:</p>
 <ul>
-<li><p>What are some of the next steps?</p></li>
-<li><p>What should we have done differently? &lt;—————— <strong>Thu finish this whole section</strong></p></li>
+<li><p>We recognize that there are differences in socioeconomic factors and educational measures among various states. Since we only focus on California, we would love to analyze data in other states in order to enhance the generalizability of our project.</p></li>
+<li><p>Since there might be spatial correlation in the data, we want to deal with missing data using spatial models instead of just dropping the observations.</p></li>
+<li><p>As some of the datasets we obtained contain observations over multiple years, it would be beneficial to conduct time series analysis to explain trends and patterns over time.</p></li>
+<li><p>In this analysis, since we gain various insights from our expert, Prof.&nbsp;Lesley Lavery, we would love to find and talk with more local experts, e.g.&nbsp;educators in California, for more context to dive deeper into our results.</p></li>
+<li><p>We think it is interesting to explore other modeling techniques, i.e.&nbsp;hierarchical linear model as suggested by our expert, or adapt a nonlinearity assumption, to see how the results might vary.</p></li>
+<li><p>Last but not least, we hope to obtain more data that has better state coverage, i.e.&nbsp;data collected from across the state of interest rather than being limited to a small number of counties within the state.</p></li>
 </ul>
+
 
 
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-school_segregation" class="csl-entry" role="doc-biblioentry">
+Carrillo, Sequoia, and Pooja Salhotra. 2022. <span>“The u.s. Student Population Is More Diverse, but Schools Are Still Highly Segregated.”</span> <em>NPR</em>. <a href="https://www.npr.org/2022/07/14/1111060299/school-segregation-report">https://www.npr.org/2022/07/14/1111060299/school-segregation-report</a>.
+</div>
+<div id="ref-expert_interview" class="csl-entry" role="doc-biblioentry">
+Lavery, Lesley. 2023. <span>“Expert Interview.”</span> Personal communication.
+</div>
+<div id="ref-teacher_inflation" class="csl-entry" role="doc-biblioentry">
+Will, Madeline. 2022. <span>“Teacher Salaries Aren’t Keeping up with Inflation. See How Your State Compares.”</span> <em>EducationWeek</em>. <a href="https://www.edweek.org/teaching-learning/teacher-salaries-arent-keeping-up-with-inflation-see-how-your-state-compares/2022/04">https://www.edweek.org/teaching-learning/teacher-salaries-arent-keeping-up-with-inflation-see-how-your-state-compares/2022/04</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

@@ -10,17 +10,29 @@ bibliography: Library.bib
 
 # What did we find, and what do they mean?
 
-There is a high degree of variation in both the county and school-level achievement data. Wealthier counties and counties with large urban areas see higher average student achievement. When we separate economically disadvantaged and non-economically disadvantaged students the economically disadvantaged students have lower average achievement in both math and english. At the school level there is more significant variability. High-achieving and low-achieving schools can be found close to each other but there are many groups of high and low-achieving schools. Diving deeper into school funding, we find that schools with a higher proportion of disadvantaged students often have higher funding than schools with fewer disadvantaged students which may be misleading at first glance. When we account for the greater need of these economically disadvantaged students, disadvantaged schools appear to be underfunded. Funding schools equally is not an equitable or effective solution to bridge the gap in socioeconomic status, leaving gaps in academic achievement unbridged. 
+There is a high degree of variation in both the county and school-level achievement data. Wealthier counties and counties with large urban areas see higher average student achievement. When we separate economically disadvantaged and non-economically disadvantaged students the economically disadvantaged students have lower average achievement in both math and english. At the school level there is more significant variability. High-achieving and low-achieving schools can be found close to each other but there are many groups of high and low-achieving schools. 
+
+Diving deeper into school funding, we find that schools with a higher proportion of disadvantaged students often have higher funding than schools with fewer disadvantaged students which may be misleading at first glance. When we account for the greater need of these economically disadvantaged students, disadvantaged schools appear to be underfunded. One of the explanations for this result is that it requires more funding to serve schools where poverty is concentrated. California is a relatively diverse state, and with a history of redlining, school segregation is inevitable. Therefore, underprivileged students tend to concentrate in certain areas. Although schools with a high proportion of economically disadvantaged students receive more funding, the majority of the funding goes to supporting students' welfare, i.e. special education, free/reduced lunch programs, as well as human capital costs, i.e. teachers' salaries and health services. Therefore, little is left to support students academically [@school_segregation; @teacher_inflation; @expert_interview]. This shows that funding schools equally is not an equitable or effective solution to bridge the gap in socioeconomic status; there are still gaps in academic achievement left unbridged. 
 
 -   A paragraph on LASSO results and talk about the big picture of the results <--------- **JEREMY YOU DO THIS ONE** 
         -   Growth score is pretty robust since there are no variables that actually predict it. <------ **AND THIS ONE LMAO**
 
 # Limitations and moving forward
 
-The main limitation in our analysis is that we drop observations with missing data. We also only had the time to look at LASSO for modeling. 
+There are some limitations in our project. Firstly, we have excluded observations with incomplete data. Secondly, due to time constraints, we could only focus on employing LASSO for modeling purposes. Furthermore, we have to exclude a few datasets due to coverage problem, meaning that the data is only collected in certain counties north of CA and could potentially induce bias had we used them. 
 
-Moving forward, in further analysis, we should use spatial models to impute 
+Moving forward, there are some improvements that we would love to make in our project: 
 
--   What are some of the next steps?
+- We recognize that there are differences in socioeconomic factors and educational measures among various states. Since we only focus on California, we would love to analyze data in other states in order to enhance the generalizability of our project. 
 
--   What should we have done differently? <------------------ **Thu finish this whole section**
+- Since there might be spatial correlation in the data, we want to deal with missing data using spatial models instead of just dropping the observations. 
+
+- As some of the datasets we obtained contain observations over multiple years, it would be beneficial to conduct time series analysis to explain trends and patterns over time.
+
+- In this analysis, since we gain various insights from our expert, Prof. Lesley Lavery, we would love to find and talk with more local experts, e.g. educators in California, for more context to dive deeper into our results.
+
+- We think it is interesting to explore other modeling techniques, i.e. hierarchical linear model as suggested by our expert, or adapt a nonlinearity assumption, to see how the results might vary. 
+
+- Last but not least, we hope to obtain more data that has better state coverage, i.e. data collected from across the state of interest rather than being limited to a small number of counties within the state.
+
+

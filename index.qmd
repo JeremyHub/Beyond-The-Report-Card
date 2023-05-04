@@ -12,7 +12,9 @@ execute:
   message: false
 ---
 
-Hi everyone, we are Thu, Nathaniel, and Jeremy, and welcome to our Capstone Project for STAT 456: Projects in Data Science. As you can tell from the title, we are interested in exploring the factors that impacting academic achievement, using California as a case study. Meet the team...
+Hi everyone, we are Thu, Nathaniel, and Jeremy, and welcome to our Capstone Project for STAT 456: Projects in Data Science. As you can tell from the title, we are interested in exploring the factors that impacting academic achievement, using California as a case study. Before going into the details, we would love to express our gratitude to the people that have supervised our project and shared their valuable insights to help bring it to fruition. We would love to thank our education expert [Prof. Lesley Lavery](https://www.macalester.edu/politicalscience/facultystaff/lesleylavery/) - we are so grateful for your insights in education policy and your expertise in giving us the much needed background for our findings. Thanks to you, we were able to explore this topic more thoroughly and interpret our results more thoughtfully. We would also love to thank our professor for this course, [Prof. Brianna Heggeseth](https://bcheggeseth.github.io/) - we are so grateful for all of the support you have provided us and the amazing advanced data lessons throughout the course. We have used various skills you've taught us, and we've grown so much together in the journey of completing this project as a result.
+
+Meet the team...
 
 ![Team picture. From left to right: Nathaniel Reimer, Thu Dang, Jeremy Hubinger](group_picture.jpg)
 
