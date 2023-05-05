@@ -36,4 +36,14 @@ Moving forward, there are some improvements that we would love to make in our pr
 
 - Last but not least, we hope to obtain more data that has better state coverage, i.e. data collected from across the state of interest rather than being limited to a small number of counties within the state.
 
+# On ethics
+
+To ensure privacy concerns are addressed, we take measures to aggregate the data at the school level. However, we recognize that there may be potential issues with bias in the data collection process and data accuracy as a result.
+
+Regarding potential bias, the data is taken from various sources, and it is possible that each school may have different processes for collecting the data. With the exception of the Educational Opportunity Project at Stanford University, we do not have information on the number of students for whom the data is collected, nor the demographic makeup of those students. As a result, we acknowledge that there may be inherent biases in the data that we cannot control due to a lack of information.
+
+Regarding data accuracy, as we do not have detailed documentation for all of the datasets, it is challenging to ascertain their accuracy. However, we have confidence in the reliability of the government and highly-credited sources from which the data originates. Given this, we consider these datasets to be our most reliable option at present.
+
+Taken out of context, our analyses and graphics have the potential to negatively impact educational policy. Particularly since we will be looking at demographics and funding data. We need to be careful and deliberate in our analysis in order to minimize harm.
+
 
