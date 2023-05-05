@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.2.335">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -190,7 +190,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <section id="lets-revisit-the-goal" class="level1">
 <h1>Let’s revisit the goal</h1>
-<p>In order to explore the factors that contribute to variations between metrics, we will examine the predictors for each metric. This entails analyzing the factors that have a significant positive or negative influence on distinct metrics of educational outcomes for schools/individuals.</p>
+<p>To explore the factors that contribute to variations between metrics, we will examine the predictors for each metric. This entails analyzing the factors that have a significant positive or negative influence on distinct metrics of educational outcomes for schools/individuals.</p>
 <p>To facilitate this analysis, we will compare various metrics and scores that we have previously studied, including the Grade Cohort Standardized (GCS) Score and both ELA and Math growth scores.</p>
 <p>It is important to note that this analysis will be conducted at the school level, whereby all the predictors will be aggregated for each school. For instance, the predictor for free/reduced lunch will be the percentage of students at a given school who receive free or reduced lunch.</p>
 </section>
@@ -203,18 +203,18 @@ ul.task-list li input[type="checkbox"] {
 <section id="how-to-interpret-a-lasso-graph" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-interpret-a-lasso-graph">How to interpret a LASSO graph</h2>
 <p>LASSO provides us with a visual representation of which predictors are responsible for the most variation in the metric. It’s important to note a few things while analyzing the LASSO graphs below. Each line on the graph corresponds to an individual predictor, such as “percentage of students who are white” or “school grade span,” among others. The most significant predictors are indicated on the graph.</p>
-<p>A predictor is considered significant if its Y-value remains consistently above or below zero for high penalty values. In other words, if the line for a predictor on the graph reaches zero at higher X-values, it is more significant, meaning it accounts for a greater amount of variability in the outcome, compared to a predictor that reaches zero at low X-values.</p>
+<p>A predictor is considered significant if its Y-value remains consistently above or below zero for high penalty values. In other words, if the line for a predictor on the graph reaches zero at higher X-values, it is more significant, meaning it accounts for a more of the variability in the outcome compared to a predictor that reaches zero at low X-values.</p>
 </section>
 <section id="note-on-predictors" class="level2">
 <h2 class="anchored" data-anchor-id="note-on-predictors">Note on predictors</h2>
-<p>Some predictors are numerical and some are categorical. Numerical predictors are fairly straightforward. If the line for a numerical predictor is above zero then the higher that predictor is for any given school, the higher the outcome metric will be. And vice versa if the predictor is below. Numerical predictors are predictors such as demographics. There are also categorical predictors. If a line for a categorical predictor (such as whether the school serves kids from K-12 or not) is above zero then if that category is true for a school the associated metric will be higher and vice versa if it is below.</p>
+<p>Some predictors are numerical, and some are categorical. Numerical predictors are fairly straightforward. If the line for a numerical predictor is above zero then the higher that predictor is for any given school, the higher the outcome metric will be. And vice versa if the predictor is below. Numerical predictors are predictors such as demographics. There are also categorical predictors. If a line for a categorical predictor (such as whether the school serves kids from K-12 or not) is above zero then if that category is true for a school the associated metric will be higher and vice versa if it is below.</p>
 </section>
 </section>
 <section id="results" class="level1">
 <h1>Results</h1>
 <section id="grade-cohort-standardized-gcs-scores" class="level2">
 <h2 class="anchored" data-anchor-id="grade-cohort-standardized-gcs-scores">Grade Cohort Standardized (GCS) Scores</h2>
-<p>First, we examine the significant predictors for the GCS Score at school level. This LASSO graph shows that the percentage of students who are Asian is a relatively strong positive predictor of GCS Score. However, the most significant predictors are the percentage of students receiving free/reduced lunch and the percentage of students considered economically disadvantaged (both with a negative correlation with the GCS Score).</p>
+<p>First, we examine the significant predictors for the GCS Score at the school level. This LASSO graph shows that the percentage of students who are Asian is a relatively strong positive predictor of GCS Score. However, the most significant predictors are the percentage of students receiving free/reduced lunch and the percentage of students considered economically disadvantaged (both with a negative correlation with the GCS Score).</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="model_files/figure-html/perform lasso pt1-1.png" class="img-fluid" width="672"></p>

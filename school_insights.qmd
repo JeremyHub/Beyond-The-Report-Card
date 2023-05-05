@@ -49,7 +49,7 @@ ca_counties <- ca_counties %>%
 
 # School-level academic achievement across California
 
-Let's now take a closer look at the statistics on the individual school level. To create this map, we find the GCS score for each school and divide the schools into 5 categories, then we place a marker at the approximate location based on available latitude and longitude data. Note that the range of GCS scores is much wider now since we are looking at individual schools rather than the county average.
+Let's now take a closer look at the statistics on the individual school level. To create this map, we find the GCS score for each school and divide the schools into five categories, then place a marker at the approximate location based on available latitude and longitude data. Note that the range of GCS scores is much wider now since we are looking at individual schools rather than the county average.
 
 ```{r funding/performance map}
 mapdata <- wide_merged_data %>% filter(!is.na(gradecenter)&!is.na(gcs_mn_avg_ol)) %>% 
@@ -92,7 +92,7 @@ leaflet(mapdata) %>% addProviderTiles(providers$CartoDB.Positron) %>%
     )
 ```
 
-<br> Schools closer to urban areas appear to have higher achievement than schools in rural areas. Zooming in on just the San Francisco Bay we see that there is a tremendous amount of variation in achievement: schools in San Jose are years behind while a swath of schools in Palo Alto, Mountain View, and Cupertino boast testing achievement more than three years ahead. On the east side of the bay in Oakland, schools just blocks apart are separated by multiple years in achievement. Further afield, Los Angeles and Sacramento have areas of very low achievement then areas of higher achievement further out, almost resembling a bullseye. How do we account for this variation?
+<br> Schools closer to urban areas appear to have higher achievement than rural schools. Zooming in on just the San Francisco Bay we see a tremendous amount of variation in achievement: schools in San Jose are years behind, while a swath of schools in Palo Alto, Mountain View, and Cupertino boast testing achievement more than three years ahead. On the east side of the bay in Oakland, schools only blocks apart are separated by multiple years in achievement. Further afield, Los Angeles and Sacramento have areas of low achievement and areas of higher achievement further out, almost resembling a bullseye. How do we account for this variation?
 
 # Does funding impact school-level academic achievement?
 
@@ -161,7 +161,7 @@ wide_merged_data %>% filter(!is.na(urbanicity)) %>%
   labs(y="Grade Cohort Score", x= "Unadjusted Per Student Spending") + guides(color="none") +   geom_hline(yintercept = 0)
 ```
 
-Overall, regardless of area, higher per pupil funding is associated with lower growth scores. In California schools receive a base per-pupil grant dependent on the grades taught in the school. Schools receive supplemental funding based on the percent of students eligible for free and reduced lunch, the percent in the foster care system, and the percent that have limited English. We use a linear model of funding based solely on the percent of students eligible for free and reduced lunch to adjust funding. The negative relationship dissapears:
+Overall, regardless of area, higher per-pupil funding is associated with lower growth scores. In California, schools receive a base per pupil grant dependent on the grades taught in the school. Schools receive supplemental funding based on the percentage of students eligible for free and reduced lunch, the percentage in the foster care system, and the percentage that has limited English. We use a linear model of funding based solely on the percentage of students eligible for free and reduced lunch to adjust funding. The negative relationship disappears:
 
 ```{r funding model, results='hide'}
 #| message: true
@@ -194,9 +194,9 @@ wide_merged_data %>% filter(!is.na(urbanicity)) %>% mutate(pp_total_raw_frl_adju
 
 ```
 
-In the suburbs and city there appears to be a slight positive relationship between funding and achievement but our data and analysis really is not suited to pinpoint that effect.
+In the suburbs and city, there appears to be a slight positive relationship between funding and achievement but our data and analysis are not suited to pinpoint that effect.
 
-There are various takeaways from this analysis. Socioeconomic status, measured as the percent of students eligible for free and reduced lunch, significantly effects achievement. Additional funding received by schools with a high proportion of disadvantaged students does not affect achievement enough to offset the impact of socioeconomic status. The Education Trust finds that California's school funding scheme is relatively progressive when comparing high and low-poverty school districts [@money_edtrust]. When adjusting for the additional needs of low income students, however, they say that California is merely 'neutral.'
+There are various takeaways from this analysis. Socioeconomic status, measured as the percent of students eligible for free and reduced lunch, significantly affects achievement. Additional funding received by schools with a high proportion of disadvantaged students does not affect achievement enough to offset the impact of socioeconomic status. The Education Trust finds that California's school funding scheme is relatively progressive when comparing high and low-poverty school districts [@money_edtrust]. When adjusting for the additional needs of low-income students, they say California is merely 'neutral.'
 
 ```{r adjusted graphs}
 #| eval: false

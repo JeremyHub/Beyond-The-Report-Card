@@ -172,7 +172,7 @@ do_lasso<-function(variable, data, labels, y_nudge, x_nudge) {
 
 # Let's revisit the goal
 
-In order to explore the factors that contribute to variations between metrics, we will examine the predictors for each metric. This entails analyzing the factors that have a significant positive or negative influence on distinct metrics of educational outcomes for schools/individuals.
+To explore the factors that contribute to variations between metrics, we will examine the predictors for each metric. This entails analyzing the factors that have a significant positive or negative influence on distinct metrics of educational outcomes for schools/individuals.
 
 To facilitate this analysis, we will compare various metrics and scores that we have previously studied, including the Grade Cohort Standardized (GCS) Score and both ELA and Math growth scores.
 
@@ -188,17 +188,17 @@ To investigate the significance of predictors, we will utilize a technique known
 
 LASSO provides us with a visual representation of which predictors are responsible for the most variation in the metric. It's important to note a few things while analyzing the LASSO graphs below. Each line on the graph corresponds to an individual predictor, such as "percentage of students who are white" or "school grade span," among others. The most significant predictors are indicated on the graph.
 
-A predictor is considered significant if its Y-value remains consistently above or below zero for high penalty values. In other words, if the line for a predictor on the graph reaches zero at higher X-values, it is more significant, meaning it accounts for a greater amount of variability in the outcome, compared to a predictor that reaches zero at low X-values.
+A predictor is considered significant if its Y-value remains consistently above or below zero for high penalty values. In other words, if the line for a predictor on the graph reaches zero at higher X-values, it is more significant, meaning it accounts for a more of the variability in the outcome compared to a predictor that reaches zero at low X-values.
 
 ## Note on predictors
 
-Some predictors are numerical and some are categorical. Numerical predictors are fairly straightforward. If the line for a numerical predictor is above zero then the higher that predictor is for any given school, the higher the outcome metric will be. And vice versa if the predictor is below. Numerical predictors are predictors such as demographics. There are also categorical predictors. If a line for a categorical predictor (such as whether the school serves kids from K-12 or not) is above zero then if that category is true for a school the associated metric will be higher and vice versa if it is below.
+Some predictors are numerical, and some are categorical. Numerical predictors are fairly straightforward. If the line for a numerical predictor is above zero then the higher that predictor is for any given school, the higher the outcome metric will be. And vice versa if the predictor is below. Numerical predictors are predictors such as demographics. There are also categorical predictors. If a line for a categorical predictor (such as whether the school serves kids from K-12 or not) is above zero then if that category is true for a school the associated metric will be higher and vice versa if it is below.
 
 # Results
 
 ## Grade Cohort Standardized (GCS) Scores
 
-First, we examine the significant predictors for the GCS Score at school level. This LASSO graph shows that the percentage of students who are Asian is a relatively strong positive predictor of GCS Score. However, the most significant predictors are the percentage of students receiving free/reduced lunch and the percentage of students considered economically disadvantaged (both with a negative correlation with the GCS Score).
+First, we examine the significant predictors for the GCS Score at the school level. This LASSO graph shows that the percentage of students who are Asian is a relatively strong positive predictor of GCS Score. However, the most significant predictors are the percentage of students receiving free/reduced lunch and the percentage of students considered economically disadvantaged (both with a negative correlation with the GCS Score).
 
 ```{r perform lasso pt1}
 do_lasso(outcome$gcs, predictors, labs(title="Significant Predictors of GCS Score"), c(0.8, -1, -1), 0.2)
